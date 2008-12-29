@@ -1,0 +1,22 @@
+AUTHORS
+Changes
+check_rbl
+check_rbl.pod
+check_rbl.spec
+COPYING
+inc/Module/Install.pm
+inc/Module/Install/Base.pm
+inc/Module/Install/Include.pm
+inc/Module/Install/Makefile.pm
+inc/Module/Install/MakeMaker.pm
+inc/Module/Install/Metadata.pm
+inc/version.pm
+INSTALL
+Makefile.PL
+MANIFEST			This list of files
+MANIFEST.SKIP
+META.yml
+NEWS
+README
+TODO
+VERSION

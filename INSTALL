@@ -1,0 +1,43 @@
+Build and install check_rbl
+
+Install to /usr/lib/nagios/plugins/contrib
+==========================================
+
+In the source directory run:
+
+    perl Makefile.PL
+    make
+    make install
+
+Install to a custom directory (CUSTOM_DIR)
+=========================================
+
+In the source directory run:
+
+    perl Makefile.PL INSTALLSITESCRIPT=CUSTOM_DIR
+    make
+    make install
+
+You can override the INSTALLSCRIPT, INSTALLNBIN or INSTALLSITESCRIPT
+variable depending on your perl installation.
+
+The man page is installed to /usr/share/man/man1/check_rbl.1
+you can customize the path by setting INSTALLMAN1DIR as follows
+
+    perl Makefile.PL INSTALLSCRIPT=CUSTOM_DIR INSTALLMAN1DIR=CUSTOM_MAN_DIR
+    make
+    make install
+
+Manual installation
+===================
+
+Substitute #!perl at the beginning of the script with the location of
+your Perl interpreter and copy it to the desired location
+
+Generate the man page with pod2man
+
+    pod2man check_rbl.pod > CUSTOM_MAN_FILE
+
+Please report any installation problem to <matteo.corti@id.ethz.ch> or
+open a ticket at
+https://trac.id.ethz.ch/projects/nagios_plugins/newticket

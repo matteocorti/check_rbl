@@ -1,0 +1,252 @@
+#!perl
+
+# check_updates is a Nagios plugin to check if RedHat or Fedora system
+# is up-to-date
+#
+# See  the INSTALL file for installation instructions
+#
+# Copyright (c) 2007, ETH Zurich.
+#
+# This module is free software; you can redistribute it and/or modify it
+# under the terms of GNU general public license (gpl) version 3.
+# See the LICENSE file for details.
+#
+# RCS information
+# enable substitution with:
+#   $ svn propset svn:keywords "Id Revision HeadURL Source Date"
+#
+#   $Id: check_updates 966 2008-02-28 15:47:36Z corti $
+#   $Revision: 966 $
+#   $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/check_updates $
+#   $Date: 2008-02-28 16:47:36 +0100 (Thu, 28 Feb 2008) $
+
+use strict;
+use warnings;
+
+use threads;
+use threads::shared;
+
+use Carp;
+use Data::Dumper;
+use English '-no_match_vars';
+use Nagios::Plugin::Threshold;
+use Nagios::Plugin;
+use Nagios::Plugin::Getopt;
+use Net::DNS;
+
+use version;
+
+our $VERSION = '1.0.0';
+
+my $help;
+my $options;
+my $plugin;
+my $threshold;
+
+my @blacklisted : shared;
+
+##############################################################################
+# Usage     : my $ip = lookup( $hostname );
+# Purpose   : DNS lookup
+# Returns   : $ip if found; undef if not found
+# Arguments : $hostname : the FQDN to resolve
+# Throws    : n/a
+# Comments  : n/a
+# See also  : n/a
+sub lookup {
+
+    my ($hostname) = @_;
+
+    require Net::DNS;
+
+    my $res   = Net::DNS::Resolver->new;
+    my $query = $res->search($hostname);
+
+    if ($query) {
+        foreach my $rr ( $query->answer ) {
+            if ( $rr->type eq 'A' ) {
+                return $rr->address;
+            }
+        }
+    }
+    else {
+        return;
+    }
+
+    return;    # dead code to make perlcritic happy
+
+}
+
+##############################################################################
+# Usage     : verbose("some message string", $optional_verbosity_level);
+# Purpose   : write a message if the verbosity level is high enough
+# Returns   : n/a
+# Arguments : message : message string
+#             level   : options verbosity level
+# Throws    : n/a
+# Comments  : n/a
+# See also  : n/a
+sub verbose {
+
+    # arguments
+    my $message = shift;
+    my $level   = shift;
+
+    if ( !defined $message ) {
+        $plugin->nagios_exit( UNKNOWN,
+            q{Internal error: not enough parameters for 'verbose'} );
+    }
+
+    if ( !defined $level ) {
+        $level = 0;
+    }
+
+    if ( $level < $options->verbose ) {
+        print $message;
+    }
+
+    return;
+
+}
+
+##############################################################################
+# Usage     : check_server( $ip, $server )
+# Purpose   : checks if $ip is blacklisted by $server
+# Returns   : n/a
+# Arguments : $ip     : host IP
+#             $server : RBL server
+# Throws    : n/a
+# Comments  : if blacklisted pushed $server onto @blacklisted
+# See also  : n/a
+sub check_server {
+
+    my ( $ip, $server ) = @_;
+
+    my $lookup_ip = $ip;
+
+    $lookup_ip =~
+s/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/$4.$3.$2.$1.$server/mxs;
+
+    verbose " -> $lookup_ip\n";
+
+    if ( lookup($lookup_ip) ) {
+
+        push @blacklisted, $server;
+
+    }
+
+    return;
+
+}
+
+##############################################################################
+# main
+#
+
+################################################################################
+# Initialization
+
+$plugin = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
+
+########################
+# Command line arguments
+
+my $usage = <<'EOT';
+Usage: check_rbl [--help] [--verbose] [--version] [--timeout t]
+                 -H hostname --server servername
+                 [--critical n] [--warning]
+EOT
+
+$options = Nagios::Plugin::Getopt->new(
+    usage   => $usage,
+    version => $VERSION,
+    url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
+    blurb   => 'Check SMTP blaklisting status',
+);
+
+$options->arg(
+    spec     => 'critical|c=i',
+    help     => 'number of blacklisting servers for a critical warning',
+    required => 0,
+    default  => 0,
+);
+
+$options->arg(
+    spec     => 'warning|w=i',
+    help     => 'number of blacklisting servers for a warning',
+    required => 0,
+    default  => 0,
+);
+
+$options->arg(
+    spec     => 'server|s=s@',
+    help     => 'RBL server',
+    required => 1,
+);
+
+$options->arg(
+    spec     => 'host|H=s',
+    help     => 'SMTP server to check',
+    required => 1,
+);
+
+$options->getopts();
+
+###############
+# Sanity checks
+
+if ( $options->critical < $options->warning ) {
+    $plugin->nagios_exit( UNKNOWN,
+        'critical has to be greater or equal warning' );
+}
+
+my $ip = $options->host;
+if ( $ip =~ m/[a-z]/mxs ) {
+    $ip = lookup( $options->host );
+}
+
+if ( !$ip ) {
+    $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $options->host );
+}
+
+alarm $options->timeout;
+
+################
+# Set the limits
+
+$threshold = Nagios::Plugin::Threshold->set_thresholds(
+    warning  => $options->warning,
+    critical => $options->critical,
+);
+
+################################################################################
+
+verbose 'Checking ' . $options->host . " ($ip)\n";
+
+for my $server ( @{ $options->server } ) {
+
+    # generate another thread
+    my $thread = threads->create( 'check_server', $ip, $server );
+
+    $thread->join();
+
+}
+
+my $total = scalar @blacklisted;
+
+my $status =
+  "blacklisted on $total " . ( ( $total == 1 ) ? 'server' : 'servers' );
+if ( $total > 0 ) {
+    $status .= " (@blacklisted)";
+}
+
+$plugin->add_perfdata(
+    label     => 'servers',
+    value     => $total,
+    uom       => q{},
+    threshold => $threshold,
+);
+
+$plugin->nagios_exit( $threshold->get_status($total), $status );
+
+1;

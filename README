@@ -1,0 +1,1 @@
+check_rbl is a Nagios plugin to check if an SMTP server is blacklisted

@@ -1,0 +1,16 @@
+\.DS_Store$
+^_build
+^Build$
+^blib
+~$
+\.bak$
+\.sw.$
+\.svn
+^cover_db
+^Makefile$
+^Makefile.old$
+^pm_to_blib$
+^.#
+^#
+^check_rbl-
+notes.txt
