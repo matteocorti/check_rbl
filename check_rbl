@@ -15,16 +15,13 @@
 # enable substitution with:
 #   $ svn propset svn:keywords "Id Revision HeadURL Source Date"
 #
-#   $Id: check_updates 966 2008-02-28 15:47:36Z corti $
-#   $Revision: 966 $
-#   $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/check_updates $
-#   $Date: 2008-02-28 16:47:36 +0100 (Thu, 28 Feb 2008) $
+#   $Id$
+#   $Revision$
+#   $HeadURL$
+#   $Date$
 
 use strict;
 use warnings;
-
-use threads;
-use threads::shared;
 
 use Carp;
 use Data::Dumper;
@@ -36,14 +33,14 @@ use Net::DNS;
 
 use version;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.0.2';
 
 my $help;
 my $options;
 my $plugin;
 my $threshold;
 
-my @blacklisted : shared;
+my @blacklisted;
 
 ##############################################################################
 # Usage     : my $ip = lookup( $hostname );
@@ -60,6 +57,9 @@ sub lookup {
     require Net::DNS;
 
     my $res   = Net::DNS::Resolver->new;
+
+    $res->retry($options->retry());
+    
     my $query = $res->search($hostname);
 
     if ($query) {
@@ -134,7 +134,7 @@ s/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/$4.$3.$2.$1.$server/mxs
         push @blacklisted, $server;
 
     }
-
+    
     return;
 
 }
@@ -147,6 +147,8 @@ s/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/$4.$3.$2.$1.$server/mxs
 # Initialization
 
 $plugin = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
+
+my $time = time;
 
 ########################
 # Command line arguments
@@ -190,6 +192,14 @@ $options->arg(
     required => 1,
 );
 
+$options->arg(
+    spec     => 'retry|r=i',
+    help     => 'Number of times to try a DNS query (default is 4) ',
+    required => 0,
+    default  => 4,
+);
+
+
 $options->getopts();
 
 ###############
@@ -225,10 +235,7 @@ verbose 'Checking ' . $options->host . " ($ip)\n";
 
 for my $server ( @{ $options->server } ) {
 
-    # generate another thread
-    my $thread = threads->create( 'check_server', $ip, $server );
-
-    $thread->join();
+    check_server($ip, $server);
 
 }
 
@@ -245,6 +252,12 @@ $plugin->add_perfdata(
     value     => $total,
     uom       => q{},
     threshold => $threshold,
+);
+
+$plugin->add_perfdata(
+    label     => 'time',
+    value     => time - $time,
+    uom       => q{s},
 );
 
 $plugin->nagios_exit( $threshold->get_status($total), $status );

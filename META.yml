@@ -3,7 +3,7 @@ abstract: ~
 author:
   - 'Matteo Corti <matteo.corti@id.ethz.ch>'
 configure_requires:
-  ExtUtils::MakeMaker: 6.30
+  ExtUtils::MakeMaker: 6.42
 distribution_type: module
 generated_by: 'Module::Install version 0.77'
 license: gpl
@@ -22,4 +22,4 @@ requires:
   Nagios::Plugin::Threshold: 0
   Net::DNS: 0
   version: 0
-version: 1.0.0
+version: 1.0.2

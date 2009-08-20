@@ -1,3 +1,11 @@
+2009-01-22  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_rbl: command line argument to set the numer of tries in DNS queries
+
+2009-01-06  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_rbl: execution time in the performace data
+
 2008-12-29  Matteo Corti  <matteo.corti@id.ethz.ch>
 
 	* check_rbl: Initial release
