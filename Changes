@@ -1,3 +1,7 @@
+2009-10-27  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* check_rbl: applied patch to parallelize the checks
+
 2009-01-22  Matteo Corti  <matteo.corti@id.ethz.ch>
 
 	* check_rbl: command line argument to set the numer of tries in DNS queries

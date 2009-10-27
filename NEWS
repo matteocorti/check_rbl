@@ -1,3 +1,4 @@
+2009-10-27: 1.1.0 - parallel checks
 2009-     : 1.0.2 - --retry command line argument to specify DNS retries
 2009-01-06: 1.0.1 - Execution time in the performance data
 2008-12-29: 1.0.0 - Initial release

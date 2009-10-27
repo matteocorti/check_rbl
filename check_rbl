@@ -30,15 +30,17 @@ use Nagios::Plugin::Threshold;
 use Nagios::Plugin;
 use Nagios::Plugin::Getopt;
 use Net::DNS;
+use Parallel::Iterator qw(iterate);
 
 use version;
 
-our $VERSION = '1.0.2';
+our $VERSION = '1.1.0';
 
 my $help;
 my $options;
 my $plugin;
 my $threshold;
+my $ip;
 
 my @blacklisted;
 
@@ -120,7 +122,7 @@ sub verbose {
 # See also  : n/a
 sub check_server {
 
-    my ( $ip, $server ) = @_;
+    my ( $server ) = @_;
 
     my $lookup_ip = $ip;
 
@@ -131,11 +133,11 @@ s/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/$4.$3.$2.$1.$server/mxs
 
     if ( lookup($lookup_ip) ) {
 
-        push @blacklisted, $server;
+        return $lookup_ip;
 
     }
     
-    return;
+    return 0;
 
 }
 
@@ -156,7 +158,7 @@ my $time = time;
 my $usage = <<'EOT';
 Usage: check_rbl [--help] [--verbose] [--version] [--timeout t]
                  -H hostname --server servername
-                 [--critical n] [--warning]
+                 [--critical n] [--warning n] [--workers n]
 EOT
 
 $options = Nagios::Plugin::Getopt->new(
@@ -168,14 +170,14 @@ $options = Nagios::Plugin::Getopt->new(
 
 $options->arg(
     spec     => 'critical|c=i',
-    help     => 'number of blacklisting servers for a critical warning',
+    help     => 'Number of blacklisting servers for a critical warning',
     required => 0,
     default  => 0,
 );
 
 $options->arg(
     spec     => 'warning|w=i',
-    help     => 'number of blacklisting servers for a warning',
+    help     => 'Number of blacklisting servers for a warning',
     required => 0,
     default  => 0,
 );
@@ -199,6 +201,12 @@ $options->arg(
     default  => 4,
 );
 
+$options->arg(
+    spec     => 'workers=i',
+    help     => 'Number of parallel checks',
+    required => 0,
+    default  => 20,
+);
 
 $options->getopts();
 
@@ -210,7 +218,7 @@ if ( $options->critical < $options->warning ) {
         'critical has to be greater or equal warning' );
 }
 
-my $ip = $options->host;
+$ip = $options->host;
 if ( $ip =~ m/[a-z]/mxs ) {
     $ip = lookup( $options->host );
 }
@@ -233,10 +241,21 @@ $threshold = Nagios::Plugin::Threshold->set_thresholds(
 
 verbose 'Checking ' . $options->host . " ($ip)\n";
 
-for my $server ( @{ $options->server } ) {
+my $iter = iterate(
+    { workers => $options->workers },
+    \&check_server,
+    sub {
+        while ( my $server = pop(@{$options->server}) ) {
+            return $server;
+        }
+        return;
+    }
+);
 
-    check_server($ip, $server);
-
+while ( my ( $ID, $VALUE ) = $iter->() ) {
+    if ( $VALUE ) {
+        push @blacklisted, $ID;
+    }
 }
 
 my $total = scalar @blacklisted;

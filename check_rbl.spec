@@ -1,4 +1,4 @@
-%define version 1.0.2
+%define version 1.1.0
 %define release 0
 %define name    check_rbl
 %define _prefix /usr/lib/nagios/plugins/contrib
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755, root, root) /usr/share/man/man3/%{name}.3pm.gz
 
 %changelog
+* Tue Oct 27 2009 Matteo Corti <matteo.corti@id.ethz.ch> - 1.1.0-0
+- Updated to 1.1.0 (parallel checks)
+
 * Thu Jan 22 2009 Matteo Corti <matteo.corti@id.ethz.ch> - 1.0.2-0
 - --retry command line argument
 

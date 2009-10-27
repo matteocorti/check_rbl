@@ -10,7 +10,7 @@ check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
 
 =head1 VERSION
 
-Version 1.0.1
+Version 1.1.0
 
 =head1 SYNOPSIS
 
@@ -32,13 +32,17 @@ check_rbl [--help] [--verbose] [--version] [--timeout t]
 
   --version,-V          Print version information
 
-  --critical=INTEGER,-c number of blacklisting servers for a critical warning
+  --critical=INTEGER,-c Number of blacklisting servers for a critical warning
 
-  --warning=INTEGER,-w  number of blacklisting servers for a warning
+  --warning=INTEGER,-w  Number of blacklisting servers for a warning
+
+  --retry=INTEGER,-r    Number of times to try a DNS query (default is 4)
 
   --timeout=INTEGER,t   Seconds before plugin times out (default: 15)
 
   --verbose,-v          Show details for command-line debugging
+
+  --workers             Number of parallel checks
 
 =head1 EXAMPLE
 
@@ -73,6 +77,8 @@ check_updates depends on
 =item * Number::Format
 
 =item * Net::DNS
+
+=item * Parallel::Iterator
 
 =item * version
 
