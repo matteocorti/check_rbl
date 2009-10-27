@@ -1,7 +1,6 @@
 #!perl
 
-# check_updates is a Nagios plugin to check if RedHat or Fedora system
-# is up-to-date
+# check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
 #
 # See  the INSTALL file for installation instructions
 #
@@ -36,7 +35,6 @@ use version;
 
 our $VERSION = '1.1.0';
 
-my $help;
 my $options;
 my $plugin;
 my $threshold;
@@ -58,10 +56,10 @@ sub lookup {
 
     require Net::DNS;
 
-    my $res   = Net::DNS::Resolver->new;
+    my $res = Net::DNS::Resolver->new;
 
-    $res->retry($options->retry());
-    
+    $res->retry( $options->retry() );
+
     my $query = $res->search($hostname);
 
     if ($query) {
@@ -122,12 +120,12 @@ sub verbose {
 # See also  : n/a
 sub check_server {
 
-    my ( $server ) = @_;
+    my ($server) = @_;
 
     my $lookup_ip = $ip;
 
     $lookup_ip =~
-s/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/$4.$3.$2.$1.$server/mxs;
+s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
 
     verbose " -> $lookup_ip\n";
 
@@ -136,7 +134,7 @@ s/([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})/$4.$3.$2.$1.$server/mxs
         return $lookup_ip;
 
     }
-    
+
     return 0;
 
 }
@@ -219,7 +217,7 @@ if ( $options->critical < $options->warning ) {
 }
 
 $ip = $options->host;
-if ( $ip =~ m/[a-z]/mxs ) {
+if ( $ip =~ m/[[:lower:]]/mxs ) {
     $ip = lookup( $options->host );
 }
 
@@ -245,7 +243,7 @@ my $iter = iterate(
     { workers => $options->workers },
     \&check_server,
     sub {
-        while ( my $server = pop(@{$options->server}) ) {
+        while ( my $server = pop @{ $options->server } ) {
             return $server;
         }
         return;
@@ -253,7 +251,7 @@ my $iter = iterate(
 );
 
 while ( my ( $ID, $VALUE ) = $iter->() ) {
-    if ( $VALUE ) {
+    if ($VALUE) {
         push @blacklisted, $ID;
     }
 }
@@ -274,9 +272,9 @@ $plugin->add_perfdata(
 );
 
 $plugin->add_perfdata(
-    label     => 'time',
-    value     => time - $time,
-    uom       => q{s},
+    label => 'time',
+    value => time - $time,
+    uom   => q{s},
 );
 
 $plugin->nagios_exit( $threshold->get_status($total), $status );
