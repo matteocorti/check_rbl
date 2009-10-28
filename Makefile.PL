@@ -20,7 +20,8 @@ requires 'Nagios::Plugin'            => 0;
 requires 'Nagios::Plugin::Threshold' => 0;
 requires 'Net::DNS'                  => 0;
 requires 'Parallel::Iterator'        => 0;
-    
+requires 'Readonly'                  => 0;
+
 requires 'version'                   => 0;
 
 install_script  'check_rbl';

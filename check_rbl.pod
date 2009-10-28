@@ -80,6 +80,8 @@ check_updates depends on
 
 =item * Parallel::Iterator
 
+=item * Readonly
+
 =item * version
 
 =back

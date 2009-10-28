@@ -30,17 +30,30 @@ use Nagios::Plugin;
 use Nagios::Plugin::Getopt;
 use Net::DNS;
 use Parallel::Iterator qw(iterate);
+use Readonly;
+
+Readonly my $DEFAULT_RETRIES => 4;
+Readonly my $DEFAULT_WORKERS => 20;
 
 use version;
 
 our $VERSION = '1.1.0';
 
-my $options;
-my $plugin;
-my $threshold;
-my $ip;
-
-my @blacklisted;
+# IMPORTANT: Nagios plugins could be executed using embedded perl in this case
+#            the main routine would be executed as a subroutine and all the
+#            declared subroutines would therefore be inner subroutines
+#            This will cause all the global lexical variables not to stay shared
+#            in the subroutines!
+#
+# All variables are therefore declared as package variables...
+#
+use vars qw(
+  @BLACKLISTED
+  $IP
+  $OPTIONS
+  $PLUGIN
+  $THRESHOLD
+);
 
 ##############################################################################
 # Usage     : my $ip = lookup( $hostname );
@@ -58,7 +71,7 @@ sub lookup {
 
     my $res = Net::DNS::Resolver->new;
 
-    $res->retry( $options->retry() );
+    $res->retry( $OPTIONS->retry() );
 
     my $query = $res->search($hostname);
 
@@ -93,7 +106,7 @@ sub verbose {
     my $level   = shift;
 
     if ( !defined $message ) {
-        $plugin->nagios_exit( UNKNOWN,
+        $PLUGIN->nagios_exit( UNKNOWN,
             q{Internal error: not enough parameters for 'verbose'} );
     }
 
@@ -101,8 +114,10 @@ sub verbose {
         $level = 0;
     }
 
-    if ( $level < $options->verbose ) {
-        print $message;
+    if ( $level < $OPTIONS->verbose ) {
+        if ( !print $message ) {
+            $PLUGIN->nagios_exit( UNKNOWN, 'Error: cannot write to STDOUT' );
+        }
     }
 
     return;
@@ -122,7 +137,7 @@ sub check_server {
 
     my ($server) = @_;
 
-    my $lookup_ip = $ip;
+    my $lookup_ip = $IP;
 
     $lookup_ip =~
 s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
@@ -146,7 +161,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
 ################################################################################
 # Initialization
 
-$plugin = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
+$PLUGIN = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
 
 my $time = time;
 
@@ -159,124 +174,125 @@ Usage: check_rbl [--help] [--verbose] [--version] [--timeout t]
                  [--critical n] [--warning n] [--workers n]
 EOT
 
-$options = Nagios::Plugin::Getopt->new(
+$OPTIONS = Nagios::Plugin::Getopt->new(
     usage   => $usage,
     version => $VERSION,
     url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
     blurb   => 'Check SMTP blaklisting status',
 );
 
-$options->arg(
+$OPTIONS->arg(
     spec     => 'critical|c=i',
     help     => 'Number of blacklisting servers for a critical warning',
     required => 0,
     default  => 0,
 );
 
-$options->arg(
+$OPTIONS->arg(
     spec     => 'warning|w=i',
     help     => 'Number of blacklisting servers for a warning',
     required => 0,
     default  => 0,
 );
 
-$options->arg(
+$OPTIONS->arg(
     spec     => 'server|s=s@',
     help     => 'RBL server',
     required => 1,
 );
 
-$options->arg(
+$OPTIONS->arg(
     spec     => 'host|H=s',
     help     => 'SMTP server to check',
     required => 1,
 );
 
-$options->arg(
+$OPTIONS->arg(
     spec     => 'retry|r=i',
     help     => 'Number of times to try a DNS query (default is 4) ',
     required => 0,
-    default  => 4,
+    default  => $DEFAULT_RETRIES,
 );
 
-$options->arg(
+$OPTIONS->arg(
     spec     => 'workers=i',
     help     => 'Number of parallel checks',
     required => 0,
-    default  => 20,
+    default  => $DEFAULT_WORKERS,
 );
 
-$options->getopts();
+$OPTIONS->getopts();
 
 ###############
 # Sanity checks
 
-if ( $options->critical < $options->warning ) {
-    $plugin->nagios_exit( UNKNOWN,
+if ( $OPTIONS->critical < $OPTIONS->warning ) {
+    $PLUGIN->nagios_exit( UNKNOWN,
         'critical has to be greater or equal warning' );
 }
 
-$ip = $options->host;
-if ( $ip =~ m/[[:lower:]]/mxs ) {
-    $ip = lookup( $options->host );
+$IP = $OPTIONS->host;
+if ( $IP =~ m/[[:lower:]]/mxs ) {
+    $IP = lookup( $OPTIONS->host );
 }
 
-if ( !$ip ) {
-    $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $options->host );
+if ( !$IP ) {
+    $PLUGIN->nagios_exit( UNKNOWN, 'Cannot resolve ' . $OPTIONS->host );
 }
 
-alarm $options->timeout;
+alarm $OPTIONS->timeout;
 
 ################
 # Set the limits
 
-$threshold = Nagios::Plugin::Threshold->set_thresholds(
-    warning  => $options->warning,
-    critical => $options->critical,
+$THRESHOLD = Nagios::Plugin::Threshold->set_thresholds(
+    warning  => $OPTIONS->warning,
+    critical => $OPTIONS->critical,
 );
 
 ################################################################################
 
-verbose 'Checking ' . $options->host . " ($ip)\n";
+verbose 'Checking ' . $OPTIONS->host . " ($IP)\n";
 
 my $iter = iterate(
-    { workers => $options->workers },
+    { workers => $OPTIONS->workers },
     \&check_server,
     sub {
-        while ( my $server = pop @{ $options->server } ) {
+        while ( my $server = pop @{ $OPTIONS->server } ) {
             return $server;
         }
         return;
     }
 );
 
-while ( my ( $ID, $VALUE ) = $iter->() ) {
-    if ($VALUE) {
-        push @blacklisted, $ID;
+while ( my ( $server, $result ) = $iter->() ) {
+    if ($result) {
+        push @BLACKLISTED, $server;
     }
 }
 
-my $total = scalar @blacklisted;
+my $total = scalar @BLACKLISTED;
 
 my $status =
-  "blacklisted on $total " . ( ( $total == 1 ) ? 'server' : 'servers' );
+  "BLACKLISTED on $total " . ( ( $total == 1 ) ? 'server' : 'servers' );
+
 if ( $total > 0 ) {
-    $status .= " (@blacklisted)";
+    $status .= " (@BLACKLISTED)";
 }
 
-$plugin->add_perfdata(
+$PLUGIN->add_perfdata(
     label     => 'servers',
     value     => $total,
     uom       => q{},
-    threshold => $threshold,
+    threshold => $THRESHOLD,
 );
 
-$plugin->add_perfdata(
+$PLUGIN->add_perfdata(
     label => 'time',
     value => time - $time,
     uom   => q{s},
 );
 
-$plugin->nagios_exit( $threshold->get_status($total), $status );
+$PLUGIN->nagios_exit( $THRESHOLD->get_status($total), $status );
 
 1;
