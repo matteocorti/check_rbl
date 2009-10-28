@@ -10,6 +10,7 @@ inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/MakeMaker.pm
 inc/Module/Install/Metadata.pm
+inc/Module/Install/Scripts.pm
 inc/version.pm
 INSTALL
 Makefile.PL
