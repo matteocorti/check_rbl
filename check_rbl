@@ -146,9 +146,12 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
 
     if ( lookup($lookup_ip) ) {
 
+        verbose "LISTED: $lookup_ip\n";
         return $lookup_ip;
 
     }
+
+    verbose "OK: $lookup_ip\n";
 
     return 0;
 
@@ -240,6 +243,7 @@ if ( !$IP ) {
     $PLUGIN->nagios_exit( UNKNOWN, 'Cannot resolve ' . $OPTIONS->host );
 }
 
+verbose "Using " . $OPTIONS->timeout . " as global script timeout\n";
 alarm $OPTIONS->timeout;
 
 ################
@@ -252,13 +256,16 @@ $THRESHOLD = Nagios::Plugin::Threshold->set_thresholds(
 
 ################################################################################
 
-verbose 'Checking ' . $OPTIONS->host . " ($IP)\n";
+my @servers = @{$OPTIONS->server};
+my $nservers = scalar @servers;
+
+verbose 'Checking ' . $OPTIONS->host . " ($IP) on $nservers server(s)\n";
 
 my $iter = iterate(
     { workers => $OPTIONS->workers },
     \&check_server,
     sub {
-        while ( my $server = pop @{ $OPTIONS->server } ) {
+        while ( my $server = pop @servers ) {
             return $server;
         }
         return;
@@ -274,7 +281,7 @@ while ( my ( $server, $result ) = $iter->() ) {
 my $total = scalar @BLACKLISTED;
 
 my $status =
-  "BLACKLISTED on $total " . ( ( $total == 1 ) ? 'server' : 'servers' );
+  $OPTIONS->host. " BLACKLISTED on $total " . ( ( $total == 1 ) ? 'server' : 'servers' ) . " of $nservers";
 
 if ( $total > 0 ) {
     $status .= " (@BLACKLISTED)";
