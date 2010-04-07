@@ -4,6 +4,7 @@
 	             and increase the verbosity (#66)
 	* check_rbl.ini: sample configuration file
 	* check_rbl: removed unnecessary dependencies
+	* check_rbl: applied the patch from #69
 
 2009-10-27  Matteo Corti  <matteo.corti@id.ethz.ch>
 

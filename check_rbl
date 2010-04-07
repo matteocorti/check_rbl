@@ -5,6 +5,7 @@
 # See  the INSTALL file for installation instructions
 #
 # Copyright (c) 2007, ETH Zurich.
+# Copyright (c) 2010, Elan Ruusamae <glen@delfi.ee>.
 #
 # This module is free software; you can redistribute it and/or modify it
 # under the terms of GNU general public license (gpl) version 3.
@@ -22,19 +23,18 @@
 use strict;
 use warnings;
 
-use Carp;
-use English '-no_match_vars';
+use IO::Select;
+use Nagios::Plugin::Getopt;
 use Nagios::Plugin::Threshold;
 use Nagios::Plugin;
-use Nagios::Plugin::Getopt;
 use Net::DNS;
-use Parallel::Iterator qw(iterate);
 use Readonly;
 
-Readonly my $DEFAULT_RETRIES => 4;
-Readonly my $DEFAULT_WORKERS => 20;
+Readonly my $DEFAULT_RETRIES       => 4;
+Readonly my $DEFAULT_WORKERS       => 20;
+Readonly my $DEFAULT_QUERY_TIMEOUT => 15;
 
-use version; our $VERSION = 'v1.1.0';
+use version; our $VERSION = 'v1.2.0';
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
 #            the main routine would be executed as a subroutine and all the
@@ -46,46 +46,14 @@ use version; our $VERSION = 'v1.1.0';
 #
 use vars qw(
   @BLACKLISTED
+  @TIMEOUTS
   $IP
   $OPTIONS
   $PLUGIN
   $THRESHOLD
+  $res
+  $timeouts
 );
-
-##############################################################################
-# Usage     : my $ip = lookup( $hostname );
-# Purpose   : DNS lookup
-# Returns   : $ip if found; undef if not found
-# Arguments : $hostname : the FQDN to resolve
-# Throws    : n/a
-# Comments  : n/a
-# See also  : n/a
-sub lookup {
-
-    my ($hostname) = @_;
-
-    require Net::DNS;
-
-    my $res = Net::DNS::Resolver->new;
-
-    $res->retry( $OPTIONS->retry() );
-
-    my $query = $res->search($hostname);
-
-    if ($query) {
-        foreach my $rr ( $query->answer ) {
-            if ( $rr->type eq 'A' ) {
-                return $rr->address;
-            }
-        }
-    }
-    else {
-        return;
-    }
-
-    return;    # dead code to make perlcritic happy
-
-}
 
 ##############################################################################
 # Usage     : verbose("some message string", $optional_verbosity_level);
@@ -122,36 +90,145 @@ sub verbose {
 }
 
 ##############################################################################
-# Usage     : check_server( $ip, $server )
-# Purpose   : checks if $ip is blacklisted by $server
+# Usage     : mdns(\@addresses, $callback)
+# Purpose   : Perform multiple DNS lookups in parallel
 # Returns   : n/a
-# Arguments : $ip     : host IP
-#             $server : RBL server
-# Throws    : n/a
-# Comments  : if blacklisted pushed $server onto @blacklisted
-# See also  : n/a
-sub check_server {
+# See also  : Perl Net::DNS module mresolv in examples
+#
+# Resolves all IPs in C<@addresses> in parallel.
+# If answer is found C<$callback> is called with arguments as: $name, $host.
+#
+# Author: Elan Ruusamae <glen@delfi.ee>, (c) 1999-2010
+sub mdns {
 
-    my ($server) = @_;
+    my ($data, $callback) = @_;
 
-    my $lookup_ip = $IP;
+    # number of requests to have outstanding at any time
+    my $opt_n = $OPTIONS->workers();
 
-    $lookup_ip =~
-s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
+    # timeout per query (seconds)
+    my $opt_t = $DEFAULT_QUERY_TIMEOUT;
+    my $opt_d = $OPTIONS->debug();
 
-    verbose " -> $lookup_ip\n";
+    my $sel = IO::Select->new();
+    my $eof = 0;
 
-    if ( lookup($lookup_ip) ) {
+    my @addrs = @{$data};
+    my %addrs;
+    while (1) {
 
-        verbose "LISTED: $lookup_ip\n";
-        return $lookup_ip;
+        #----------------------------------------------------------------------
+        # Read names until we've filled our quota of outstanding requests.
+        #----------------------------------------------------------------------
 
+        while ( !$eof && $sel->count < $opt_n ) {
+            if ($opt_d) {
+                print 'DEBUG: reading...';
+            }
+            my $name = shift @addrs;
+            if (! defined $name ) {
+                if ($opt_d) {
+                    print "EOF.\n";
+                }
+                $eof = 1;
+                last;
+            }
+            if ($opt_d) {
+                print "NAME: $name\n";
+            }
+            my $sock = $res->bgsend($name);
+
+            # we store in a hash the query we made, as parsing it back from
+            # response gives different ip for ips with multiple hosts
+            $addrs{$sock} = $name;
+            $sel->add($sock);
+            if ($opt_d) {
+                print "name = $name, outstanding = ", $sel->count, "\n";
+            }
+        }
+
+        #----------------------------------------------------------------------
+        # Wait for any replies.  Remove any replies from the outstanding pool.
+        #----------------------------------------------------------------------
+
+        my @ready;
+        my $timed_out = 1;
+
+        if ($opt_d) {
+            print "DEBUG: waiting for replies\n";
+        }
+
+        @ready = $sel->can_read($opt_t);
+        while (@ready) {
+
+            $timed_out = 0;
+
+            if ($opt_d) {
+                print 'DEBUG: replies received: ', scalar @ready, "\n";
+            }
+
+            foreach my $sock (@ready) {
+                if ($opt_d) {
+                    print "DEBUG: handling a reply\n";
+                }
+                my $addr = $addrs{$sock};
+                delete $addrs{$sock};
+                $sel->remove($sock);
+
+                my $ans = $res->bgread($sock);
+                my $host;
+                if ($ans) {
+                    foreach my $rr ( $ans->answer ) {
+                        if (! $rr->type eq 'A') {
+                            next;
+                        }
+                        $host = $rr->address;
+
+                        # take just the first answer
+                        last;
+                    }
+                }
+                else {
+                    if ($opt_d) {
+                        print 'DEBUG: no answer: ' . $res->errorstring . "\n";
+                    }
+                }
+                &{$callback}( $addr, $host );
+            }
+
+            @ready = $sel->can_read(0);
+
+        }
+
+        #----------------------------------------------------------------------
+        # If we timed out waiting for replies, remove all entries from the
+        # outstanding pool.
+        #----------------------------------------------------------------------
+
+        if ($timed_out) {
+            if ($opt_d) {
+                print "DEBUG: timeout: clearing the outstanding pool.\n";
+            }
+            foreach my $sock ( $sel->handles ) {
+                my $addr = $addrs{$sock};
+                delete $addrs{$sock};
+                $sel->remove($sock);
+
+                # callback for hosts that timed out
+                &{$callback}( $addr, q{} );
+            }
+        }
+
+        if ($opt_d) {
+            print 'DEBUG: outstanding = ', $sel->count, ", eof = $eof\n";
+        }
+
+        #----------------------------------------------------------------------
+        # We're done if there are no outstanding queries and we've read EOF.
+        #----------------------------------------------------------------------
+
+        last if ( $sel->count == 0 ) && $eof;
     }
-
-    verbose "OK: $lookup_ip\n";
-
-    return 0;
-
 }
 
 ##############################################################################
@@ -196,6 +273,13 @@ $OPTIONS->arg(
 );
 
 $OPTIONS->arg(
+    spec     => 'debug',
+    help     => 'Prints debugging information',
+    required => 0,
+    default  => 0,
+);
+
+$OPTIONS->arg(
     spec     => 'server|s=s@',
     help     => 'RBL server',
     required => 1,
@@ -231,16 +315,30 @@ if ( $OPTIONS->critical < $OPTIONS->warning ) {
         'critical has to be greater or equal warning' );
 }
 
+$res = Net::DNS::Resolver->new();
+
+if ( $res->can('force_v4') ) {
+    $res->force_v4(1);
+}
+
+$res->retry( $OPTIONS->retry() );
+
 $IP = $OPTIONS->host;
 if ( $IP =~ m/[[:lower:]]/mxs ) {
-    $IP = lookup( $OPTIONS->host );
+    mdns(
+        [ $OPTIONS->host ],
+        sub {
+            my ( $addr, $host ) = @_;
+            $IP = $host;
+        }
+    );
 }
 
 if ( !$IP ) {
     $PLUGIN->nagios_exit( UNKNOWN, 'Cannot resolve ' . $OPTIONS->host );
 }
 
-verbose "Using " . $OPTIONS->timeout . " as global script timeout\n";
+verbose 'Using ' . $OPTIONS->timeout . " as global script timeout\n";
 alarm $OPTIONS->timeout;
 
 ################
@@ -253,32 +351,55 @@ $THRESHOLD = Nagios::Plugin::Threshold->set_thresholds(
 
 ################################################################################
 
-my @servers = @{$OPTIONS->server};
+my @servers  = @{ $OPTIONS->server };
 my $nservers = scalar @servers;
 
 verbose 'Checking ' . $OPTIONS->host . " ($IP) on $nservers server(s)\n";
 
-my $iter = iterate(
-    { workers => $OPTIONS->workers },
-    \&check_server,
+# build address lists
+my @addrs;
+foreach my $server (@servers) {
+    ( my $ip = $IP ) =~
+s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
+    push @addrs, $ip;
+}
+
+mdns(
+    \@addrs,
     sub {
-        while ( my $server = pop @servers ) {
-            return $server;
+        my ( $addr, $host ) = @_;
+
+        # extract RBL we checked
+        $addr =~ s/^(?:\d+\.){4}//mxs;
+        if ( defined $host ) {
+            if ( $host eq q{} ) {
+                push @TIMEOUTS, $addr;
+            }
+            else {
+                verbose "listed in $addr as $host\n";
+                push @BLACKLISTED, $addr;
+            }
         }
-        return;
     }
 );
-
-while ( my ( $server, $result ) = $iter->() ) {
-    if ($result) {
-        push @BLACKLISTED, $server;
-    }
-}
 
 my $total = scalar @BLACKLISTED;
 
 my $status =
-  $OPTIONS->host. " BLACKLISTED on $total " . ( ( $total == 1 ) ? 'server' : 'servers' ) . " of $nservers";
+    $OPTIONS->host
+  . " BLACKLISTED on $total "
+  . ( ( $total == 1 ) ? 'server' : 'servers' )
+  . " of $nservers";
+
+# append timeout info, but do not account these in status
+if (@TIMEOUTS) {
+    $timeouts = scalar @TIMEOUTS;
+    $status =
+        " ($timeouts server"
+      . ( ( $timeouts > 1 ) ? 's' : q{} )
+      . ' timed out: '
+      . join( ', ', @TIMEOUTS ) . ')';
+}
 
 if ( $total > 0 ) {
     $status .= " (@BLACKLISTED)";
