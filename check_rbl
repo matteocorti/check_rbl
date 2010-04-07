@@ -23,7 +23,6 @@ use strict;
 use warnings;
 
 use Carp;
-use Data::Dumper;
 use English '-no_match_vars';
 use Nagios::Plugin::Threshold;
 use Nagios::Plugin;
@@ -35,9 +34,7 @@ use Readonly;
 Readonly my $DEFAULT_RETRIES => 4;
 Readonly my $DEFAULT_WORKERS => 20;
 
-use version;
-
-our $VERSION = '1.1.0';
+use version; our $VERSION = 'v1.1.0';
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
 #            the main routine would be executed as a subroutine and all the
