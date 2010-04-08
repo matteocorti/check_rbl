@@ -10,39 +10,33 @@ check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
 
 =head1 VERSION
 
-Version 1.1.0
+Version 1.2.0
 
 =head1 SYNOPSIS
 
 check_rbl [--help] [--verbose] [--version] [--timeout t]
-          -H hostname --server servername
-          [--critical n] [--warning]
+                 -H hostname --server servername
+                 [--critical n] [--warning n] [--workers n]
 
 =head1 REQUIRED ARGUMENTS
 
-  --server=STRING,-s    RBL server (may be repeated)
-
-  --host=STRING,-H      SMTP server to check
+  -s, --server=STRING  RBL server (may be repeated)
+  -H, --host=STRING    SMTP server to check
 
 =head1 OPTIONS
 
-  --usage,-?            Print usage information
-
-  --help,-h             Print detailed help screen
-
-  --version,-V          Print version information
-
-  --critical=INTEGER,-c Number of blacklisting servers for a critical warning
-
-  --warning=INTEGER,-w  Number of blacklisting servers for a warning
-
-  --retry=INTEGER,-r    Number of times to try a DNS query (default is 4)
-
-  --timeout=INTEGER,t   Seconds before plugin times out (default: 15)
-
-  --verbose,-v          Show details for command-line debugging
-
-  --workers             Number of parallel checks
+ -?, --usage                                Print usage information
+ -h, --help                                 Print detailed help screen
+ -V, --version                              Print version information
+ --extra-opts=[<section>[@<config_file>]]   Section and/or config_file from which to load extra options (may repeat)
+ -c, --critical=INTEGER                     Number of blacklisting servers for a critical warning
+ -w, --warning=INTEGER                      Number of blacklisting servers for a warning
+ -d, --debug                                Prints debugging information
+ -r, --retry=INTEGER                        Number of times to try a DNS query (default is 4) 
+ --workers=INTEGER                          Number of parallel checks
+ --query-timeout=INTEGER                    Timeout of the RBL queries
+ -t, --timeout=INTEGER                      Seconds before plugin times out (default: 15)
+ -v, --verbose                              Show details for command-line debugging (can repeat up to 3 times)
 
 =head1 EXAMPLE
 
@@ -51,7 +45,8 @@ check_rbl [--help] [--verbose] [--version] [--timeout t]
 =head1 DIAGNOSTICS
 
 You can specify multiple --verbose options to increase the program
-verbosity.
+verbosity. --debug can be used to display the process and internals of
+the querying mechanism.
 
 =head1 EXIT STATUS
 
@@ -98,7 +93,7 @@ No bugs have been reported.
 
 Please report any bugs or feature requests to matteo.corti@id.ethz.ch,
 or through the web interface at
-https://svn.id.ethz.ch/trac/bd_webhosting/newticket
+https://trac.id.ethz.ch/projects/nagios_plugins/newticket?component=check_rbl
 
 =head1 AUTHOR
 
@@ -106,6 +101,7 @@ Matteo Corti <matteo.corti@id.ethz.ch>
 
 =head1 LICENSE AND COPYRIGHT
 
+Copyright (c) 2010, Elan Ruusamae <glen@delfi.ee>
 Copyright (c) 2008, Matteo Corti
 
 This module is free software; you can redistribute it and/or modify it

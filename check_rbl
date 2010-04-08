@@ -30,10 +30,6 @@ use Nagios::Plugin;
 use Net::DNS;
 use Readonly;
 
-Readonly my $DEFAULT_RETRIES       => 4;
-Readonly my $DEFAULT_WORKERS       => 20;
-Readonly my $DEFAULT_QUERY_TIMEOUT => 15;
-
 use version; our $VERSION = 'v1.2.0';
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
@@ -44,13 +40,17 @@ use version; our $VERSION = 'v1.2.0';
 #
 # All variables are therefore declared as package variables...
 #
+Readonly our $DEFAULT_RETRIES       => 4;
+Readonly our $DEFAULT_WORKERS       => 20;
+Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
+
 use vars qw(
-  @BLACKLISTED
-  @TIMEOUTS
-  $IP
-  $OPTIONS
-  $PLUGIN
-  $THRESHOLD
+  @blacklisted
+  @timeouts
+  $ip
+  $options
+  $plugin
+  $threshold
   $res
   $timeouts
 );
@@ -71,7 +71,7 @@ sub verbose {
     my $level   = shift;
 
     if ( !defined $message ) {
-        $PLUGIN->nagios_exit( UNKNOWN,
+        $plugin->nagios_exit( UNKNOWN,
             q{Internal error: not enough parameters for 'verbose'} );
     }
 
@@ -79,9 +79,9 @@ sub verbose {
         $level = 0;
     }
 
-    if ( $level < $OPTIONS->verbose ) {
+    if ( $level < $options->verbose ) {
         if ( !print $message ) {
-            $PLUGIN->nagios_exit( UNKNOWN, 'Error: cannot write to STDOUT' );
+            $plugin->nagios_exit( UNKNOWN, 'Error: cannot write to STDOUT' );
         }
     }
 
@@ -101,14 +101,14 @@ sub verbose {
 # Author: Elan Ruusamae <glen@delfi.ee>, (c) 1999-2010
 sub mdns {
 
-    my ($data, $callback) = @_;
+    my ( $data, $callback ) = @_;
 
     # number of requests to have outstanding at any time
-    my $opt_n = $OPTIONS->workers();
+    my $workers = $options->workers();
 
     # timeout per query (seconds)
-    my $opt_t = $DEFAULT_QUERY_TIMEOUT;
-    my $opt_d = $OPTIONS->debug();
+    my $timeout = $options->get('query-timeout');
+    my $debug = $options->debug();
 
     my $sel = IO::Select->new();
     my $eof = 0;
@@ -121,19 +121,20 @@ sub mdns {
         # Read names until we've filled our quota of outstanding requests.
         #----------------------------------------------------------------------
 
-        while ( !$eof && $sel->count < $opt_n ) {
-            if ($opt_d) {
+        while ( !$eof && $sel->count() < $workers ) {
+            
+            if ($debug) {
                 print 'DEBUG: reading...';
             }
             my $name = shift @addrs;
-            if (! defined $name ) {
-                if ($opt_d) {
+            if ( !defined $name ) {
+                if ($debug) {
                     print "EOF.\n";
                 }
                 $eof = 1;
                 last;
             }
-            if ($opt_d) {
+            if ($debug) {
                 print "NAME: $name\n";
             }
             my $sock = $res->bgsend($name);
@@ -142,8 +143,8 @@ sub mdns {
             # response gives different ip for ips with multiple hosts
             $addrs{$sock} = $name;
             $sel->add($sock);
-            if ($opt_d) {
-                print "name = $name, outstanding = ", $sel->count, "\n";
+            if ($debug) {
+                print "DEBUG: name = $name, outstanding = ", $sel->count, "\n";
             }
         }
 
@@ -154,21 +155,21 @@ sub mdns {
         my @ready;
         my $timed_out = 1;
 
-        if ($opt_d) {
+        if ($debug) {
             print "DEBUG: waiting for replies\n";
         }
 
-        @ready = $sel->can_read($opt_t);
+        @ready = $sel->can_read($timeout);
         while (@ready) {
 
             $timed_out = 0;
 
-            if ($opt_d) {
+            if ($debug) {
                 print 'DEBUG: replies received: ', scalar @ready, "\n";
             }
 
             foreach my $sock (@ready) {
-                if ($opt_d) {
+                if ($debug) {
                     print "DEBUG: handling a reply\n";
                 }
                 my $addr = $addrs{$sock};
@@ -179,7 +180,7 @@ sub mdns {
                 my $host;
                 if ($ans) {
                     foreach my $rr ( $ans->answer ) {
-                        if (! $rr->type eq 'A') {
+                        if ( !$rr->type eq 'A' ) {
                             next;
                         }
                         $host = $rr->address;
@@ -189,7 +190,7 @@ sub mdns {
                     }
                 }
                 else {
-                    if ($opt_d) {
+                    if ($debug) {
                         print 'DEBUG: no answer: ' . $res->errorstring . "\n";
                     }
                 }
@@ -206,7 +207,7 @@ sub mdns {
         #----------------------------------------------------------------------
 
         if ($timed_out) {
-            if ($opt_d) {
+            if ($debug) {
                 print "DEBUG: timeout: clearing the outstanding pool.\n";
             }
             foreach my $sock ( $sel->handles ) {
@@ -219,7 +220,7 @@ sub mdns {
             }
         }
 
-        if ($opt_d) {
+        if ($debug) {
             print 'DEBUG: outstanding = ', $sel->count, ", eof = $eof\n";
         }
 
@@ -238,7 +239,7 @@ sub mdns {
 ################################################################################
 # Initialization
 
-$PLUGIN = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
+$plugin = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
 
 my $time = time;
 
@@ -251,67 +252,74 @@ Usage: check_rbl [--help] [--verbose] [--version] [--timeout t]
                  [--critical n] [--warning n] [--workers n]
 EOT
 
-$OPTIONS = Nagios::Plugin::Getopt->new(
+$options = Nagios::Plugin::Getopt->new(
     usage   => $usage,
     version => $VERSION,
     url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
     blurb   => 'Check SMTP blaklisting status',
 );
 
-$OPTIONS->arg(
+$options->arg(
     spec     => 'critical|c=i',
     help     => 'Number of blacklisting servers for a critical warning',
     required => 0,
     default  => 0,
 );
 
-$OPTIONS->arg(
+$options->arg(
     spec     => 'warning|w=i',
     help     => 'Number of blacklisting servers for a warning',
     required => 0,
     default  => 0,
 );
 
-$OPTIONS->arg(
-    spec     => 'debug',
+$options->arg(
+    spec     => 'debug|d',
     help     => 'Prints debugging information',
     required => 0,
     default  => 0,
 );
 
-$OPTIONS->arg(
+$options->arg(
     spec     => 'server|s=s@',
     help     => 'RBL server',
     required => 1,
 );
 
-$OPTIONS->arg(
+$options->arg(
     spec     => 'host|H=s',
     help     => 'SMTP server to check',
     required => 1,
 );
 
-$OPTIONS->arg(
+$options->arg(
     spec     => 'retry|r=i',
     help     => 'Number of times to try a DNS query (default is 4) ',
     required => 0,
     default  => $DEFAULT_RETRIES,
 );
 
-$OPTIONS->arg(
+$options->arg(
     spec     => 'workers=i',
     help     => 'Number of parallel checks',
     required => 0,
     default  => $DEFAULT_WORKERS,
 );
 
-$OPTIONS->getopts();
+$options->arg(
+    spec     => 'query-timeout=i',
+    help     => 'Timeout of the RBL queries',
+    required => 0,
+    default  => $DEFAULT_QUERY_TIMEOUT,
+);
+
+$options->getopts();
 
 ###############
 # Sanity checks
 
-if ( $OPTIONS->critical < $OPTIONS->warning ) {
-    $PLUGIN->nagios_exit( UNKNOWN,
+if ( $options->critical < $options->warning ) {
+    $plugin->nagios_exit( UNKNOWN,
         'critical has to be greater or equal warning' );
 }
 
@@ -321,47 +329,47 @@ if ( $res->can('force_v4') ) {
     $res->force_v4(1);
 }
 
-$res->retry( $OPTIONS->retry() );
+$res->retry( $options->retry() );
 
-$IP = $OPTIONS->host;
-if ( $IP =~ m/[[:lower:]]/mxs ) {
+$ip = $options->host;
+if ( $ip =~ m/[[:lower:]]/mxs ) {
     mdns(
-        [ $OPTIONS->host ],
+        [ $options->host ],
         sub {
             my ( $addr, $host ) = @_;
-            $IP = $host;
+            $ip = $host;
         }
     );
 }
 
-if ( !$IP ) {
-    $PLUGIN->nagios_exit( UNKNOWN, 'Cannot resolve ' . $OPTIONS->host );
+if ( !$ip ) {
+    $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $options->host );
 }
 
-verbose 'Using ' . $OPTIONS->timeout . " as global script timeout\n";
-alarm $OPTIONS->timeout;
+verbose 'Using ' . $options->timeout . " as global script timeout\n";
+alarm $options->timeout;
 
 ################
 # Set the limits
 
-$THRESHOLD = Nagios::Plugin::Threshold->set_thresholds(
-    warning  => $OPTIONS->warning,
-    critical => $OPTIONS->critical,
+$threshold = Nagios::Plugin::Threshold->set_thresholds(
+    warning  => $options->warning,
+    critical => $options->critical,
 );
 
 ################################################################################
 
-my @servers  = @{ $OPTIONS->server };
+my @servers  = @{ $options->server };
 my $nservers = scalar @servers;
 
-verbose 'Checking ' . $OPTIONS->host . " ($IP) on $nservers server(s)\n";
+verbose 'Checking ' . $options->host . " ($ip) on $nservers server(s)\n";
 
 # build address lists
 my @addrs;
 foreach my $server (@servers) {
-    ( my $ip = $IP ) =~
+    ( my $local_ip = $ip ) =~
 s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
-    push @addrs, $ip;
+    push @addrs, $local_ip;
 }
 
 mdns(
@@ -373,51 +381,51 @@ mdns(
         $addr =~ s/^(?:\d+\.){4}//mxs;
         if ( defined $host ) {
             if ( $host eq q{} ) {
-                push @TIMEOUTS, $addr;
+                push @timeouts, $addr;
             }
             else {
                 verbose "listed in $addr as $host\n";
-                push @BLACKLISTED, $addr;
+                push @blacklisted, $addr;
             }
         }
     }
 );
 
-my $total = scalar @BLACKLISTED;
+my $total = scalar @blacklisted;
 
 my $status =
-    $OPTIONS->host
+    $options->host
   . " BLACKLISTED on $total "
   . ( ( $total == 1 ) ? 'server' : 'servers' )
   . " of $nservers";
 
 # append timeout info, but do not account these in status
-if (@TIMEOUTS) {
-    $timeouts = scalar @TIMEOUTS;
+if (@timeouts) {
+    $timeouts = scalar @timeouts;
     $status =
         " ($timeouts server"
       . ( ( $timeouts > 1 ) ? 's' : q{} )
       . ' timed out: '
-      . join( ', ', @TIMEOUTS ) . ')';
+      . join( ', ', @timeouts ) . ')';
 }
 
 if ( $total > 0 ) {
-    $status .= " (@BLACKLISTED)";
+    $status .= " (@blacklisted)";
 }
 
-$PLUGIN->add_perfdata(
+$plugin->add_perfdata(
     label     => 'servers',
     value     => $total,
     uom       => q{},
-    threshold => $THRESHOLD,
+    threshold => $threshold,
 );
 
-$PLUGIN->add_perfdata(
+$plugin->add_perfdata(
     label => 'time',
     value => time - $time,
     uom   => q{s},
 );
 
-$PLUGIN->nagios_exit( $THRESHOLD->get_status($total), $status );
+$plugin->nagios_exit( $threshold->get_status($total), $status );
 
 1;

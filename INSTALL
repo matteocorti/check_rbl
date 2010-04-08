@@ -41,3 +41,9 @@ Generate the man page with pod2man
 Please report any installation problem to <matteo.corti@id.ethz.ch> or
 open a ticket at
 https://trac.id.ethz.ch/projects/nagios_plugins/newticket
+
+# File version information:
+# $Id: AUTHORS 1103 2009-12-07 07:49:19Z corti $
+# $Revision: 1103 $
+# $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/AUTHORS $
+# $Date: 2009-12-07 08:49:19 +0100 (Mon, 07 Dec 2009) $

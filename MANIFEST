@@ -1,9 +1,11 @@
 AUTHORS
 Changes
 check_rbl
+check_rbl.ini
 check_rbl.pod
 check_rbl.spec
 COPYING
+COPYRIGHT
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Include.pm
