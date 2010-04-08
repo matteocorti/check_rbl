@@ -26,4 +26,4 @@ requires:
   version: 0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-version: v1.2.0
+version: 1.2.0
