@@ -7,7 +7,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.42
 distribution_type: module
-generated_by: 'Module::Install version 0.82'
+generated_by: 'Module::Install version 0.91'
 license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -17,15 +17,13 @@ no_index:
   directory:
     - inc
 requires:
-  Carp: 0
-  English: 0
+  IO::Select: 0
   Nagios::Plugin: 0
   Nagios::Plugin::Getopt: 0
   Nagios::Plugin::Threshold: 0
   Net::DNS: 0
-  Parallel::Iterator: 0
   Readonly: 0
   version: 0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
-version: 1.1.0
+version: v1.2.0

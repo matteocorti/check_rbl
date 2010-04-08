@@ -30,7 +30,7 @@ use Nagios::Plugin;
 use Net::DNS;
 use Readonly;
 
-use version; our $VERSION = 'v1.2.0';
+use version; our $VERSION = '1.2.0';
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
 #            the main routine would be executed as a subroutine and all the
