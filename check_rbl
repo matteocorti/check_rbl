@@ -30,7 +30,7 @@ use Nagios::Plugin;
 use Net::DNS;
 use Readonly;
 
-use version; our $VERSION = '1.2.0';
+our $VERSION = '1.2.0';
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
 #            the main routine would be executed as a subroutine and all the
@@ -44,7 +44,7 @@ Readonly our $DEFAULT_RETRIES       => 4;
 Readonly our $DEFAULT_WORKERS       => 20;
 Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 
-use vars qw(
+our (
   @blacklisted
   @timeouts
   $ip
@@ -230,6 +230,9 @@ sub mdns {
 
         last if ( $sel->count == 0 ) && $eof;
     }
+
+    return;
+    
 }
 
 ##############################################################################

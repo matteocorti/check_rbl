@@ -73,8 +73,6 @@ check_updates depends on
 
 =item * Readonly
 
-=item * version
-
 =back
 
 =head1 CONFIGURATION

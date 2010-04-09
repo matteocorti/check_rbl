@@ -26,8 +26,6 @@ requires 'Net::DNS'                  => 0;
 requires 'Readonly'                  => 0;
 requires 'IO::Select'                => 0;
 
-requires 'version'                   => 0;
-
 install_script  'check_rbl';
 
 WriteMakefile(
