@@ -45,14 +45,14 @@ Readonly our $DEFAULT_WORKERS       => 20;
 Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 
 our (
-  @blacklisted
-  @timeouts
-  $ip
-  $options
-  $plugin
-  $threshold
-  $res
-  $timeouts
+  @blacklisted,
+  @timeouts,
+  $ip,
+  $options,
+  $plugin,
+  $threshold,
+  $res,
+  $timeouts,
 );
 
 ##############################################################################
