@@ -6,7 +6,7 @@
 # $Date: 2010-02-16 21:06:11 +0100 (Tue, 16 Feb 2010) $
 ################################################################################
 
-%define version 1.2.0
+%define version 1.2.1
 %define release 0
 %define name    check_rbl
 %define nagiospluginsdir %{_libdir}/nagios/plugins
@@ -60,6 +60,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{name}.1*
 
 %changelog
+* Mon Jul  5 2010 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.1-0
+- Updated to 1.2.1 (bug fix)
+
 * Thu Apr  8 2010 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.0-0
 - Updated to 1.2.0 and imprved the SPEC file
 

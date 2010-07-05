@@ -30,7 +30,7 @@ use Nagios::Plugin;
 use Net::DNS;
 use Readonly;
 
-our $VERSION = '1.2.0';
+our $VERSION = '1.2.1';
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
 #            the main routine would be executed as a subroutine and all the
@@ -179,10 +179,13 @@ sub mdns {
                 my $ans = $res->bgread($sock);
                 my $host;
                 if ($ans) {
+
                     foreach my $rr ( $ans->answer ) {
-                        if ( !$rr->type eq 'A' ) {
+                        
+                        if ( ! ($rr->type eq 'A') ) {
                             next;
                         }
+
                         $host = $rr->address;
 
                         # take just the first answer

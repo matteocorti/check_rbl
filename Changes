@@ -1,3 +1,9 @@
+2010-07-05  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* Version 1.2.1
+	* check_rbl: fixed a problem with operator precedence that made some
+	             checks fail
+
 2010-04-07  Matteo Corti  <matteo.corti@id.ethz.ch>
 
         * Version 1.2.0
