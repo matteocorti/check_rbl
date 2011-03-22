@@ -23,6 +23,7 @@ requires:
   Nagios::Plugin::Threshold: 0
   Net::DNS: 0
   Readonly: 0
+  perl: 5.8.0
 resources:
   license: http://opensource.org/licenses/gpl-license.php
 version: 1.2.2

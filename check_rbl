@@ -23,6 +23,8 @@
 use strict;
 use warnings;
 
+use 5.00800;
+
 use IO::Select;
 use Nagios::Plugin 0.31;
 use Nagios::Plugin::Getopt;
