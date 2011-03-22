@@ -1,6 +1,13 @@
+2010-03-22: 1.2.2 - bug fix release (dependencies fixed)
 2010-07-05: 1.2.1 - bug fix release (see Changes)
 2010-04-08: 1.2.0 - improved parallel checks and several fixes
 2009-10-27: 1.1.0 - parallel checks
 2009-     : 1.0.2 - --retry command line argument to specify DNS retries
 2009-01-06: 1.0.1 - Execution time in the performance data
 2008-12-29: 1.0.0 - Initial release
+
+# File version information:
+# $Id$
+# $Revision$
+# $HeadURL$
+# $Date$

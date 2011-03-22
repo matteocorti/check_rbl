@@ -1,1 +1,8 @@
+* refactor mdns to reduce code complexity
 * unit tests
+
+# File version information:
+# $Id$
+# $Revision$
+# $HeadURL$
+# $Date$

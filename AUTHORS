@@ -2,8 +2,12 @@ Matteo Corti <matteo.corti@id.ethz.ch>
 Elan Ruusamäe <glen@delfi.ee> (improved parallel support and several fixes)
 Victor V Kudlak <info@kentos.ru> (parallel support)
 
+Please report any bugs or feature requests to matteo.corti@id.ethz.ch, or through the
+web interface at
+https://trac.id.ethz.ch/projects/nagios_plugins/newticket?component=check_rbl
+
 # File version information:
-# $Id: AUTHORS 1103 2009-12-07 07:49:19Z corti $
-# $Revision: 1103 $
-# $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/AUTHORS $
-# $Date: 2009-12-07 08:49:19 +0100 (Mon, 07 Dec 2009) $
+# $Id$
+# $Revision$
+# $HeadURL$
+# $Date$

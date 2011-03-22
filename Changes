@@ -1,3 +1,9 @@
+2011-03-22  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* Version 1.2.2
+	* check_rbl: specified the dependency on Nagios::Plugin > 0.31 (earlier versions
+	             caused parameter parsing errors, thanks to Elan Ruusamäe)
+
 2010-07-05  Matteo Corti  <matteo.corti@id.ethz.ch>
 
 	* Version 1.2.1
@@ -30,7 +36,7 @@
 	* check_rbl: Initial release
 
 # File version information:
-# $Id: AUTHORS 1103 2009-12-07 07:49:19Z corti $
-# $Revision: 1103 $
-# $HeadURL: https://svn.id.ethz.ch/nagios_plugins/check_updates/AUTHORS $
-# $Date: 2009-12-07 08:49:19 +0100 (Mon, 07 Dec 2009) $
+# $Id$
+# $Revision$
+# $HeadURL$
+# $Date$

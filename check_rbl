@@ -24,13 +24,17 @@ use strict;
 use warnings;
 
 use IO::Select;
+use Nagios::Plugin 0.31;
 use Nagios::Plugin::Getopt;
 use Nagios::Plugin::Threshold;
-use Nagios::Plugin;
 use Net::DNS;
 use Readonly;
 
-our $VERSION = '1.2.1';
+our $VERSION = '1.2.2';
+
+Readonly our $DEFAULT_RETRIES       => 4;
+Readonly our $DEFAULT_WORKERS       => 20;
+Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 
 # IMPORTANT: Nagios plugins could be executed using embedded perl in this case
 #            the main routine would be executed as a subroutine and all the
@@ -40,20 +44,10 @@ our $VERSION = '1.2.1';
 #
 # All variables are therefore declared as package variables...
 #
-Readonly our $DEFAULT_RETRIES       => 4;
-Readonly our $DEFAULT_WORKERS       => 20;
-Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 
-our (
-  @blacklisted,
-  @timeouts,
-  $ip,
-  $options,
-  $plugin,
-  $threshold,
-  $res,
-  $timeouts,
-);
+## no critic (ProhibitPackageVars)
+our ( @blacklisted, @timeouts, $ip, $options, $plugin, $threshold, $res,
+    $timeouts, );
 
 ##############################################################################
 # Usage     : verbose("some message string", $optional_verbosity_level);
@@ -108,7 +102,7 @@ sub mdns {
 
     # timeout per query (seconds)
     my $timeout = $options->get('query-timeout');
-    my $debug = $options->debug();
+    my $debug   = $options->debug();
 
     my $sel = IO::Select->new();
     my $eof = 0;
@@ -122,19 +116,22 @@ sub mdns {
         #----------------------------------------------------------------------
 
         while ( !$eof && $sel->count() < $workers ) {
-            
+
             if ($debug) {
+                ## no critic (RequireCheckedSyscall)
                 print 'DEBUG: reading...';
             }
             my $name = shift @addrs;
             if ( !defined $name ) {
                 if ($debug) {
+                    ## no critic (RequireCheckedSyscall)
                     print "EOF.\n";
                 }
                 $eof = 1;
                 last;
             }
             if ($debug) {
+                ## no critic (RequireCheckedSyscall)
                 print "NAME: $name\n";
             }
             my $sock = $res->bgsend($name);
@@ -144,6 +141,7 @@ sub mdns {
             $addrs{$sock} = $name;
             $sel->add($sock);
             if ($debug) {
+                ## no critic (RequireCheckedSyscall)
                 print "DEBUG: name = $name, outstanding = ", $sel->count, "\n";
             }
         }
@@ -156,6 +154,7 @@ sub mdns {
         my $timed_out = 1;
 
         if ($debug) {
+            ## no critic (RequireCheckedSyscall)
             print "DEBUG: waiting for replies\n";
         }
 
@@ -165,11 +164,13 @@ sub mdns {
             $timed_out = 0;
 
             if ($debug) {
+                ## no critic (RequireCheckedSyscall)
                 print 'DEBUG: replies received: ', scalar @ready, "\n";
             }
 
             foreach my $sock (@ready) {
                 if ($debug) {
+                    ## no critic (RequireCheckedSyscall)
                     print "DEBUG: handling a reply\n";
                 }
                 my $addr = $addrs{$sock};
@@ -181,8 +182,8 @@ sub mdns {
                 if ($ans) {
 
                     foreach my $rr ( $ans->answer ) {
-                        
-                        if ( ! ($rr->type eq 'A') ) {
+
+                        if ( !( $rr->type eq 'A' ) ) {
                             next;
                         }
 
@@ -194,6 +195,7 @@ sub mdns {
                 }
                 else {
                     if ($debug) {
+                        ## no critic (RequireCheckedSyscall)
                         print 'DEBUG: no answer: ' . $res->errorstring . "\n";
                     }
                 }
@@ -211,6 +213,7 @@ sub mdns {
 
         if ($timed_out) {
             if ($debug) {
+                ## no critic (RequireCheckedSyscall)
                 print "DEBUG: timeout: clearing the outstanding pool.\n";
             }
             foreach my $sock ( $sel->handles ) {
@@ -224,6 +227,7 @@ sub mdns {
         }
 
         if ($debug) {
+            ## no critic (RequireCheckedSyscall)
             print 'DEBUG: outstanding = ', $sel->count, ", eof = $eof\n";
         }
 
@@ -235,7 +239,7 @@ sub mdns {
     }
 
     return;
-    
+
 }
 
 ##############################################################################
@@ -384,7 +388,7 @@ mdns(
         my ( $addr, $host ) = @_;
 
         # extract RBL we checked
-        $addr =~ s/^(?:\d+\.){4}//mxs;
+        $addr =~ s/^(?:\d+[.]){4}//mxs;
         if ( defined $host ) {
             if ( $host eq q{} ) {
                 push @timeouts, $addr;
