@@ -36,7 +36,7 @@ Requires:  nagios-plugins
 check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
 
 %prep
-%setup -q
+%setup -q -n %{sourcename}-%{version}
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor \
