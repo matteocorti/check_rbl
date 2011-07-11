@@ -6,7 +6,7 @@
 # $Date$
 ################################################################################
 
-%define version          1.2.2
+%define version          1.3.0
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -62,7 +62,10 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
-* Tue Mar 22 2011 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.2-0%{?dist}
+* Mon Jul 11 2011 Matteo Corti <matteo.corti@id.ethz.ch> - 1.3.0-0
+- Updated to 1.3.0 (whitelistings support)
+
+* Tue Mar 22 2011 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.2-0
 - Updated to 1.2.2 (bug fix) and renamed the package
 
 * Mon Jul  5 2010 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.1-0

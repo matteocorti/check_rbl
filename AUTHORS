@@ -1,6 +1,7 @@
 Matteo Corti <matteo.corti@id.ethz.ch>
 Elan Ruusamäe <glen@delfi.ee> (improved parallel support and several fixes)
 Victor V Kudlak <info@kentos.ru> (parallel support)
+Jan Kantert <jan.kantert@researchgate.net> for the whitelisting support
 
 Please report any bugs or feature requests to matteo.corti@id.ethz.ch, or through the
 web interface at

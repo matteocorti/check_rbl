@@ -10,10 +10,10 @@ use inc::Module::Install;
 ##############################################################################
 # Define metadata (we read it from the binary)
 
-name         'check_rbl';
-version_from 'check_rbl';
+name              'check_rbl';
+version_from      'check_rbl';
 perl_version_from 'check_rbl';
-all_from     'check_rbl.pod';
+all_from          'check_rbl.pod';
 
 ##############################################################################
 # Specific dependencies
@@ -28,6 +28,8 @@ requires 'Readonly'                  => 0;
 requires 'IO::Select'                => 0;
 
 install_script  'check_rbl';
+
+tests 't/*.t';
 
 WriteMakefile(
     INSTALLSCRIPT        => '/usr/lib/nagios/plugins/contrib',

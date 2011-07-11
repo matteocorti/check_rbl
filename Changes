@@ -1,8 +1,15 @@
+2011-07-11  Matteo Corti  <matteo.corti@id.ethz.ch>
+
+	* Version 1.3.0
+	* check_rbl: applied patch from Jan Kantert to support whitelists
+	* added support for unit tests
+
 2011-03-22  Matteo Corti  <matteo.corti@id.ethz.ch>
 
 	* Version 1.2.2
-	* check_rbl: specified the dependency on Nagios::Plugin > 0.31 (earlier versions
-	             caused parameter parsing errors, thanks to Elan Ruusamäe)
+	* check_rbl: specified the dependency on Nagios::Plugin > 0.31
+	             (earlier versions caused parameter parsing errors,
+	             thanks to Elan Ruusamäe)
 
 2010-07-05  Matteo Corti  <matteo.corti@id.ethz.ch>
 
