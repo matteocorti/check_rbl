@@ -1,5 +1,30 @@
 Build and install check_rbl
 
+Dependences
+===========
+
+check_rbl depends on several Perl modules:
+
+ * Getopt::Long
+ * IO::Select
+ * Nagios::Plugin
+ * Nagios::Plugin::Threshold
+ * Number::Format
+ * Net::DNS
+ * Readonly
+
+Perl modules can be found on the "Comprehensive Perl Archive Network"
+(CPAN). The "How to install CPAN modules" guide summarizes how these
+can be installed
+
+        http://www.cpan.org/modules/INSTALL.html
+
+On many systems Perl modules are also available as installation
+packages (refer to your system documentation on how to install them).
+
+The 'perl Makefile.PL' command (see below) will list the missing
+packages the you will need to install.
+
 Install to /usr/lib/nagios/plugins/contrib
 ==========================================
 
