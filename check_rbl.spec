@@ -6,7 +6,7 @@
 # $Date$
 ################################################################################
 
-%define version          1.3.0
+%define version          1.3.1
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
