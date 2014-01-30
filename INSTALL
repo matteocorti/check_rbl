@@ -5,11 +5,10 @@ Dependences
 
 check_rbl depends on several Perl modules:
 
- * Getopt::Long
  * IO::Select
  * Nagios::Plugin
+ * Nagios::Plugin::Getopt
  * Nagios::Plugin::Threshold
- * Number::Format
  * Net::DNS
  * Readonly
 
