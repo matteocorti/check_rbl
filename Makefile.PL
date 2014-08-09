@@ -20,6 +20,8 @@ all_from          'check_rbl.pod';
 
 include 'version';
 
+requires 'Data::Validate::Domain'    => 0;
+requires 'Data::Validate::IP'        => 0;
 requires 'Nagios::Plugin'            => 0.31;
 requires 'Nagios::Plugin::Getopt'    => 0;
 requires 'Nagios::Plugin::Threshold' => 0;

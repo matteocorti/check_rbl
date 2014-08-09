@@ -6,7 +6,7 @@
 # $Date$
 ################################################################################
 
-%define version          1.3.2
+%define version          1.3.3
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -62,6 +62,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Sat Aug  9 2014 Matteo Corti <matteo.corti@id.ethz.ch> - 1.3.3-0
+- updated to 1.3.3
+
 * Thu Jan 30 2014 Matteo Corti <matteo.corti@id.ethz.ch> - 1.3.2-0
 - Dependencies and documentation update
 
