@@ -9,6 +9,7 @@ package main;
 #
 # See  the INSTALL file for installation instructions
 #
+# Copyright (c) 2014, Matteo Corti <matteo@corti.li>
 # Copyright (c) 2007, ETH Zurich.
 # Copyright (c) 2010, Elan Ruusamae <glen@delfi.ee>.
 #
@@ -30,6 +31,8 @@ use warnings;
 
 use 5.00800;
 
+use Data::Validate::Domain qw(is_hostname);
+use Data::Validate::IP qw(is_ipv4 is_ipv6);
 use IO::Select;
 use Nagios::Plugin 0.31;
 use Nagios::Plugin::Getopt;
@@ -37,8 +40,9 @@ use Nagios::Plugin::Threshold;
 use Net::DNS;
 use Readonly;
 
-our $VERSION = '1.3.2';
+our $VERSION = '1.4.0';
 
+Readonly our $DEFAULT_TIMEOUT       => 5;
 Readonly our $DEFAULT_RETRIES       => 4;
 Readonly our $DEFAULT_WORKERS       => 20;
 Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
@@ -53,8 +57,7 @@ Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 #
 
 ## no critic (ProhibitPackageVars)
-our ( @listed, @timeouts, $ip, $options, $plugin, $threshold, $res,
-    $timeouts_string, );
+our ( @listed, @timeouts, $options, $plugin, $threshold, $timeouts_string, );
 
 # the script is declared as a package so that it can be unit tested
 # but it should not be used as a module
@@ -100,6 +103,28 @@ sub verbose {
 }
 
 ##############################################################################
+# Usage     : my $res = init_dns_resolver( $retries )
+# Purpose   : Initializes a new DNS resolver
+# Arguments : retries : number of retries
+# Returns   : The newly created resolver
+# See also  : Perl Net::DNS
+sub init_dns_resolver {
+
+    my $retries = shift;
+
+    my $res = Net::DNS::Resolver->new();
+    if ( $res->can('force_v4') ) {
+        $res->force_v4(1);
+    }
+
+    if ($retries) {
+        $res->retry($retries);
+    }
+
+    return $res;
+}
+
+##############################################################################
 # Usage     : mdns(\@addresses, $callback)
 # Purpose   : Perform multiple DNS lookups in parallel
 # Returns   : n/a
@@ -115,11 +140,12 @@ sub mdns {
     my ( $data, $callback ) = @_;
 
     # number of requests to have outstanding at any time
-    my $workers = $options->workers();
+    my $workers = $options ? $options->workers() : 1;
 
     # timeout per query (seconds)
-    my $timeout = $options->get('query-timeout');
-    my $debug   = $options->debug();
+    my $timeout = $options ? $options->get('query-timeout') : $DEFAULT_TIMEOUT;
+    my $debug = $options ? $options->debug() : 0;
+    my $res = init_dns_resolver( $options ? $options->retry() : 0 );
 
     my $sel = IO::Select->new();
     my $eof = 0;
@@ -272,6 +298,52 @@ sub mdns {
 }
 
 ##############################################################################
+# Usage     : validate( $hostname );
+# Purpose   : check if an IP address or host name is valid
+# Returns   : the IP address corresponding to $hostname
+# Arguments : n/a
+# Throws    : an UNKNOWN error if the argument is not valid
+# Comments  : n/a
+# See also  : n/a
+sub validate {
+
+    my $hostname = shift;
+    my $ip;
+
+    if ( !is_ipv4($hostname) && !is_ipv6($hostname) ) {
+
+        if ( is_hostname($hostname) ) {
+
+            mdns(
+                [$hostname],
+                sub {
+
+                    my ( $addr, $host ) = @_;
+                    $ip = $host;
+                }
+            );
+
+            if ( !$ip ) {
+                $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $hostname );
+            }
+
+        }
+        else {
+            $plugin->nagios_exit( UNKNOWN,
+                "invalid name or address '$hostname'" );
+        }
+
+    }
+    else {
+        # the input is an IP
+        $ip = $hostname;
+    }
+
+    return $ip;
+
+}
+
+##############################################################################
 # Usage     : run();
 # Purpose   : main method
 # Returns   : n/a
@@ -369,27 +441,11 @@ sub run {
             'critical has to be greater or equal warning' );
     }
 
-    $res = Net::DNS::Resolver->new();
+    my $ip = validate( $options->host );
 
-    if ( $res->can('force_v4') ) {
-        $res->force_v4(1);
-    }
-
-    $res->retry( $options->retry() );
-
-    $ip = $options->host;
-    if ( $ip =~ m/[[:lower:]]/mxs ) {
-        mdns(
-            [ $options->host ],
-            sub {
-                my ( $addr, $host ) = @_;
-                $ip = $host;
-            }
-        );
-    }
-
-    if ( !$ip ) {
-        $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $options->host );
+    my @servers = @{ $options->server };
+    for my $server (@servers) {
+        validate($server);
     }
 
     verbose 'Using ' . $options->timeout . " as global script timeout\n";
@@ -405,7 +461,6 @@ sub run {
 
     ################################################################################
 
-    my @servers  = @{ $options->server };
     my $nservers = scalar @servers;
 
     verbose 'Checking ' . $options->host . " ($ip) on $nservers server(s)\n";

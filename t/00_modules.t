@@ -12,7 +12,7 @@ use warnings;
 
 use Test::More tests => 23;
 
-our $VERSION = '1.3.1';
+our $VERSION = '1.4.0';
 
 use_ok('Nagios::Plugin');
 can_ok( 'Nagios::Plugin', 'new' );
