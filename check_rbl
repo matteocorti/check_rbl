@@ -42,7 +42,7 @@ use Readonly;
 
 our $VERSION = '1.3.3';
 
-Readonly our $DEFAULT_TIMEOUT       => 5;
+Readonly our $DEFAULT_TIMEOUT       => 15;
 Readonly our $DEFAULT_RETRIES       => 4;
 Readonly our $DEFAULT_WORKERS       => 20;
 Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
@@ -364,7 +364,7 @@ sub run {
         usage   => 'Usage: %s [OPTIONS]',
         version => $VERSION,
         url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
-        blurb   => 'Check SMTP blakl- or white- isting status',
+        blurb   => 'Check SMTP black- or white- isting status',
     );
 
     $options->arg(
