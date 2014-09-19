@@ -449,8 +449,8 @@ sub run {
 
     # see https://nagios-plugins.org/doc/guidelines.html#THRESHOLDFORMAT
     $threshold = Nagios::Plugin::Threshold->set_thresholds(
-        warning  => $options->warning-1,
-        critical => $options->critical-1,
+        warning  => $options->warning - 1,
+        critical => $options->critical - 1,
     );
 
     ################################################################################
@@ -540,7 +540,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
         value => time - $time,
         uom   => q{s},
     );
-    
+
     $plugin->nagios_exit( $threshold->get_status($total), $status );
 
     return;
