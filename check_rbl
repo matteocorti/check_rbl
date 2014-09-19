@@ -40,7 +40,7 @@ use Nagios::Plugin::Threshold;
 use Net::DNS;
 use Readonly;
 
-our $VERSION = '1.3.3';
+our $VERSION = '1.3.4';
 
 Readonly our $DEFAULT_TIMEOUT       => 15;
 Readonly our $DEFAULT_RETRIES       => 4;
@@ -148,6 +148,7 @@ sub mdns {
     my $eof = 0;
 
     my @addrs = @{$data};
+
     my %addrs;
     while (1) {
 
@@ -162,6 +163,7 @@ sub mdns {
                 print 'DEBUG: reading...';
             }
             my $name = shift @addrs;
+
             if ( !defined $name ) {
                 if ($debug) {
                     ## no critic (RequireCheckedSyscall)
@@ -210,6 +212,7 @@ sub mdns {
         }
 
         @ready = $sel->can_read($timeout);
+
         while (@ready) {
 
             $timed_out = 0;
@@ -229,6 +232,7 @@ sub mdns {
                 $sel->remove($sock);
 
                 my $ans = $res->bgread($sock);
+
                 my $host;
                 if ($ans) {
 
@@ -305,7 +309,7 @@ sub mdns {
 sub validate {
 
     my $hostname = shift;
-    my $ip;
+    my $ip       = $hostname;
 
     if ( !is_ipv4($hostname) && !is_ipv6($hostname) ) {
 
@@ -314,7 +318,6 @@ sub validate {
             mdns(
                 [$hostname],
                 sub {
-
                     my ( $addr, $host ) = @_;
                     $ip = $host;
                 }
@@ -325,15 +328,11 @@ sub validate {
             }
 
         }
-        else {
-            $plugin->nagios_exit( UNKNOWN,
-                "invalid name or address '$hostname'" );
+
+        if ( !$ip ) {
+            $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $options->host );
         }
 
-    }
-    else {
-        # the input is an IP
-        $ip = $hostname;
     }
 
     return $ip;
@@ -441,9 +440,6 @@ sub run {
     my $ip = validate( $options->host );
 
     my @servers = @{ $options->server };
-    for my $server (@servers) {
-        validate($server);
-    }
 
     verbose 'Using ' . $options->timeout . " as global script timeout\n";
     alarm $options->timeout;
