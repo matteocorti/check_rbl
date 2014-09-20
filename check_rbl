@@ -363,7 +363,7 @@ sub run {
         usage   => 'Usage: %s [OPTIONS]',
         version => $VERSION,
         url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
-        blurb   => 'Check SMTP black- or white- isting status',
+        blurb   => 'Check SMTP black- or white- listing status',
     );
 
     $options->arg(
