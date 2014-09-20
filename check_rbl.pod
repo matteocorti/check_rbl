@@ -143,6 +143,8 @@ DAMAGES.
 
 =head1 ACKNOWLEDGMENTS
 
+=encoding iso-8859-1
+
 Elan Ruusamäe for the improved parallel support and several fixes
 
 Victor V Kudlak for parallel support
