@@ -31,6 +31,7 @@ use warnings;
 
 use 5.00800;
 
+use Data::Dumper;
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
 use IO::Select;
@@ -40,7 +41,7 @@ use Nagios::Plugin::Threshold;
 use Net::DNS;
 use Readonly;
 
-our $VERSION = '1.3.4';
+our $VERSION = '1.3.5';
 
 Readonly our $DEFAULT_TIMEOUT       => 15;
 Readonly our $DEFAULT_RETRIES       => 4;
@@ -370,14 +371,14 @@ sub run {
         spec     => 'critical|c=i',
         help     => 'Number of blacklisting servers for a critical warning',
         required => 0,
-        default  => 0,
+        default  => 1,
     );
 
     $options->arg(
         spec     => 'warning|w=i',
         help     => 'Number of blacklisting servers for a warning',
         required => 0,
-        default  => 0,
+        default  => 1,
     );
 
     $options->arg(
