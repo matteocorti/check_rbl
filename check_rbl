@@ -34,9 +34,9 @@ use 5.00800;
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
 use IO::Select;
-use Nagios::Plugin 0.31;
-use Nagios::Plugin::Getopt;
-use Nagios::Plugin::Threshold;
+use Monitoring::Plugin;
+use Monitoring::Plugin::Getopt;
+use Monitoring::Plugin::Threshold;
 use Net::DNS;
 use Readonly;
 
@@ -352,14 +352,14 @@ sub run {
     ################################################################################
     # Initialization
 
-    $plugin = Nagios::Plugin->new( shortname => 'CHECK_RBL' );
+    $plugin = Monitoring::Plugin->new( shortname => 'CHECK_RBL' );
 
     my $time = time;
 
     ########################
     # Command line arguments
 
-    $options = Nagios::Plugin::Getopt->new(
+    $options = Monitoring::Plugin::Getopt->new(
         usage   => 'Usage: %s [OPTIONS]',
         version => $VERSION,
         url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
@@ -448,7 +448,7 @@ sub run {
     # Set the limits
 
     # see https://nagios-plugins.org/doc/guidelines.html#THRESHOLDFORMAT
-    $threshold = Nagios::Plugin::Threshold->set_thresholds(
+    $threshold = Monitoring::Plugin::Threshold->set_thresholds(
         warning  => $options->warning - 1,
         critical => $options->critical - 1,
     );
