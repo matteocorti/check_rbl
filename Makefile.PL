@@ -20,14 +20,14 @@ all_from          'check_rbl.pod';
 
 include 'version';
 
-requires 'Data::Validate::Domain'    => 0;
-requires 'Data::Validate::IP'        => 0;
-requires 'Nagios::Plugin'            => 0.31;
-requires 'Nagios::Plugin::Getopt'    => 0;
-requires 'Nagios::Plugin::Threshold' => 0;
-requires 'Net::DNS'                  => 0;
-requires 'Readonly'                  => 0;
-requires 'IO::Select'                => 0;
+requires 'Data::Validate::Domain'        => 0;
+requires 'Data::Validate::IP'            => 0;
+requires 'Monitoring::Plugin'            => 0;
+requires 'Monitoring::Plugin::Getopt'    => 0;
+requires 'Monitoring::Plugin::Threshold' => 0;
+requires 'Net::DNS'                      => 0;
+requires 'Readonly'                      => 0;
+requires 'IO::Select'                    => 0;
 
 install_script  'check_rbl';
 

@@ -74,9 +74,9 @@ check_updates depends on
 
 =item * IO::Select
 
-=item * Nagios::Plugin
+=item * Monitoring::Plugin
 
-=item * Nagios::Plugin::Threshold
+=item * Monitoring::Plugin::Threshold
 
 =item * Number::Format
 

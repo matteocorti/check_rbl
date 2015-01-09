@@ -22,9 +22,9 @@ requires:
   Data::Validate::Domain: 0
   Data::Validate::IP: 0
   IO::Select: 0
-  Nagios::Plugin: 0.31
-  Nagios::Plugin::Getopt: 0
-  Nagios::Plugin::Threshold: 0
+  Monitoring::Plugin: 0
+  Monitoring::Plugin::Getopt: 0
+  Monitoring::Plugin::Threshold: 0
   Net::DNS: 0
   Readonly: 0
   perl: 5.8.0
