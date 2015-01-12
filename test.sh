@@ -1,4 +1,4 @@
-perl ./check_rbl -H plesk.rtcomm-sibir.ru \
+perl ./check_rbl -H $1 \
     -t 60 \
     -c 1 \
     -w 1 \
