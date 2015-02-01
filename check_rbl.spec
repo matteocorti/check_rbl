@@ -6,7 +6,7 @@
 # $Date$
 ################################################################################
 
-%define version          1.3.6
+%define version          1.3.7
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -62,6 +62,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Sun Feb  1 2015 Matteo Corti <matteo@corti.li> - 1.3.7-0
+- Update to 1.3.7 (using Monitoring::Plugins)
+
 * Fri Dec  5 2014 Matteo Corti <matteo@corti.li> - 1.3.6-0
 - Updated to 1.3.6 (removed dependency on Data::Dumper)
 

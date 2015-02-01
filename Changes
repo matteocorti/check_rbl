@@ -1,5 +1,6 @@
-2015-01-09  Matteo Corti  <matteo@corti.li>
+2015-02-01  Matteo Corti  <matteo@corti.li>
 
+        * Version 1.3.7
 	* check_rbl:  switching to Monitoring::Plugin
 	              (as Nagios::Plugin is deprecated)
 

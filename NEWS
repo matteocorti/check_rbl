@@ -1,4 +1,4 @@
-                  - now depends on Monitoring::Plugins (Nagios::Plugins
+2015-02-01: 1.3.7 - now depends on Monitoring::Plugins (Nagios::Plugins
                     is deprecated)
 2014-12-05: 1.3.6 - removed dependency on Data::Dumper
 2014-09-21: 1.3.5 - fixed the default critical and warning range

@@ -12,7 +12,7 @@ use warnings;
 
 use Test::More tests => 23;
 
-our $VERSION = '1.3.3';
+our $VERSION = '1.3.7';
 
 use_ok('Monitoring::Plugin');
 can_ok( 'Monitoring::Plugin', 'new' );
