@@ -8,7 +8,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.59
 distribution_type: module
 dynamic_config: 1
-generated_by: 'Module::Install version 1.14'
+generated_by: 'Module::Install version 1.16'
 license: gpl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -25,7 +25,7 @@ requires:
   Monitoring::Plugin: 0
   Monitoring::Plugin::Getopt: 0
   Monitoring::Plugin::Threshold: 0
-  Net::DNS: 0
+  Net::DNS: '1.04'
   Readonly: 0
   perl: 5.8.0
 resources:
