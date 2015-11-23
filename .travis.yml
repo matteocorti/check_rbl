@@ -1,4 +1,7 @@
 language: perl
+install:
+  - cpanm -n -q Net::DNS@1.02
+  - cpanm -n -q --skip-satisfied Net::DNS --installdeps .
 perl:
   - "5.22"
   - "5.20"
