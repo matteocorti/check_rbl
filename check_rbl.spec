@@ -1,11 +1,3 @@
-################################################################################
-# File version information:
-# $Id$
-# $Revision$
-# $HeadURL$
-# $Date$
-################################################################################
-
 %define version          1.3.7
 %define release          0
 %define sourcename       check_rbl

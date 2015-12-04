@@ -1,9 +1,3 @@
-# File version information:
-# $Id$
-# $Revision$
-# $HeadURL$
-# $Date$
-
 =pod
 
 =head1 NAME

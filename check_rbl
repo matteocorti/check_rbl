@@ -16,15 +16,6 @@ package main;
 # This module is free software; you can redistribute it and/or modify it
 # under the terms of GNU general public license (gpl) version 3.
 # See the LICENSE file for details.
-#
-# RCS information
-# enable substitution with:
-#   $ svn propset svn:keywords "Id Revision HeadURL Source Date"
-#
-#   $Id$
-#   $Revision$
-#   $HeadURL$
-#   $Date$
 
 use strict;
 use warnings;

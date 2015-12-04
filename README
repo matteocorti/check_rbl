@@ -8,12 +8,4 @@ check_rbl -H example.org -t 60 -c 1 -w 1 -s cbl.anti-spam.org.cn -s cblplus.anti
 
 
 Please report any bugs or feature requests to matteo.corti@id.ethz.ch, or through the
-web interface at
-https://trac.id.ethz.ch/projects/nagios_plugins/newticket?component=check_rbl
-
-
-# File version information:
-# $Id$
-# $Revision$
-# $HeadURL$
-# $Date$
+web interface at https://github.com/matteocorti/check_rbl/issues

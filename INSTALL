@@ -63,11 +63,4 @@ Generate the man page with pod2man
     pod2man check_rbl.pod > CUSTOM_MAN_FILE
 
 Please report any installation problem to <matteo.corti@id.ethz.ch> or
-open a ticket at
-https://trac.id.ethz.ch/projects/nagios_plugins/newticket
-
-# File version information:
-# $Id$
-# $Revision$
-# $HeadURL$
-# $Date$
+open a ticket at https://github.com/matteocorti/check_rbl/issues
