@@ -25,7 +25,7 @@ requires:
   Monitoring::Plugin: 0
   Monitoring::Plugin::Getopt: 0
   Monitoring::Plugin::Threshold: 0
-  Net::DNS: '1.04'
+  Net::DNS: 0
   Readonly: 0
   perl: 5.8.0
 resources:
