@@ -72,8 +72,6 @@ check_updates depends on
 
 =item * Monitoring::Plugin::Threshold
 
-=item * Number::Format
-
 =item * Net::DNS
 
 =item * Readonly

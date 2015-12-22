@@ -5,6 +5,8 @@ Dependences
 
 check_rbl depends on several Perl modules:
 
+ * Data::Validate::Domain
+ * Data::Validate::IP
  * IO::Select
  * Monitoring::Plugin
  * Monitoring::Plugin::Getopt
