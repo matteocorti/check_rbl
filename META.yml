@@ -19,8 +19,9 @@ no_index:
     - inc
     - t
 requires:
-  Data::Validate::Domain: 0
+  Data::Validate::Domain: 0.12
   Data::Validate::IP: 0
+  English: 0
   IO::Select: 0
   Monitoring::Plugin: 0
   Monitoring::Plugin::Getopt: 0
