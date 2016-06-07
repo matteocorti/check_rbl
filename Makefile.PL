@@ -12,29 +12,51 @@ all_from          'check_rbl.pod';
 ##############################################################################
 # Specific dependencies
 
-include 'version';
+my %prereqs = (
+    'Data::Validate::Domain' => 0.12,
+    'Data::Validate::IP'     => 0,
+    'English'                => 0,
+    'Net::DNS'               => 0,
+    'Readonly'               => 0,
+    'IO::Select'             => 0,
+);
 
-requires 'Data::Validate::Domain'        => 0;
-requires 'Data::Validate::IP'            => 0;
-requires 'Monitoring::Plugin'            => 0;
-requires 'Monitoring::Plugin::Getopt'    => 0;
-requires 'Monitoring::Plugin::Threshold' => 0;
-requires 'Net::DNS'                      => 0;
-requires 'Readonly'                      => 0;
-requires 'IO::Select'                    => 0;
+if( eval { require Monitoring::Plugin } ) {
+    $prereqs{'Monitoring::Plugin'} = 0;
+}
+else {
+    $prereqs{'Nagios::Plugin'} = 0;
+}
+
+if( eval { require Monitoring::Plugin::Threshold } ) {
+    $prereqs{'Monitoring::Plugin::Threshold'} = 0;
+}
+else {
+    $prereqs{'Nagios::Plugin::Threshold'} = 0;
+}
+
+if( eval { require Monitoring::Plugin::Getopt } ) {
+    $prereqs{'Monitoring::Plugin::Getopt'} = 0;
+}
+else {
+    $prereqs{'Nagios::Plugin::Getopt'} = 0;
+}
 
 # Net::DNS 1.03 is broken
 my $ver = eval { require Net::DNS; $Net::DNS::VERSION };
 if (!$ver || $ver eq '1.03') {
     warn 'Net::DNS is broken please downgrade until fixed. See https://rt.cpan.org/Ticket/Display.html?id=108745';
-    requires 'Net::DNS' => '1.04';
+    $prereqs{'Nagios::Plugin::Getopt'} = '1.04';
 }
 
 install_script  'check_rbl';
 
+auto_install;
+
 tests 't/*.t';
 
 WriteMakefile(
+    PREREQ_PM            => \%prereqs,
     INSTALLSCRIPT        => '/usr/lib/nagios/plugins/contrib',
     INSTALLSITESCRIPT    => '/usr/lib/nagios/plugins/contrib',
     MAN1PODS             => { 'check_rbl.pod' =>'blib/man1/check_rbl.1', },

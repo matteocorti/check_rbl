@@ -1,6 +1,13 @@
 check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
 
-Note: some blacklister as Spamhaus ban DNS queries from public DNS resolvers as Google resulting in no host being listed. If you are experiencing problems with the plugin just try the DNS query with a tool as nslookup to check your DNS configuration.
+Note: some blacklister as Spamhaus ban DNS queries from public DNS
+resolvers as Google resulting in no host being listed. If you are
+experiencing problems with the plugin just try the DNS query with a
+tool as nslookup to check your DNS configuration.
+
+Known bugs and problems
+
+Needs Data::Validate::Domain 0.12 to handle fully qualified host names with an ending dot (e.g., "example.org.")
 
 Example:
 

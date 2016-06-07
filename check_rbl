@@ -22,16 +22,57 @@ use warnings;
 
 use 5.00800;
 
+our $VERSION = '1.3.8';
+
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
 use IO::Select;
-use Monitoring::Plugin;
-use Monitoring::Plugin::Getopt;
-use Monitoring::Plugin::Threshold;
 use Net::DNS;
 use Readonly;
+use English qw(-no_match_vars);
 
-our $VERSION = '1.3.7';
+my $plugin_module = load_module( 'Monitoring::Plugin', 'Nagios::Plugin' );
+my $plugin_threshold_module =
+  load_module( 'Monitoring::Plugin::Threshold', 'Nagios::Plugin::Threshold' );
+my $plugin_getopt_module =
+  load_module( 'Monitoring::Plugin::Getopt', 'Nagios::Plugin::Getopt' );
+
+# Check which version of the monitoring plugins is available
+
+sub load_module {
+
+    my @names = @_;
+    my $loaded_module;
+
+    for my $name (@names) {
+
+        my $file = $name;
+
+        # requires need either a bare word or a file name
+        $file =~ s{::}{/}gsxm;
+        $file .= '.pm';
+
+        eval {    ## no critic (ErrorHandling::RequireCheckingReturnValueOfEval)
+            require $file;
+            $name->import();
+        };
+        if ( !$EVAL_ERROR ) {
+            $loaded_module = $name;
+            last;
+        }
+    }
+
+    if ( !$loaded_module ) {
+        #<<<
+        print 'CHECK_RBL: plugin not found: ' . join( ', ', @names ) . "\n";  ## no critic (RequireCheckedSyscall)
+        #>>>
+
+        exit 2;
+    }
+
+    return $loaded_module;
+
+}
 
 Readonly our $DEFAULT_TIMEOUT       => 15;
 Readonly our $DEFAULT_RETRIES       => 4;
@@ -50,12 +91,6 @@ Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 ## no critic (ProhibitPackageVars)
 our ( @listed, @timeouts, $options, $plugin, $threshold, $timeouts_string, );
 
-# the script is declared as a package so that it can be unit tested
-# but it should not be used as a module
-if ( !caller ) {
-    run();
-}
-
 ##############################################################################
 # Usage     : verbose("some message string", $optional_verbosity_level);
 # Purpose   : write a message if the verbosity level is high enough
@@ -72,7 +107,7 @@ sub verbose {
     my $level   = shift;
 
     if ( !defined $message ) {
-        $plugin->nagios_exit( UNKNOWN,
+        $plugin->nagios_exit( $plugin_module->UNKNOWN,
             q{Internal error: not enough parameters for 'verbose'} );
     }
 
@@ -82,12 +117,19 @@ sub verbose {
 
     if ( $level < $options->verbose ) {
         if ( !print $message ) {
-            $plugin->nagios_exit( UNKNOWN, 'Error: cannot write to STDOUT' );
+            $plugin->nagios_exit( $plugin_module->UNKNOWN,
+                'Error: cannot write to STDOUT' );
         }
     }
 
     return;
 
+}
+
+# the script is declared as a package so that it can be unit tested
+# but it should not be used as a module
+if ( !caller ) {
+    run();
 }
 
 ##############################################################################
@@ -163,6 +205,7 @@ sub mdns {
                 $eof = 1;
                 last;
             }
+
             if ($debug) {
                 ## no critic (RequireCheckedSyscall)
                 print "NAME: $name\n";
@@ -315,13 +358,15 @@ sub validate {
             );
 
             if ( !$ip ) {
-                $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $hostname );
+                $plugin->nagios_exit( $plugin_module->UNKNOWN,
+                    'Cannot resolve ' . $hostname );
             }
 
         }
 
         if ( !$ip ) {
-            $plugin->nagios_exit( UNKNOWN, 'Cannot resolve ' . $options->host );
+            $plugin->nagios_exit( $plugin_module->UNKNOWN,
+                'Cannot resolve ' . $options->host );
         }
 
     }
@@ -343,14 +388,14 @@ sub run {
     ################################################################################
     # Initialization
 
-    $plugin = Monitoring::Plugin->new( shortname => 'CHECK_RBL' );
+    $plugin = $plugin_module->new( shortname => 'CHECK_RBL' );
 
     my $time = time;
 
     ########################
     # Command line arguments
 
-    $options = Monitoring::Plugin::Getopt->new(
+    $options = $plugin_getopt_module->new(
         usage   => 'Usage: %s [OPTIONS]',
         version => $VERSION,
         url     => 'https://trac.id.ethz.ch/projects/nagios_plugins',
@@ -424,7 +469,7 @@ sub run {
     # Sanity checks
 
     if ( $options->critical < $options->warning ) {
-        $plugin->nagios_exit( UNKNOWN,
+        $plugin->nagios_exit( $plugin_module->UNKNOWN,
             'critical has to be greater or equal warning' );
     }
 
@@ -439,7 +484,7 @@ sub run {
     # Set the limits
 
     # see https://nagios-plugins.org/doc/guidelines.html#THRESHOLDFORMAT
-    $threshold = Monitoring::Plugin::Threshold->set_thresholds(
+    $threshold = $plugin_threshold_module->set_thresholds(
         warning  => $options->warning - 1,
         critical => $options->critical - 1,
     );
