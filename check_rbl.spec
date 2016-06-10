@@ -17,7 +17,7 @@ Packager:  Matteo Corti <matteo.corti@id.ethz.ch>
 Group:     Applications/System
 BuildRoot: %{_tmppath}/%{packagename}-%{version}-%{release}-root-%(%{__id_u} -n)
 URL:       https://trac.id.ethz.ch/projects/nagios_plugins/wiki/check_rbl
-Source:    http://www.id.ethz.ch/people/allid_list/corti/%{sourcename}-%{version}.tar.gz
+Source:    https://github.com/matteocorti/check_rbl/releases/download/v%{version}/check_rbl-%{version}.tar.gz
 
 # Fedora build requirement (not needed for EPEL{4,5})
 BuildRequires: perl(ExtUtils::MakeMaker)
