@@ -92,6 +92,33 @@ Readonly our $DEFAULT_QUERY_TIMEOUT => 15;
 our ( @listed, @timeouts, $options, $plugin, $threshold, $timeouts_string, );
 
 ##############################################################################
+# Usage     : debug("some message string")
+# Purpose   : write a message if the debugging option was specified
+# Returns   : n/a
+# Arguments : message : message string
+# Throws    : n/a
+# Comments  : n/a
+# See also  : n/a
+sub debug {
+
+    # arguments
+    my $message = shift;
+
+    if ( !defined $message ) {
+        $plugin->nagios_exit( $plugin_module->UNKNOWN,
+            q{Internal error: not enough parameters for 'debug'} );
+    }
+
+    if ( $options && $options->debug() ) {
+        ## no critic (RequireCheckedSyscall)
+        print "[DBG] $message\n";
+    }
+
+    return;
+
+}
+
+##############################################################################
 # Usage     : verbose("some message string", $optional_verbosity_level);
 # Purpose   : write a message if the verbosity level is high enough
 # Returns   : n/a
@@ -164,7 +191,6 @@ sub init_dns_resolver {
 # If answer is found C<$callback> is called with arguments as: $name, $host.
 #
 # Author: Elan Ruusamae <glen@delfi.ee>, (c) 1999-2010
-## no critic (ProhibitExcessComplexity)
 sub mdns {
 
     my ( $data, $callback ) = @_;
@@ -174,7 +200,6 @@ sub mdns {
 
     # timeout per query (seconds)
     my $timeout = $options ? $options->get('query-timeout') : $DEFAULT_TIMEOUT;
-    my $debug = $options ? $options->debug() : 0;
     my $res = init_dns_resolver( $options ? $options->retry() : 0 );
 
     my $sel = IO::Select->new();
@@ -191,25 +216,15 @@ sub mdns {
 
         while ( !$eof && $sel->count() < $workers ) {
 
-            if ($debug) {
-                ## no critic (RequireCheckedSyscall)
-                print 'DEBUG: reading...';
-            }
             my $name = shift @addrs;
 
             if ( !defined $name ) {
-                if ($debug) {
-                    ## no critic (RequireCheckedSyscall)
-                    print "EOF.\n";
-                }
+                debug('reading...EOF.');
                 $eof = 1;
                 last;
             }
 
-            if ($debug) {
-                ## no critic (RequireCheckedSyscall)
-                print "NAME: $name\n";
-            }
+            debug("reading...$name");
 
             my $sock = $res->bgsend($name);
 
@@ -223,11 +238,7 @@ sub mdns {
                 # response gives different ip for ips with multiple hosts
                 $addrs{$sock} = $name;
                 $sel->add($sock);
-                if ($debug) {
-                    ## no critic (RequireCheckedSyscall)
-                    print "DEBUG: name = $name, outstanding = ", $sel->count(),
-                      "\n";
-                }
+                debug( "name = $name, outstanding = " . $sel->count() );
 
             }
 
@@ -240,10 +251,7 @@ sub mdns {
         my @ready;
         my $timed_out = 1;
 
-        if ($debug) {
-            ## no critic (RequireCheckedSyscall)
-            print "DEBUG: waiting for replies\n";
-        }
+        debug('waiting for replies');
 
         @ready = $sel->can_read($timeout);
 
@@ -251,16 +259,12 @@ sub mdns {
 
             $timed_out = 0;
 
-            if ($debug) {
-                ## no critic (RequireCheckedSyscall)
-                print 'DEBUG: replies received: ', scalar @ready, "\n";
-            }
+            debug( 'replies received: ' . scalar @ready );
 
             foreach my $sock (@ready) {
-                if ($debug) {
-                    ## no critic (RequireCheckedSyscall)
-                    print "DEBUG: handling a reply\n";
-                }
+
+                debug('handling a reply');
+
                 my $addr = $addrs{$sock};
                 delete $addrs{$sock};
                 $sel->remove($sock);
@@ -284,10 +288,9 @@ sub mdns {
                     }
                 }
                 else {
-                    if ($debug) {
-                        ## no critic (RequireCheckedSyscall)
-                        print 'DEBUG: no answer: ' . $res->errorstring() . "\n";
-                    }
+
+                    debug( 'no answer: ' . $res->errorstring() );
+
                 }
                 &{$callback}( $addr, $host );
             }
@@ -302,10 +305,9 @@ sub mdns {
         #----------------------------------------------------------------------
 
         if ($timed_out) {
-            if ($debug) {
-                ## no critic (RequireCheckedSyscall)
-                print "DEBUG: timeout: clearing the outstanding pool.\n";
-            }
+
+            debug('timeout: clearing the outstanding pool.');
+
             foreach my $sock ( $sel->handles() ) {
                 my $addr = $addrs{$sock};
                 delete $addrs{$sock};
@@ -316,10 +318,7 @@ sub mdns {
             }
         }
 
-        if ($debug) {
-            ## no critic (RequireCheckedSyscall)
-            print 'DEBUG: outstanding = ', $sel->count(), ", eof = $eof\n";
-        }
+        debug( 'outstanding = ' . $sel->count() . ", eof = $eof" );
 
         #----------------------------------------------------------------------
         # We're done if there are no outstanding queries and we've read EOF.
@@ -344,6 +343,8 @@ sub validate {
 
     my $hostname = shift;
     my $ip       = $hostname;
+
+    debug("validate($hostname, $ip)");
 
     if ( !is_ipv4($hostname) && !is_ipv6($hostname) ) {
 
