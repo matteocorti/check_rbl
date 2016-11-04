@@ -92,13 +92,12 @@ Nagios documentation
 
 No bugs have been reported.
 
-Please report any bugs or feature requests to matteo.corti@id.ethz.ch,
-or through the web interface at
-https://trac.id.ethz.ch/projects/nagios_plugins/newticket?component=check_rbl
+Please report any bugs or feature requests through the
+web interface at https://github.com/matteocorti/check_rbl/issues
 
 =head1 AUTHOR
 
-Matteo Corti <matteo.corti@id.ethz.ch>
+Matteo Corti <matteo@corti.li>
 
 =head1 LICENSE AND COPYRIGHT
 

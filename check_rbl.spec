@@ -13,10 +13,10 @@ Obsoletes: check_rbl
 Version:   %{version}
 Release:   %{release}%{?dist}
 License:   GPLv3+
-Packager:  Matteo Corti <matteo.corti@id.ethz.ch>
+Packager:  Matteo Corti <matteo@corti.li>
 Group:     Applications/System
 BuildRoot: %{_tmppath}/%{packagename}-%{version}-%{release}-root-%(%{__id_u} -n)
-URL:       https://trac.id.ethz.ch/projects/nagios_plugins/wiki/check_rbl
+URL:       https://github.com/matteocorti/check_rbl
 Source:    https://github.com/matteocorti/check_rbl/releases/download/v%{version}/check_rbl-%{version}.tar.gz
 
 # Fedora build requirement (not needed for EPEL{4,5})
