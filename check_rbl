@@ -272,12 +272,15 @@ sub mdns {
 
                 my $ans = $res->bgread($sock);
 
-		debug Dumper $ans;
-		
+                debug Dumper $ans;
+
                 my $host;
+
                 if ($ans) {
 
                     foreach my $rr ( $ans->answer ) {
+
+                        debug('Processing answer');
 
                         ## no critic(ProhibitDeepNests)
                         if ( !( $rr->type eq 'A' ) ) {
@@ -285,6 +288,8 @@ sub mdns {
                         }
 
                         $host = $rr->address;
+
+                        debug("host = $host");
 
                         # take just the first answer
                         last;
@@ -295,6 +300,18 @@ sub mdns {
                     debug( 'no answer: ' . $res->errorstring() );
 
                 }
+
+                if ( defined $host ) {
+
+                    debug("callback( $addr, $host )");
+
+                }
+                else {
+
+                    debug("callback( $addr, <undefined> )");
+
+                }
+
                 &{$callback}( $addr, $host );
             }
 
@@ -511,6 +528,17 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
         \@addrs,
         sub {
             my ( $addr, $host ) = @_;
+
+            if ( defined $host ) {
+
+                debug("callback( $addr, $host )");
+
+            }
+            else {
+
+                debug("callback( $addr, <undefined> )");
+
+            }
 
             # extract RBL we checked
             $addr =~ s/^(?:\d+[.]){4}//mxs;
