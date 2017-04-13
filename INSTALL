@@ -67,3 +67,7 @@ Generate the man page with pod2man
 Please report any bugs or feature requests through the
 web interface at https://github.com/matteocorti/check_rbl/issues
 
+Dependencies on Debian
+======================
+
+apt-get install libdata-validate-ip-perl libdata-validate-domain-perl
