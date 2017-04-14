@@ -17,6 +17,7 @@ my %prereqs = (
     'Data::Validate::IP'     => 0,
     'English'                => 0,
     'Net::DNS'               => 0,
+    'Net::IP '               => 0,
     'Readonly'               => 0,
     'IO::Select'             => 0,
 );
