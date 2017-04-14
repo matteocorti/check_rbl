@@ -12,6 +12,7 @@ check_rbl depends on several Perl modules:
  * Monitoring::Plugin::Getopt
  * Monitoring::Plugin::Threshold
  * Net::DNS
+ * Net::IP
  * Readonly
 
 Perl modules can be found on the "Comprehensive Perl Archive Network"
