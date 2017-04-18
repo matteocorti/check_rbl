@@ -5,9 +5,9 @@ use 5.00800;
 use strict;
 use warnings;
 
-use Test::More tests => 24;
+use Test::More tests => 33;
 
-our $VERSION = '1.3.8';
+our $VERSION = '1.4.0';
 
 my $plugin_name;
 if ( eval { require Monitoring::Plugin } ) {
@@ -45,3 +45,17 @@ can_ok( 'Net::DNS::Resolver', 'new' );
 can_ok( 'Net::DNS::Resolver', 'can' );
 can_ok( 'Net::DNS::Resolver', 'bgsend' );
 can_ok( 'Net::DNS::Resolver', 'bgread' );
+
+use_ok('English');
+use_ok('Readonly');
+
+use_ok('Net::IP');
+can_ok( 'Net::IP', 'ip_expand_address' );
+
+use_ok('Data::Validate::Domain');
+can_ok( 'Data::Validate::Domain', 'is_hostname' );
+
+use_ok('Data::Validate::IP');
+can_ok( 'Data::Validate::IP', 'is_ipv4' );
+can_ok( 'Data::Validate::IP', 'is_ipv6' );
+

@@ -22,7 +22,7 @@ use warnings;
 
 use 5.00800;
 
-our $VERSION = '1.3.8';
+our $VERSION = '1.4.0';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -390,8 +390,8 @@ sub validate {
 
     }
 
-    if(is_ipv6($ip)){
-	    $ip = Net::IP::ip_expand_address($ip,6);
+    if ( is_ipv6($ip) ) {
+        $ip = Net::IP::ip_expand_address( $ip, 6 );
     }
 
     return $ip;
@@ -521,15 +521,17 @@ sub run {
     # build address lists
     my @addrs;
     foreach my $server (@servers) {
-	my $local_ip = $ip;
-	if(is_ipv6($local_ip)) {	
-		$local_ip = reverse $local_ip;
-		$local_ip =~ s/://g;
-		$local_ip =~ s/(.)/$1\./g;
-       		$local_ip = $local_ip.$server;
-	} else {
-       		$local_ip  =~ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
-	}
+        my $local_ip = $ip;
+        if ( is_ipv6($local_ip) ) {
+            $local_ip = reverse $local_ip;
+            $local_ip =~ s/://gmxs;
+            $local_ip =~ s/(.)/$1\./gmxs;
+            $local_ip = $local_ip . $server;
+        }
+        else {
+            $local_ip =~
+s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
+        }
         push @addrs, $local_ip;
     }
 
@@ -550,7 +552,7 @@ sub run {
             }
 
             # extract RBL we checked
-            $addr =~ s/^(?:[a-f0-9][.]){32}//mxs;
+            $addr =~ s/^(?:[a-f\d][.]){32}//mxs;
             $addr =~ s/^(?:\d+[.]){4}//mxs;
             if ( defined $host ) {
                 if ( $host eq q{} ) {

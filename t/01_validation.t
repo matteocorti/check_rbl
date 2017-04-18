@@ -8,7 +8,7 @@ use warnings;
 use File::Spec;
 use Test::More tests => 3;
 
-our $VERSION = '1.3.8';
+our $VERSION = '1.4.0';
 
 my $check_updates = File::Spec->catfile(qw(blib script check_rbl));
 
