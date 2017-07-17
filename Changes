@@ -1,3 +1,8 @@
+2017-07-17  Matteo Corti  <matteo@corti.li>
+
+	* Version 1.4.1
+	* check_rbl: Perl 5.26 support ('.' missing from @INC)
+
 2017-04-18  Matteo Corti  <matteo@corti.li>
 
 	* Version 1.4.0

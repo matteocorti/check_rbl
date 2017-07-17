@@ -1,4 +1,5 @@
 # Load the Module::Install bundled in ./inc/
+use lib '.'; # added since from Perl 5.26 '.' is no more in @INC
 use inc::Module::Install;
 
 ##############################################################################
