@@ -1,4 +1,21 @@
-perl ./check_rbl -H $1 \
+#!/bin/sh
+
+# Our one non-success exit code.
+EXIT_BAD_ARGS=1
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <ip address>"
+    echo ''
+    echo '  <ip address> the IP to check against a bunch of blacklists.'
+    echo ''
+    exit $EXIT_BAD_ARGS
+else
+    IP_ADDR="${1}"
+fi
+
+
+
+perl ./check_rbl -H $IP_ADDR \
     -t 60 \
     -c 1 \
     -w 1 \
