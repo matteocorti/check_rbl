@@ -3,6 +3,7 @@ Elan Ruusamäe <glen@delfi.ee> (improved parallel support and several fixes)
 Victor V Kudlak <info@kentos.ru> (parallel support)
 Jan Kantert <jan.kantert@researchgate.net> for the whitelisting support
 Nick Nicholas <opoudjis@gmail.com> for IPv6 support
+Michael Orlitzky <michael@orlitzky.com> for the test.sh usage patch 
 
 Please report any bugs or feature requests through the
 web interface at https://github.com/matteocorti/check_rbl/issues
