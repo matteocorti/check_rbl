@@ -7,8 +7,6 @@ use inc::Module::Install;
 
 name              'check_rbl';
 version_from      'check_rbl';
-perl_version_from 'check_rbl';
-all_from          'check_rbl.pod';
 
 ##############################################################################
 # Specific dependencies

@@ -10,9 +10,9 @@ use Test::More tests => 3;
 
 our $VERSION = '1.4.0';
 
-my $check_updates = File::Spec->catfile(qw(blib script check_rbl));
+my $check_rbl = File::Spec->catfile(qw(blib script check_rbl));
 
-require_ok($check_updates);
+require_ok($check_rbl);
 
 is( validate('127.0.0.1'), '127.0.0.1', 'numeric localhost' );
 is( validate('localhost'), '127.0.0.1', 'localhost' );
