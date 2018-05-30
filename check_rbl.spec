@@ -1,4 +1,4 @@
-%define version          1.4.2
+%define version          1.4.3
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -54,6 +54,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Tue May 30 2018 Matteo Corti <matteo@corti.li> - 1.4.3-0
+- Update to 1.4.3
+
 * Sun May 27 2018 Matteo Corti <matteo@corti.li> - 1.4.2-0
 - Update to 1.4.2
 

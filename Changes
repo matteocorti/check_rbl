@@ -1,3 +1,8 @@
+2018-05-30  Matteo Corti  <matteo@corti.li>
+
+	* Version 1.4.3
+	* check_rbl.ini: Removed bl.spamcannibal.org
+
 2018-05-27  Matteo Corti  <matteo@corti.li>
 
 	* Version 1.4.2
