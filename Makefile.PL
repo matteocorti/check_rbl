@@ -46,7 +46,7 @@ else {
 my $ver = eval { require Net::DNS; $Net::DNS::VERSION };
 if (!$ver || $ver eq '1.03') {
     warn 'Net::DNS is broken please downgrade until fixed. See https://rt.cpan.org/Ticket/Display.html?id=108745';
-    $prereqs{'Nagios::Plugin::Getopt'} = '1.04';
+    $prereqs{'Net::DNS'} = '1.04';
 }
 
 install_script  'check_rbl';
