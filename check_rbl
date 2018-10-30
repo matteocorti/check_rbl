@@ -383,7 +383,7 @@ sub validate {
 
         if ( !$ip ) {
             $plugin->nagios_exit( $plugin_module->UNKNOWN,
-                'Cannot resolve ' . $options->host );
+                'Cannot resolve ' . $hostname );
         }
 
     }
