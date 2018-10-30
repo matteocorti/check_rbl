@@ -10,6 +10,6 @@ perl:
   - '5.12'
   - '5.10'
 before_install:
-  - cpanm --installdeps --notest Monitoring::Plugin Monitoring::Plugin::Threshold Monitoring::Plugin::Getopt
+  - cpanm --installdeps --notest Monitoring::Plugin Monitoring::Plugin::Threshold Monitoring::Plugin::Getopt Nagios::Plugin Nagios::Plugin::Threshold Nagios::Plugin::Getopt
   - cpanm --installdeps --notest .
 
