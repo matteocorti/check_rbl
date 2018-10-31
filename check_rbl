@@ -362,10 +362,17 @@ sub validate {
 
     debug("validate($hostname, $ip)");
 
+    print STDERR "validate($hostname, $ip)\n";
+
     if ( !is_ipv4($hostname) && !is_ipv6($hostname) ) {
 
+	print STDERR "is_hostname('12uu') " . is_hostname('12uu') . "\n";
+	print STDERR "is_hostname($hostname) " . is_hostname($hostname) . "\n";
+	
         if ( is_hostname($hostname) ) {
 
+	    print STDERR "is_hostname\n";
+	    
             mdns(
                 [$hostname],
                 sub {
@@ -373,6 +380,8 @@ sub validate {
                     $ip = $host;
                 }
             );
+
+	    print STDERR "mdsn: ip = $ip\n";
 
             if ( !$ip ) {
                 $plugin->nagios_exit( $plugin_module->UNKNOWN,
