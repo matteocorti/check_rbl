@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use File::Spec;
-use Test::More tests => 3;
+use Test::More tests => 1;
 
 our $VERSION = '1.4.0';
 
@@ -16,8 +16,5 @@ require_ok($check_rbl);
 
 my $plugin_module = load_module( 'Monitoring::Plugin', 'Nagios::Plugin' );
 our $plugin = $plugin_module->new( shortname => 'CHECK_RBL' );
-
-is( validate('127.0.0.1'), '127.0.0.1', 'numeric localhost' );
-is( validate('localhost'), '127.0.0.1', 'localhost' );
 
 1;
