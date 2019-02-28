@@ -28,6 +28,7 @@ check_rbl [--help] [--verbose] [--version] [--timeout t]
  -?, --usage                                Print usage information
  -h, --help                                 Print detailed help screen
  -V, --version                              Print version information
+ -a, --append=STRING                        Append string at the end of the plugin output
  --extra-opts=[<section>[@<config_file>]]   Section and/or config_file from which to load extra options (may repeat)
  -c, --critical=INTEGER                     Number of blacklisting servers for a critical warning
  -w, --warning=INTEGER                      Number of blacklisting servers for a warning
