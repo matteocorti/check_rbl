@@ -20,7 +20,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.4.4';
+our $VERSION = '1.4.5';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
