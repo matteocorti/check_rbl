@@ -453,8 +453,14 @@ sub run {
 
     $options->arg(
         spec     => 'host|H=s',
-        help     => 'SMTP server to check',
-        required => 1,
+        help     => 'SMTP server to check. If hostname is given, it will be resolved to its IP first.',
+        required => 0,
+    );
+
+    $options->arg(
+        spec     => 'url|U=s',
+        help     => 'URL to check. Will be ignored if host is set.',
+        required => 0,
     );
 
     $options->arg(
@@ -502,7 +508,34 @@ sub run {
             'critical has to be greater or equal warning' );
     }
 
-    my $ip = validate( $options->host );
+    if ( $options->host eq "" and $options->url eq "" ) {
+        $plugin->nagios_exit( $plugin_module->UNKNOWN,
+            'host or url has to be set' );
+    }
+
+    my $check_prefix;
+    if ( $options->host ne "" ) {
+        # if checking for host
+        # validate ip and resolve hostname if applicable
+        my $ip = validate( $options->host );
+
+        # reverse ip order
+        my $local_ip = $ip;
+        if ( is_ipv6($local_ip) ) {
+            $local_ip = reverse $local_ip;
+            $local_ip =~ s/://gmxs;
+            $local_ip =~ s/(.)/$1\./gmxs;
+        }
+        else {
+            $local_ip =~
+s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
+        }
+
+        $check_prefix = $local_ip;
+    } else {
+        # if checking for url, just set the prefix to the url name
+        $check_prefix = $options->url;
+    }
 
     my @servers = @{ $options->server };
 
@@ -522,22 +555,12 @@ sub run {
 
     my $nservers = scalar @servers;
 
-    verbose 'Checking ' . $options->host . " ($ip) on $nservers server(s)\n";
+    verbose 'Checking ' . $check_prefix . " on $nservers server(s)\n";
 
     # build address lists
     my @addrs;
     foreach my $server (@servers) {
-        my $local_ip = $ip;
-        if ( is_ipv6($local_ip) ) {
-            $local_ip = reverse $local_ip;
-            $local_ip =~ s/://gmxs;
-            $local_ip =~ s/(.)/$1\./gmxs;
-            $local_ip = $local_ip . $server;
-        }
-        else {
-            $local_ip =~
-s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
-        }
+        my $local_ip = $check_prefix.".".$server;
         push @addrs, $local_ip;
     }
 
@@ -567,7 +590,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1.$server/mxs;
                 else {
                     verbose "listed in $addr as $host\n";
                     if ( !$options->get('whitelistings') ) {
-                        push @listed, $addr;
+                        push @listed, $addr." (".$host.")";
                     }
                 }
             }
