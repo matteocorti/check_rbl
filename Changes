@@ -1,3 +1,7 @@
+2019-06-03  Matteo Corti  <corti@id-vpn-025.ethz.ch>
+
+	* check_rbl: applied patch with the --url option
+
 2019-06-02  Matteo Corti  <matteo@corti.li>
 
         * Version 1.4.5
@@ -7,7 +11,7 @@
 
         * Version 1.4.4
 	* check_rbl: applied --append patch
-	
+
 2018-05-30  Matteo Corti  <matteo@corti.li>
 
 	* Version 1.4.3
