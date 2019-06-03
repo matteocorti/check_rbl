@@ -508,13 +508,13 @@ sub run {
             'critical has to be greater or equal warning' );
     }
 
-    if ( $options->host eq "" and $options->url eq "" ) {
+    if ( $options->host eq q{} and $options->url eq q{} ) {
         $plugin->nagios_exit( $plugin_module->UNKNOWN,
             'host or url has to be set' );
     }
 
     my $check_prefix;
-    if ( $options->host ne "" ) {
+    if ( $options->host ne q{} ) {
         # if checking for host
         # validate ip and resolve hostname if applicable
         my $ip = validate( $options->host );
@@ -560,7 +560,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
     # build address lists
     my @addrs;
     foreach my $server (@servers) {
-        my $local_ip = $check_prefix.".".$server;
+        my $local_ip = $check_prefix.q{.}.$server;
         push @addrs, $local_ip;
     }
 
@@ -590,7 +590,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
                 else {
                     verbose "listed in $addr as $host\n";
                     if ( !$options->get('whitelistings') ) {
-                        push @listed, $addr." (".$host.")";
+                        push @listed, $addr.' ('.$host.')';
                     }
                 }
             }
