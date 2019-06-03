@@ -200,7 +200,7 @@ sub mdns {
 
     # timeout per query (seconds)
     my $timeout = $options ? $options->get('query-timeout') : $DEFAULT_TIMEOUT;
-    my $res = init_dns_resolver( $options ? $options->retry() : 0 );
+    my $res     = init_dns_resolver( $options ? $options->retry() : 0 );
 
     my $sel = IO::Select->new();
     my $eof = 0;
@@ -452,8 +452,9 @@ sub run {
     );
 
     $options->arg(
-        spec     => 'host|H=s',
-        help     => 'SMTP server to check. If hostname is given, it will be resolved to its IP first.',
+        spec => 'host|H=s',
+        help =>
+'SMTP server to check. If hostname is given, it will be resolved to its IP first.',
         required => 0,
     );
 
@@ -508,8 +509,9 @@ sub run {
             'critical has to be greater or equal warning' );
     }
 
-    if ( (!defined $options->host or $options->host eq q{}) and
-         (!defined $options->url or $options->url eq q{} )) {
+    if (   ( !defined $options->host || $options->host eq q{} )
+        && ( !defined $options->url || $options->url eq q{} ) )
+    {
         $plugin->nagios_exit( $plugin_module->UNKNOWN,
             'host or url has to be set' );
     }
@@ -517,6 +519,7 @@ sub run {
     my $check_prefix;
     my $check_object;
     if ( defined $options->host and $options->host ne q{} ) {
+
         # if checking for host
         # validate ip and resolve hostname if applicable
         my $ip = validate( $options->host );
@@ -535,7 +538,8 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
 
         $check_prefix = $local_ip;
         $check_object = $options->host;
-    } else {
+    }
+    else {
         # if checking for url, just set the prefix to the url name
         $check_prefix = $options->url;
         $check_object = $options->url;
@@ -564,7 +568,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
     # build address lists
     my @addrs;
     foreach my $server (@servers) {
-        my $local_ip = $check_prefix.q{.}.$server;
+        my $local_ip = $check_prefix . q{.} . $server;
         push @addrs, $local_ip;
     }
 
@@ -594,7 +598,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
                 else {
                     verbose "listed in $addr as $host\n";
                     if ( !$options->get('whitelistings') ) {
-                        push @listed, $addr.' ('.$host.')';
+                        push @listed, $addr . ' (' . $host . ')';
                     }
                 }
             }
