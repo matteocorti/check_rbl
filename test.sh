@@ -13,9 +13,14 @@ else
     IP_ADDR="${1}"
 fi
 
+# Allow symlinks if realpath is installed on the system
+if ( command -v realpath 2>&1 >/dev/null ); then
+    absolute_dir="$( dirname "$( realpath "$0" )" )"
+else
+    absolute_dir="." # Expect the perlscript to be in same directory
+fi
 
-
-perl ./check_rbl -H $IP_ADDR \
+perl ${absolute_dir}/check_rbl -H $IP_ADDR \
     -t 60 \
     -c 1 \
     -w 1 \
