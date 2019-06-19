@@ -15,7 +15,7 @@ fi
 
 
 
-perl ./check_rbl -H $IP_ADDR \
+perl ./check_rbl -H "$IP_ADDR" \
     -t 60 \
     -c 1 \
     -w 1 \

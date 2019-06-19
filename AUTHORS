@@ -7,6 +7,7 @@ Michael Orlitzky <michael@orlitzky.com> for the test.sh usage patch
 Celevra https://github.com/celevra for the Debian/Ubuntu documentation update
 Claudio Kuenzler https://github.com/Napsty for the append patch
 Oliver Rahner https://github.com/oliverrahner for the --url patch
+Nikolas Obser https://github.com/nikolasobser for the symlink patch
 
 Please report any bugs or feature requests through the
 web interface at https://github.com/matteocorti/check_rbl/issues
