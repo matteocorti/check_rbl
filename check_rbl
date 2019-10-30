@@ -9,9 +9,9 @@ package main;
 #
 # See  the INSTALL file for installation instructions
 #
-# Copyright (c) 2014, Matteo Corti <matteo@corti.li>
-# Copyright (c) 2007, ETH Zurich.
-# Copyright (c) 2010, Elan Ruusamae <glen@delfi.ee>.
+# Copyright (c) 2009-2019 Matteo Corti <matteo@corti.li>
+# Copyright (c) 2009 ETH Zurich.
+# Copyright (c) 2010 Elan Ruusamae <glen@delfi.ee>.
 #
 # This module is free software; you can redistribute it and/or modify it
 # under the terms of GNU general public license (gpl) version 3.
@@ -191,6 +191,8 @@ sub init_dns_resolver {
 # If answer is found C<$callback> is called with arguments as: $name, $host.
 #
 # Author: Elan Ruusamae <glen@delfi.ee>, (c) 1999-2010
+
+## no critic (ProhibitExcessComplexity)
 sub mdns {
 
     my ( $data, $callback ) = @_;
@@ -200,7 +202,7 @@ sub mdns {
 
     # timeout per query (seconds)
     my $timeout = $options ? $options->get('query-timeout') : $DEFAULT_TIMEOUT;
-    my $res     = init_dns_resolver( $options ? $options->retry() : 0 );
+    my $res = init_dns_resolver( $options ? $options->retry() : 0 );
 
     my $sel = IO::Select->new();
     my $eof = 0;
@@ -390,6 +392,7 @@ sub validate {
     }
 
     if ( is_ipv6($ip) ) {
+        ## no critic (ProhibitMagicNumbers)
         $ip = Net::IP::ip_expand_address( $ip, 6 );
     }
 
@@ -405,6 +408,8 @@ sub validate {
 # Throws    : n/a
 # Comments  : n/a
 # See also  : n/a
+
+## no critic (ProhibitExcessComplexity)
 sub run {
 
     ################################################################################
