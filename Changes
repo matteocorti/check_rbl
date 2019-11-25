@@ -1,3 +1,8 @@
+2019-11-25  Matteo Corti  <matteo@corti.li>
+
+    * Version 1.5.1
+    * removing rbl.megarbl.net from the documentation and default configuration
+
 2019-06-03  Matteo Corti  <matteo@corti.li>
 
     * check_rbl: applied patch with the --url option
