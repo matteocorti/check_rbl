@@ -1,3 +1,4 @@
+2019-12-03: 1.5.2 - removed rbl.suresupport.com from the documentation and default configuration
 2019-11-25: 1.5.1 - removed megarbl.net from the documentation and default configuration
 2019-06-03: 1.5.0 - added the --url option
 2019-06-02: 1.4.5 - removing spamcannibal.org from the documentation and default configuration (fixed)
