@@ -12,35 +12,17 @@ version_from      'check_rbl';
 # Specific dependencies
 
 my %prereqs = (
-    'Data::Validate::Domain' => 0.12,
-    'Data::Validate::IP'     => 0,
-    'English'                => 0,
-    'Net::DNS'               => 0,
-    'Net::IP'                => 0,
-    'Readonly'               => 0,
-    'IO::Select'             => 0,
+    'Data::Validate::Domain'        => 0.12,
+    'Data::Validate::IP'            => 0,
+    'English'                       => 0,
+    'Net::DNS'                      => 0,
+    'Net::IP'                       => 0,
+    'Readonly'                      => 0,
+    'IO::Select'                    => 0,
+    'Monitoring::Plugin'            => 0,
+    'Monitoring::Plugin::Threshold' => 0,
+    'Monitoring::Plugin::Getopt'    => 0,
 );
-
-if( eval { require Monitoring::Plugin } ) {
-    $prereqs{'Monitoring::Plugin'} = 0;
-}
-else {
-    $prereqs{'Nagios::Plugin'} = 0;
-}
-
-if( eval { require Monitoring::Plugin::Threshold } ) {
-    $prereqs{'Monitoring::Plugin::Threshold'} = 0;
-}
-else {
-    $prereqs{'Nagios::Plugin::Threshold'} = 0;
-}
-
-if( eval { require Monitoring::Plugin::Getopt } ) {
-    $prereqs{'Monitoring::Plugin::Getopt'} = 0;
-}
-else {
-    $prereqs{'Nagios::Plugin::Getopt'} = 0;
-}
 
 # Net::DNS 1.03 is broken
 my $ver = eval { require Net::DNS; $Net::DNS::VERSION };
