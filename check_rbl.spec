@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 %define version          1.5.1
+=======
+%define version          1.5.2
+>>>>>>> 79360d4e09cddbe47b90bc86ed8fa23534b3aa53
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -54,8 +58,11 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
-* Tue Dec 24 2019 Matteo Corti <matteo@corti.li> - 1.5.1-0
-- Update to 1.5.1
+* Tue Dec 24 2019 Matteo Corti <matteo@corti.li> - 1.5.3-0
+- Update to 1.5.3
+
+* Tue Dec 03 2019 Matteo Corti <matteo@corti.li> - 1.5.2-0
+- Update to 1.5.2
 
 * Mon Jun 03 2019 Matteo Corti <matteo@corti.li> - 1.5.0-0
 - Update to 1.5.0
