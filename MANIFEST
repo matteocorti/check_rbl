@@ -24,7 +24,7 @@ META.yml
 MYMETA.json
 MYMETA.yml
 NEWS
-README
+README.md
 t/00_modules.t
 t/01_validation.t
 test.sh
