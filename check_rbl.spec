@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-%define version          1.5.1
-=======
-%define version          1.5.2
->>>>>>> 79360d4e09cddbe47b90bc86ed8fa23534b3aa53
+%define version          1.5.3
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
