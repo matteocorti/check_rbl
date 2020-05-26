@@ -202,7 +202,7 @@ sub mdns {
 
     # timeout per query (seconds)
     my $timeout = $options ? $options->get('query-timeout') : $DEFAULT_TIMEOUT;
-    my $res = init_dns_resolver( $options ? $options->retry() : 0 );
+    my $res     = init_dns_resolver( $options ? $options->retry() : 0 );
 
     my $sel = IO::Select->new();
     my $eof = 0;
