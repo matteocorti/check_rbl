@@ -11,3 +11,4 @@ Thanks:
 * Many thanks to Claudio Kuenzler https://github.com/Napsty for the append patch and several improvements
 * Many thanks to Oliver Rahner https://github.com/oliverrahner for the --url patch
 * Many thanks to Nikolas Obser https://github.com/nikolasobser for the symlink patch
+* Many thanks to waja (https://github.com/waja) for the dnsbl.inps.de patch

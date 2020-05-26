@@ -1,3 +1,4 @@
+2020-05-26: 1.5.4 - removed dnsbl.inps.de from the documentation and default configuration
 2019-12-24: 1.5.3 - fixes in the RPM spec file
 2019-12-03: 1.5.2 - removed rbl.suresupport.com from the documentation and default configuration
 2019-11-25: 1.5.1 - removed megarbl.net from the documentation and default configuration
