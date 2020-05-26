@@ -7,31 +7,23 @@ use warnings;
 
 use Test::More tests => 33;
 
-our $VERSION = '1.4.0';
+our $VERSION = '1.5.4';
 
-my $plugin_name;
-if ( eval { require Monitoring::Plugin } ) {
-    $plugin_name = 'Monitoring::Plugin';
-}
-else {
-    $plugin_name = 'Nagios::Plugin';
-}
+use_ok('Monitoring::Plugin');
+can_ok( 'Monitoring::Plugin', 'new' );
+can_ok( 'Monitoring::Plugin', 'nagios_exit' );
+can_ok( 'Monitoring::Plugin', 'add_perfdata' );
+can_ok( 'Monitoring::Plugin', 'perfdata' );
 
-use_ok($plugin_name);
-can_ok( $plugin_name, 'new' );
-can_ok( $plugin_name, 'nagios_exit' );
-can_ok( $plugin_name, 'add_perfdata' );
-can_ok( $plugin_name, 'perfdata' );
+use_ok( 'Monitoring::Plugin' . '::Getopt' );
+can_ok( 'Monitoring::Plugin' . '::Getopt', 'new' );
+can_ok( 'Monitoring::Plugin' . '::Getopt', 'arg' );
+can_ok( 'Monitoring::Plugin' . '::Getopt', 'getopts' );
+can_ok( 'Monitoring::Plugin' . '::Getopt', 'get' );
 
-use_ok( $plugin_name . '::Getopt' );
-can_ok( $plugin_name . '::Getopt', 'new' );
-can_ok( $plugin_name . '::Getopt', 'arg' );
-can_ok( $plugin_name . '::Getopt', 'getopts' );
-can_ok( $plugin_name . '::Getopt', 'get' );
-
-use_ok( $plugin_name . '::Threshold' );
-can_ok( $plugin_name . '::Threshold', 'new' );
-can_ok( $plugin_name . '::Threshold', 'set_thresholds' );
+use_ok( 'Monitoring::Plugin' . '::Threshold' );
+can_ok( 'Monitoring::Plugin' . '::Threshold', 'new' );
+can_ok( 'Monitoring::Plugin' . '::Threshold', 'set_thresholds' );
 
 use_ok('IO::Select');
 can_ok( 'IO::Select', 'new' );

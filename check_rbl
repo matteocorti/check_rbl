@@ -30,48 +30,9 @@ use Net::IP qw(ip_expand_address);
 use Readonly;
 use English qw(-no_match_vars);
 
-my $plugin_module = load_module( 'Monitoring::Plugin', 'Nagios::Plugin' );
-my $plugin_threshold_module =
-  load_module( 'Monitoring::Plugin::Threshold', 'Nagios::Plugin::Threshold' );
-my $plugin_getopt_module =
-  load_module( 'Monitoring::Plugin::Getopt', 'Nagios::Plugin::Getopt' );
-
-# Check which version of the monitoring plugins is available
-
-sub load_module {
-
-    my @names = @_;
-    my $loaded_module;
-
-    for my $name (@names) {
-
-        my $file = $name;
-
-        # requires need either a bare word or a file name
-        $file =~ s{::}{/}gsxm;
-        $file .= '.pm';
-
-        eval {    ## no critic (ErrorHandling::RequireCheckingReturnValueOfEval)
-            require $file;
-            $name->import();
-        };
-        if ( !$EVAL_ERROR ) {
-            $loaded_module = $name;
-            last;
-        }
-    }
-
-    if ( !$loaded_module ) {
-        #<<<
-        print 'CHECK_RBL: plugin not found: ' . join( ', ', @names ) . "\n";  ## no critic (RequireCheckedSyscall)
-        #>>>
-
-        exit 2;
-    }
-
-    return $loaded_module;
-
-}
+use Monitoring::Plugin;
+use Monitoring::Plugin::Threshold;
+use Monitoring::Plugin::Getopt;
 
 Readonly our $DEFAULT_TIMEOUT       => 15;
 Readonly our $DEFAULT_RETRIES       => 4;
@@ -105,7 +66,7 @@ sub debug {
     my $message = shift;
 
     if ( !defined $message ) {
-        $plugin->nagios_exit( $plugin_module->UNKNOWN,
+        $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
             q{Internal error: not enough parameters for 'debug'} );
     }
 
@@ -134,7 +95,7 @@ sub verbose {
     my $level   = shift;
 
     if ( !defined $message ) {
-        $plugin->nagios_exit( $plugin_module->UNKNOWN,
+        $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
             q{Internal error: not enough parameters for 'verbose'} );
     }
 
@@ -144,7 +105,7 @@ sub verbose {
 
     if ( $level < $options->verbose ) {
         if ( !print $message ) {
-            $plugin->nagios_exit( $plugin_module->UNKNOWN,
+            $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
                 'Error: cannot write to STDOUT' );
         }
     }
@@ -378,14 +339,16 @@ sub validate {
             );
 
             if ( !$ip ) {
-                $plugin->nagios_exit( $plugin_module->UNKNOWN,
-                    'Cannot resolve ' . $hostname );
+                $plugin->nagios_exit(
+                    Monitoring::Plugin->UNKNOWN,
+                    'Cannot resolve ' . $hostname
+                );
             }
 
         }
 
         if ( !$ip ) {
-            $plugin->nagios_exit( $plugin_module->UNKNOWN,
+            $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
                 'Cannot resolve ' . $hostname );
         }
 
@@ -415,14 +378,14 @@ sub run {
     ################################################################################
     # Initialization
 
-    $plugin = $plugin_module->new( shortname => 'CHECK_RBL' );
+    $plugin = Monitoring::Plugin->new( shortname => 'CHECK_RBL' );
 
     my $time = time;
 
     ########################
     # Command line arguments
 
-    $options = $plugin_getopt_module->new(
+    $options = Monitoring::Plugin::Getopt->new(
         usage   => 'Usage: %s [OPTIONS]',
         version => $VERSION,
         url     => 'http://matteocorti.github.io/check_rbl/',
@@ -510,14 +473,14 @@ sub run {
     # Sanity checks
 
     if ( $options->critical < $options->warning ) {
-        $plugin->nagios_exit( $plugin_module->UNKNOWN,
+        $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
             'critical has to be greater or equal warning' );
     }
 
     if (   ( !defined $options->host || $options->host eq q{} )
         && ( !defined $options->url || $options->url eq q{} ) )
     {
-        $plugin->nagios_exit( $plugin_module->UNKNOWN,
+        $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
             'host or url has to be set' );
     }
 
@@ -559,7 +522,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
     # Set the limits
 
     # see https://nagios-plugins.org/doc/guidelines.html#THRESHOLDFORMAT
-    $threshold = $plugin_threshold_module->set_thresholds(
+    $threshold = Monitoring::Plugin::Threshold->set_thresholds(
         warning  => $options->warning - 1,
         critical => $options->critical - 1,
     );

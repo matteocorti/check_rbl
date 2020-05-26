@@ -14,8 +14,4 @@ my $check_rbl = File::Spec->catfile(qw(blib script check_rbl));
 
 require_ok($check_rbl);
 
-my $plugin_module = load_module( 'Monitoring::Plugin', 'Nagios::Plugin' );
-## no critic (Variables::ProhibitPackageVars)
-our $plugin = $plugin_module->new( shortname => 'CHECK_RBL' );
-
 1;
