@@ -1,3 +1,7 @@
+2020-11-30  Matteo Corti  <matteo@corti.li>
+
+    * check_rbl: Removes unnecessary dot in IPv6 addresses
+
 2020-05-26  Matteo Corti  <matteo@corti.li>
 
     * check_rbl: Removed old Nagios CPAN modules

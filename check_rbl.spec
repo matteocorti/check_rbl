@@ -1,4 +1,4 @@
-%define version          1.5.4
+%define version          1.5.6
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -54,6 +54,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Mon Nov 30 2020 Matteo Corti <matteo@corti.li> - 1.5.6-0
+- Update to 1.5.6
+
 * Tue May 26 2020 Matteo Corti <matteo@corti.li> - 1.5.4-0
 - Update to 1.5.4
 
