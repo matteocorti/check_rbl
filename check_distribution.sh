@@ -22,7 +22,7 @@ grep --line-number '[[:blank:]]$' ${FILES}
 echo
 
 YEAR=$( date +"%Y" )
-echo "Copyright"
+echo "Copyright (${YEAR})"
 echo "========="
 echo
 echo '### README.md'

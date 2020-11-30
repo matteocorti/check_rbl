@@ -9,7 +9,7 @@ package main;
 #
 # See  the INSTALL file for installation instructions
 #
-# Copyright (c) 2009-2019 Matteo Corti <matteo@corti.li>
+# Copyright (c) 2009-2020 Matteo Corti <matteo@corti.li>
 # Copyright (c) 2009 ETH Zurich.
 # Copyright (c) 2010 Elan Ruusamae <glen@delfi.ee>.
 #
@@ -20,7 +20,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.5.4';
+our $VERSION = '1.5.5';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -494,10 +494,16 @@ sub run {
 
         # reverse ip order
         my $local_ip = $ip;
+	
         if ( is_ipv6($local_ip) ) {
-            $local_ip = reverse $local_ip;
+
+	    debug("$local_ip is an IPv6 address");
+
+	    $local_ip = reverse $local_ip;
             $local_ip =~ s/://gmxs;
-            $local_ip =~ s/(.)/$1\./gmxs;
+
+	    debug("    $local_ip");
+	    
         }
         else {
             $local_ip =~

@@ -1,6 +1,6 @@
 2020-05-26  Matteo Corti  <matteo@corti.li>
 
-	* check_rbl: Removed old Nagios CPAN modules
+    * check_rbl: Removed old Nagios CPAN modules
 
 2019-12-03  Matteo Corti  <matteo@corti.li>
 
