@@ -64,6 +64,6 @@ jobs:
               && uname -a \
               && perl Makefile.PL \
               && make test \
+              && ./test_script.sh \
               && ./check_distribution.sh \
               && ./build_rpm.sh'
-
