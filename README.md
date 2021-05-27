@@ -1,11 +1,11 @@
 
- (c) Matteo Corti, ETH Zurich, 2009-2012
-
- (c) Matteo Corti, 2009-2021
+ &copy; Matteo Corti, ETH Zurich, 2009-2012
+ 
+ &copy;  Matteo Corti, 2009-2021
 
   see AUTHORS for the complete list of contributors
 
-# check_rbl
+# check\_rbl
 
 A Nagios plugin to check if an SMTP server is blacklisted
 
@@ -28,4 +28,4 @@ check_rbl -H example.org -t 60 -c 1 -w 1 -s cbl.abuseat.org -s bl.deadbeef.com -
 
 ## Bugs
 Please report any bugs or feature requests through the
-web interface at https://github.com/matteocorti/check_rbl/issues
+web interface at [https://github.com/matteocorti/check_rbl/issues](https://github.com/matteocorti/check_rbl/issues)

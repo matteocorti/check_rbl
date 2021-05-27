@@ -14,6 +14,7 @@ check_rbl depends on several Perl modules:
  * Net::DNS
  * Net::IP
  * Readonly
+ * Socket
 
 Perl modules can be found on the "Comprehensive Perl Archive Network"
 (CPAN). The "How to install CPAN modules" guide summarizes how these
