@@ -606,6 +606,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
                 ( $err, $fqdn ) = getnameinfo( $ai->{addr}, NI_NUMERICSERV );
                 if ( !$err ) {
                     $check_object = "$check_object ($fqdn)";
+                    last;
                 }
             }
 
@@ -615,6 +616,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
 
     my $status;
     my $appendstring = $options->append;
+    
     if ( $options->get('whitelistings') ) {
 
         $status =
@@ -632,6 +634,10 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
 
     }
 
+    if ( $total > 0 ) {
+        $status .= " (@listed)";
+    }
+
     # append timeout info, but do not account these in status
     if (@timeouts) {
         $timeouts_string = scalar @timeouts;
@@ -640,10 +646,6 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
           . ( ( $timeouts_string > 1 ) ? 's' : q{} )
           . ' timed out: '
           . join( ', ', @timeouts ) . ')';
-    }
-
-    if ( $total > 0 ) {
-        $status .= " (@listed)";
     }
 
     $plugin->add_perfdata(
