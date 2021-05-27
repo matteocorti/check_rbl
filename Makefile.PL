@@ -18,6 +18,7 @@ my %prereqs = (
     'Net::DNS'                      => 0,
     'Net::IP'                       => 0,
     'Readonly'                      => 0,
+    'Socket'                        => 0,
     'IO::Select'                    => 0,
     'Monitoring::Plugin'            => 0,
     'Monitoring::Plugin::Threshold' => 0,
