@@ -595,6 +595,8 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
 
         my $err;
         my @res;
+        my $fqdn;
+
         ( $err, @res ) =
           getaddrinfo( $check_object, q{}, { socktype => SOCK_RAW } );
 
