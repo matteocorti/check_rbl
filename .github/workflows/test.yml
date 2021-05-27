@@ -28,25 +28,25 @@ jobs:
         include:
           - distro: 'fedora:rawhide'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP
           - distro: 'fedora:34'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP
           - distro: 'fedora:33'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP
           - distro: 'fedora:32'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP
           - distro: 'centos:7'
             pre: >-
               yum install -y epel-release &&
-              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain
+              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP
           - distro: 'centos:8'
             pre: >-
               dnf install -y sudo dnf-plugins-core epel-release &&
               sudo dnf config-manager --set-enabled powertools &&
-              dnf install -y perl perl-Module-Install  perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain
+              dnf install -y perl perl-Module-Install  perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP
     steps:
       - name: Git clone repository
         uses: actions/checkout@v2
