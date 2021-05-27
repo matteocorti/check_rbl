@@ -29,7 +29,7 @@ use Net::DNS;
 use Net::IP qw(ip_expand_address);
 use Readonly;
 use English qw(-no_match_vars);
-use Socket;
+use Socket qw( NI_NUMERICSERV SOCK_RAW getaddrinfo getnameinfo);
 
 use Monitoring::Plugin;
 use Monitoring::Plugin::Threshold;
@@ -588,12 +588,27 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
 
     my $total = scalar @listed;
 
-    # reverse lookup for a better output
     if ( is_ipv4($check_object) || is_ipv6($check_object) ) {
-        my $fqdn = gethostbyaddr inet_aton($check_object), AF_INET;
-        if ($fqdn) {
-            $check_object = "$check_object ($fqdn)";
+
+# if the input is an IP address we try to do a reverse DNS lookup to display the FQDN
+# we ignore errors since in case of failure we can just skip the information
+
+        my $err;
+        my @res;
+        ( $err, @res ) =
+          getaddrinfo( $check_object, q{}, { socktype => SOCK_RAW } );
+
+        if ( !$err ) {
+
+            while ( my $ai = shift @res ) {
+                ( $err, $fqdn ) = getnameinfo( $ai->{addr}, NI_NUMERICSERV );
+                if ( !$err ) {
+                    $check_object = "$check_object ($fqdn)";
+                }
+            }
+
         }
+
     }
 
     my $status;
