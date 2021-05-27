@@ -41,13 +41,13 @@ jobs:
           - distro: 'centos:7'
             pre: >-
               yum install -y epel-release &&
-              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus
+              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus &&
               sudo cpanm Data::Validate::Domain
           - distro: 'centos:8'
             pre: >-
               dnf install -y sudo dnf-plugins-core epel-release &&
               sudo dnf config-manager --set-enabled powertools &&
-              dnf install -y perl perl-Module-Install  perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus
+              dnf install -y perl perl-Module-Install  perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus &&
               sudo cpanm Data::Validate::Domain
     steps:
       - name: Git clone repository
