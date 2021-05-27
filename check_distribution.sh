@@ -26,7 +26,7 @@ echo "Copyright (${YEAR})"
 echo "========="
 echo
 echo '### README.md'
-grep  "(c) Matteo Corti, 2009-${YEAR}" README.md
+grep  "&copy; Matteo Corti, 2009-${YEAR}" README.md
 echo '### COPYRIGHT'
 grep "Copyright (c) 2009-${YEAR} Matteo Corti" COPYRIGHT
 echo '### check_rbl'

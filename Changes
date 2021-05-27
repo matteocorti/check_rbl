@@ -1,7 +1,7 @@
 2021-05-27  Matteo Corti  <matteo@corti.li>
 
-	* check_rbl (run): Adds the host name to the status if the input is an IP address.
-	* check_rbl (run): Fixes the output in case of timeout
+    * check_rbl (run): Adds the host name to the status if the input is an IP address.
+    * check_rbl (run): Fixes the output in case of timeout
 
 2020-11-30  Matteo Corti  <matteo@corti.li>
 
