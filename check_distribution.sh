@@ -6,18 +6,21 @@ FILES="${PERL_FILES} AUTHORS COPYING COPYRIGHT Changes INSTALL Makefile.PL NEWS 
 echo "Perl::Critic"
 echo "============"
 echo
+# shellcheck disable=SC2086
 perlcritic -1 ${PERL_FILES}
 echo
 
 echo "Formatting errors: tabs"
 echo "======================="
 echo
-grep --line-number '\t' ${FILES}
+# shellcheck disable=SC2086
+grep --line-number "$(printf '\t')" ${FILES}
 echo
 
 echo "Formatting errors: blanks at the end of line"
 echo "============================================"
 echo
+# shellcheck disable=SC2086
 grep --line-number '[[:blank:]]$' ${FILES}
 echo
 
