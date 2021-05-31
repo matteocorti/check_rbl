@@ -4,6 +4,8 @@ failures=0
 
 # not all the providers are compliant
 
+echo "Testing failure"
+
 # 127.0.0.2 should always be listed
 perl ./check_rbl -H 127.0.0.2 \
     -t 60 \
@@ -14,6 +16,8 @@ perl ./check_rbl -H 127.0.0.2 \
 if [ $? -ne 2 ] ; then
     failures=$(( failures + 1 ))
 fi
+
+echo "Testing OK"
 
 # 127.0.0.1 should never be listed
 perl ./check_rbl -H 127.0.0.1 \
