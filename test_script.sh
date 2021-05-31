@@ -17,6 +17,7 @@ if [ $? -ne 2 ] ; then
     failures=$(( failures + 1 ))
 fi
 
+echo
 echo "Testing OK"
 
 # 127.0.0.1 should never be listed
@@ -30,6 +31,7 @@ if [ $? -ne 0 ] ; then
     failures=$(( failures + 1 ))
 fi
 
+echo
 if [ $failures -gt 0 ] ; then
     echo "$failures tests failed"
     exit 1

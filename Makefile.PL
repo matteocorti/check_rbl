@@ -32,6 +32,9 @@ if (!$ver || $ver eq '1.03') {
     $prereqs{'Net::DNS'} = '1.04';
 }
 
+# https://metacpan.org/pod/release/DAGOLDEN/CPAN-Meta-2.142690/lib/CPAN/Meta/Spec.pm#license
+license 'gpl_3';
+
 install_script  'check_rbl';
 
 auto_install;
