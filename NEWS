@@ -1,3 +1,4 @@
+2021-06-01: 1.6.2 - fixed a bug with IPv6
 2021-05-27: 1.6.1 - fixes the FQDN with IPv6 and fixes the output in case of timeouts
 2021-05-27: 1.6.0 - show the FQDN if the host is specified with an IP address
 2021-01-03: 1.5.7 - removed emailbasura.org from the documentation and default configuration

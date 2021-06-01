@@ -1,3 +1,7 @@
+2021-06-01  Matteo Corti  <matteo@corti.li>
+
+    * check_rbl (run): Fixed a bug in the resolution of IPv6 addresses
+
 2021-05-27  Matteo Corti  <matteo@corti.li>
 
     * check_rbl (run): Adds the host name to the status if the input is an IP address.

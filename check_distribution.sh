@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PERL_FILES="check_rbl t/*.t"
-FILES="${PERL_FILES} AUTHORS COPYING COPYRIGHT Changes INSTALL Makefile.PL NEWS README.md TODO check_distribution.sh"
+FILES="${PERL_FILES} AUTHORS COPYING COPYRIGHT Changes INSTALL Makefile.PL NEWS README.md TODO check_distribution.sh test_script.sh"
 
 echo "Perl::Critic"
 echo "============"
@@ -23,6 +23,20 @@ echo
 # shellcheck disable=SC2086
 grep --line-number '[[:blank:]]$' ${FILES}
 echo
+
+echo "ShellCheck"
+echo "=========="
+echo
+SHELLCHECK=$(command -v shellcheck 2> /dev/null)
+if [ -z "${SHELLCHECK}" ] ; then
+    echo "No shellcheck installed: skipping test"
+else
+    if shellcheck --help 2>&1 | grep -q -- '-o\ ' ; then
+        shellcheck -o all ./check_distribution.sh ./test_script.sh
+    else
+        shellcheck ./check_distribution.sh ./test_script.sh
+    fi
+fi
 
 YEAR=$( date +"%Y" )
 echo "Copyright (${YEAR})"

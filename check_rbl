@@ -20,7 +20,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.6.1';
+our $VERSION = '1.6.2';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -502,6 +502,8 @@ sub run {
 
             $local_ip = reverse $local_ip;
             $local_ip =~ s/://gmxs;
+
+            $local_ip = join q{.}, split //ms, $local_ip;
 
             debug("    $local_ip");
 
