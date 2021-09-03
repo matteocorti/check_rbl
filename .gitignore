@@ -1,7 +1,11 @@
+**bak
+**~
+.DS_Store
 META.yml
 MYMETA.json
 MYMETA.yml
 Makefile
 blib
+check_rbl-**
 inc
 pm_to_blib
