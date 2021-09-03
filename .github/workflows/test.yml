@@ -24,11 +24,7 @@ jobs:
           - 'fedora:32'
           - 'fedora:33'
           - 'fedora:34'
-          - 'fedora:rawhide'
         include:
-          - distro: 'fedora:rawhide'
-            pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
           - distro: 'fedora:34'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
