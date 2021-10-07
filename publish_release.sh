@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=$( grep "our\ \$VERSION\ =\ " check_rbl | sed "s/^[^']*'\([0-9.]*\)';/\1/" )
+VERSION=$(grep "our\ \$VERSION\ =\ " check_rbl | sed "s/^[^']*'\([0-9.]*\)';/\1/")
 
 echo "Publishing release ${VERSION}"
 
@@ -13,7 +13,7 @@ echo '--------------------------------------------------------------------------
 
 echo 'Did you update the RELEASE_NOTES.md? '
 read -r ANSWER
-if [ "x${ANSWER}" = "xy" ] ; then
+if [ "x${ANSWER}" = "xy" ]; then
 
     perl Makefile.PL
     make dist

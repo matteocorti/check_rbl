@@ -13,8 +13,6 @@ else
     IP_ADDR="${1}"
 fi
 
-
-
 perl ./check_rbl -H "$IP_ADDR" \
     -t 60 \
     -c 1 \
