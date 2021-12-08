@@ -13,7 +13,7 @@ echo '--------------------------------------------------------------------------
 
 echo 'Did you update the RELEASE_NOTES.md? '
 read -r ANSWER
-if [ "x${ANSWER}" = "xy" ]; then
+if [ "${ANSWER}" = "y" ]; then
 
     perl Makefile.PL
     make dist

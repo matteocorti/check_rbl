@@ -8,12 +8,12 @@ if [ $# -lt 1 ]; then
     echo ''
     echo '  <ip address> the IP to check against a bunch of blacklists.'
     echo ''
-    exit $EXIT_BAD_ARGS
+    exit "${EXIT_BAD_ARGS}"
 else
     IP_ADDR="${1}"
 fi
 
-perl ./check_rbl -H "$IP_ADDR" \
+perl ./check_rbl -H "${IP_ADDR}" \
     -t 60 \
     -c 1 \
     -w 1 \

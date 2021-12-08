@@ -4,7 +4,7 @@ failures=0
 
 # not all the providers are compliant
 
-echo "Tesing 127.0.0.2: should always be listed"
+echo "Testing 127.0.0.2: should always be listed"
 perl ./check_rbl -H 127.0.0.2 \
     -t 60 \
     -c 30 \

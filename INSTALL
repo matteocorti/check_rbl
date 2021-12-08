@@ -1,6 +1,6 @@
 Build and install check_rbl
 
-Dependences
+Dependencies
 ===========
 
 check_rbl depends on several Perl modules:

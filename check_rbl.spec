@@ -130,7 +130,7 @@ rm -rf %{buildroot}
 - Updated to 1.2.1 (bug fix)
 
 * Thu Apr  8 2010 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.0-0
-- Updated to 1.2.0 and imprved the SPEC file
+- Updated to 1.2.0 and improved the SPEC file
 
 * Tue Oct 27 2009 Matteo Corti <matteo.corti@id.ethz.ch> - 1.1.0-0
 - Updated to 1.1.0 (parallel checks)
