@@ -486,6 +486,7 @@ sub run {
     }
 
     # if present remove the trailing dot from the FQDN
+    # see https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls
     my $host = $options->host;
     if ( defined $host ) {
         $host =~ s/[.]$//mxs;
