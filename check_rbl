@@ -20,7 +20,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.6.2';
+our $VERSION = '1.6.3';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -485,13 +485,19 @@ sub run {
             'host or url has to be set' );
     }
 
+    # if present remove the trailing dot from the FQDN
+    my $host = $options->host;
+    if ( defined $host ) {
+        $host =~ s/[.]$//mxs;
+    }
+
     my $check_prefix;
     my $check_object;
     if ( defined $options->host and $options->host ne q{} ) {
 
         # if checking for host
         # validate ip and resolve hostname if applicable
-        my $ip = validate( $options->host );
+        my $ip = validate($host);
 
         # reverse ip order
         my $local_ip = $ip;
@@ -514,7 +520,7 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
         }
 
         $check_prefix = $local_ip;
-        $check_object = $options->host;
+        $check_object = $host;
     }
     else {
         # if checking for url, just set the prefix to the url name
@@ -552,11 +558,11 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
     mdns(
         \@addrs,
         sub {
-            my ( $addr, $host ) = @_;
+            my ( $addr, $mdns_host ) = @_;
 
-            if ( defined $host ) {
+            if ( defined $mdns_host ) {
 
-                debug("callback( $addr, $host )");
+                debug("callback( $addr, $mdns_host )");
 
             }
             else {
@@ -569,14 +575,14 @@ s/(\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3}) [.] (\d{1,3})/$4.$3.$2.$1/mxs;
             $addr =~ s/^(?:[a-f\d][.]){32}//mxs;
             $addr =~ s/^(?:\d+[.]){4}//mxs;
 
-            if ( defined $host ) {
-                if ( $host eq q{} ) {
+            if ( defined $mdns_host ) {
+                if ( $mdns_host eq q{} ) {
                     push @timeouts, $addr;
                 }
                 else {
-                    verbose "listed in $addr as $host\n";
+                    verbose "listed in $addr as $mdns_host\n";
                     if ( !$options->get('whitelistings') ) {
-                        push @listed, $addr . ' (' . $host . ')';
+                        push @listed, $addr . ' (' . $mdns_host . ')';
                     }
                 }
             }
