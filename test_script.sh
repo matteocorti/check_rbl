@@ -10,7 +10,6 @@ perl ./check_rbl -H 127.0.0.2 \
     -c 30 \
     -w 1 \
     -s cbl.abuseat.org -s spamsources.fabel.dk -s mail-abuse.blacklist.jippg.org -s korea.services.net -s ix.dnsbl.manitu.net -s psbl.surriel.com -s dyna.spamrats.com -s noptr.spamrats.com -s spam.spamrats.com -s dnsbl.sorbs.net -s spam.dnsbl.sorbs.net -s bl.spamcop.net -s pbl.spamhaus.org -s sbl.spamhaus.org -s xbl.spamhaus.org -s dnsbl-3.ucepro -s misc.dnsbl.sorbs.nettect.net -s db.wpbl.info -s access.redhawk.org -s dnsbl.kempt.net -s rbl.schulte.org -s sbl-xbl.spamhaus.org -s smtp.dnsbl.sorbs.net -s web.dnsbl.sorbs.net -s zen.spamhaus.org -s zombie.dnsbl.sorbs.net -s dnsbl.dronebl.org -s dnsbl.spfbl.net -s ips.backscatterer.org -s spam.dnsbl.anonmails.de -s z.mailspike.net
->>>>>>> b6a52ea739aa7fc577bd05d25a5933dc431efacf
 
 if [ $? -ne 2 ]; then
     echo "   failed"
