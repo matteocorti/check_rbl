@@ -1,4 +1,4 @@
-%define version          1.6.2
+%define version          1.6.3
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -54,9 +54,12 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Thu Dec 16 2021 Matteo Corti <matteo@corti.li> - 1.6.3-0
+- Update to 1.6.3
+
 * Tue Jun  1 2021 Matteo Corti <matteo@corti.li> - 1.6.2-0
 - Update to 1.6.2
-
+w
 * Thu May 27 2021 Matteo Corti <matteo@corti.li> - 1.6.1-0
 - Update to 1.6.1
 
@@ -130,7 +133,7 @@ rm -rf %{buildroot}
 - Updated to 1.2.1 (bug fix)
 
 * Thu Apr  8 2010 Matteo Corti <matteo.corti@id.ethz.ch> - 1.2.0-0
-- Updated to 1.2.0 and imprved the SPEC file
+- Updated to 1.2.0 and improved the SPEC file
 
 * Tue Oct 27 2009 Matteo Corti <matteo.corti@id.ethz.ch> - 1.1.0-0
 - Updated to 1.1.0 (parallel checks)

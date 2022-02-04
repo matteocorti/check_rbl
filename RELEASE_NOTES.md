@@ -1,1 +1,1 @@
-Fixed a bug with IPv6
+Accepts FQDN as host names

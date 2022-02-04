@@ -18,9 +18,9 @@ jobs:
           - 'fedora:32'
           - 'fedora:33'
           - 'fedora:34'
-          - 'fedora:rawhide'
+          - 'fedora:35'
         include:
-          - distro: 'fedora:rawhide'
+          - distro: 'fedora:35'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Monitoring-Plugin perl-Perl-Critic rpm-build openssh-clients
           - distro: 'fedora:34'

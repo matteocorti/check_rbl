@@ -1,3 +1,7 @@
+2021-12-16  Matteo Corti  <matteo@corti.li>
+
+        * check_rbl (run): Remove the dot at the end of FQDN
+
 2021-06-01  Matteo Corti  <matteo@corti.li>
 
     * check_rbl (run): Fixed a bug in the resolution of IPv6 addresses
@@ -152,11 +156,11 @@
 
 2009-01-22  Matteo Corti  <matteo.corti@id.ethz.ch>
 
-    * check_rbl: command line argument to set the numer of tries in DNS queries
+    * check_rbl: command line argument to set the number of tries in DNS queries
 
 2009-01-06  Matteo Corti  <matteo.corti@id.ethz.ch>
 
-    * check_rbl: execution time in the performace data
+    * check_rbl: execution time in the performance data
 
 2008-12-29  Matteo Corti  <matteo.corti@id.ethz.ch>
 

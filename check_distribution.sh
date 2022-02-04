@@ -27,23 +27,23 @@ echo
 echo "ShellCheck"
 echo "=========="
 echo
-SHELLCHECK=$(command -v shellcheck 2> /dev/null)
-if [ -z "${SHELLCHECK}" ] ; then
+SHELLCHECK=$(command -v shellcheck 2>/dev/null)
+if [ -z "${SHELLCHECK}" ]; then
     echo "No shellcheck installed: skipping test"
 else
-    if shellcheck --help 2>&1 | grep -q -- '-o\ ' ; then
+    if shellcheck --help 2>&1 | grep -q -- '-o\ '; then
         shellcheck -o all ./check_distribution.sh ./test_script.sh
     else
         shellcheck ./check_distribution.sh ./test_script.sh
     fi
 fi
 
-YEAR=$( date +"%Y" )
+YEAR=$(date +"%Y")
 echo "Copyright (${YEAR})"
 echo "========="
 echo
 echo '### README.md'
-grep  "&copy; Matteo Corti, 2009-${YEAR}" README.md
+grep "&copy; Matteo Corti, 2009-${YEAR}" README.md
 echo '### COPYRIGHT'
 grep "Copyright (c) 2009-${YEAR} Matteo Corti" COPYRIGHT
 echo '### check_rbl'
