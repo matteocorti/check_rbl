@@ -48,6 +48,8 @@ jobs:
               sudo cpanm Data::Validate::Domain
           - distro: 'centos:8'
             pre: >-
+              sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-Linux-* &&
+              sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-Linux-* &&
               dnf install -y sudo dnf-plugins-core epel-release &&
               sudo dnf config-manager --set-enabled powertools &&
               dnf install -y perl perl-Module-Install  perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus &&
