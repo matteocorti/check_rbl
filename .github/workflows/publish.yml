@@ -18,13 +18,15 @@ jobs:
       matrix:
         distro:
           - 'centos:7'
-          - 'centos:8'
           - 'fedora:32'
           - 'fedora:33'
           - 'fedora:34'
           - 'fedora:35'
+          - 'fedora:36'
         include:
-          - distro: 'fedora:35'
+          - distro: 'fedora:36'
+            pre: >-
+              dnf install -y sudo perl-Module-Install perl-Monitoring-Plugin perl-Perl-Critic rpm-build openssh-clients          - distro: 'fedora:35'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Monitoring-Plugin perl-Perl-Critic rpm-build openssh-clients
           - distro: 'fedora:34'
