@@ -43,11 +43,7 @@ jobs:
             pre: >-
               yum install -y epel-release &&
               yum install -y sudo perl-Module-Install perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build openssh-clients
-          - distro: 'centos:8'
-            pre: >-
-              dnf install -y sudo dnf-plugins-core epel-release &&
-              sudo dnf config-manager --set-enabled powertools &&
-              dnf install -y perl perl-Module-Install  perl-Monitoring-Plugin perl-Perl-Critic rpm-build openssh-clients
+
     steps:
       - name: Git clone repository
         uses: actions/checkout@v2
