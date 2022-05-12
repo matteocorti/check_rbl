@@ -20,7 +20,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.6.3';
+our $VERSION = '1.6.4';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -485,8 +485,8 @@ sub run {
             'host or url has to be set' );
     }
 
-    # if present remove the trailing dot from the FQDN
-    # see https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls
+# if present remove the trailing dot from the FQDN
+# see https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls
     my $host = $options->host;
     if ( defined $host ) {
         $host =~ s/[.]$//mxs;

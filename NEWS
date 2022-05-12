@@ -1,3 +1,4 @@
+2022-05-12: 1.6.4 - updated the list of servers
 2021-12-16: 1.6.3 - accepts FQDN as host names
 2021-06-01: 1.6.2 - fixed a bug with IPv6
 2021-05-27: 1.6.1 - fixes the FQDN with IPv6 and fixes the output in case of timeouts

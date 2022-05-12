@@ -1,1 +1,1 @@
-Accepts FQDN as host names
+Updated the list of servers
