@@ -54,7 +54,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
-* Thu May 12 2021 Matteo Corti <matteo@corti.li> - 1.6.4-0
+* Thu May 12 2022 Matteo Corti <matteo@corti.li> - 1.6.4-0
 - Update to 1.6.4
 
 * Thu Dec 16 2021 Matteo Corti <matteo@corti.li> - 1.6.3-0
