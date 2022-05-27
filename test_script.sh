@@ -17,7 +17,7 @@ done
 
 echo "Testing 127.0.0.2: should always be listed"
 
-# shellcheck disable=SC2086 # ${option} can be empty and should be splitted if not
+# shellcheck disable=SC2086 # ${option} can be empty and should be split if not
 perl ./check_rbl -H 127.0.0.2 -t 60 -c 29 -w 1 ${options}
 
 if [ $? -ne 2 ]; then
@@ -36,7 +36,7 @@ fi
 
 echo "Testing 127.0.0.1: should never be listed"
 
-# shellcheck disable=SC2086 # ${option} can be empty and should be splitted if not
+# shellcheck disable=SC2086 # ${option} can be empty and should be split if not
 if ! perl ./check_rbl -H 127.0.0.1 -t 60 -c 38 -w 1 ${options} ; then
     echo "  failed"
     failures=$((failures + 1))
