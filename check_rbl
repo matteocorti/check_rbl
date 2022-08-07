@@ -132,17 +132,17 @@ sub init_dns_resolver {
 
     my $retries = shift;
 
-    my $res = Net::DNS::Resolver->new();
-    if ( $res->can('force_v4') ) {
-        $res->force_v4(1);
+    my $resolver = Net::DNS::Resolver->new();
+    if ( $resolver->can('force_v4') ) {
+        $resolver->force_v4(1);
     }
 
     if ($retries) {
-        $res->retry($retries);
+        $resolver->retry($retries);
     }
 
     if ( defined $options->nameserver ) {
-        if ( !$res->nameservers( $options->nameserver ) ) {
+        if ( !$resolver->nameservers( $options->nameserver ) ) {
             $plugin->nagios_exit(
                 Monitoring::Plugin->CRITICAL,
                 $options->nameserver . ' is invalid'
@@ -150,9 +150,9 @@ sub init_dns_resolver {
         }
     }
 
-    my @nameservers = $res->nameservers();
+    my @nameservers = $resolver->nameservers();
     debug("Using DNS Resolver: @nameservers");
-    return $res;
+    return $resolver;
 }
 
 ##############################################################################
@@ -245,13 +245,13 @@ sub mdns {
                 delete $addrs{$sock};
                 $sel->remove($sock);
 
-                my $ans = $res->bgread($sock);
+                my $answer = $res->bgread($sock);
 
                 my $host;
 
-                if ($ans) {
+                if ($answer) {
 
-                    foreach my $rr ( $ans->answer ) {
+                    foreach my $rr ( $answer->answer ) {
 
                         debug('Processing answer');
 
