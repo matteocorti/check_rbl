@@ -12,6 +12,7 @@ package main;
 # Copyright (c) 2009-2021 Matteo Corti <matteo@corti.li>
 # Copyright (c) 2009 ETH Zurich.
 # Copyright (c) 2010 Elan Ruusamae <glen@delfi.ee>.
+# Copyright (c) 2022 Claudio Kuenzler <ck@claudiokuenzler.com>.
 #
 # This module is free software; you can redistribute it and/or modify it
 # under the terms of GNU general public license (gpl) version 3.
@@ -20,7 +21,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.6.4';
+our $VERSION = '1.6.5';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -140,6 +141,12 @@ sub init_dns_resolver {
         $res->retry($retries);
     }
 
+    if (defined $options->nameserver) {
+        $res->nameservers( $options->nameserver );
+    }
+
+    my @nameservers = $res->nameservers();
+    debug("Using DNS Resolver: @nameservers");
     return $res;
 }
 
@@ -466,6 +473,12 @@ sub run {
         help     => 'Append string at the end of the plugin output',
         required => 0,
         default  => $DEFAULT_APPEND_STRING,
+    );
+
+    $options->arg(
+        spec     => 'nameserver|n=s',
+        help     => 'Use this nameserver IP as DNS resolver (only one IP supported)',
+        required => 0,
     );
 
     $options->getopts();
