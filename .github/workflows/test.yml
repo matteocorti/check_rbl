@@ -23,21 +23,17 @@ jobs:
       matrix:
         distro:
           - 'centos:7'
-          - 'fedora:32'
-          - 'fedora:33'
           - 'fedora:34'
           - 'fedora:35'
+          - 'fedora:36'
         include:
+          - distro: 'fedora:36'
+            pre: >-
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
           - distro: 'fedora:35'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
           - distro: 'fedora:34'
-            pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
-          - distro: 'fedora:33'
-            pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
-          - distro: 'fedora:32'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
           - distro: 'centos:7'
