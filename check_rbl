@@ -21,7 +21,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.6.5';
+our $VERSION = '1.7.0';
 
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
@@ -141,8 +141,13 @@ sub init_dns_resolver {
         $res->retry($retries);
     }
 
-    if (defined $options->nameserver) {
-        $res->nameservers( $options->nameserver );
+    if ( defined $options->nameserver ) {
+        if ( !$res->nameservers( $options->nameserver ) ) {
+            $plugin->nagios_exit(
+                Monitoring::Plugin->CRITICAL,
+                $options->nameserver . ' is invalid'
+            );
+        }
     }
 
     my @nameservers = $res->nameservers();
@@ -396,7 +401,7 @@ sub run {
     $options = Monitoring::Plugin::Getopt->new(
         usage   => 'Usage: %s [OPTIONS]',
         version => $VERSION,
-        url     => 'http://matteocorti.github.io/check_rbl/',
+        url     => 'https://github.com/matteocorti/check_rbl',
         blurb   => 'Check SMTP black- or white- listing status',
     );
 
@@ -423,7 +428,7 @@ sub run {
 
     $options->arg(
         spec     => 'server|s=s@',
-        help     => 'RBL server',
+        help     => 'RBL server (may be repeated)',
         required => 1,
     );
 
@@ -442,7 +447,7 @@ sub run {
 
     $options->arg(
         spec     => 'retry|r=i',
-        help     => 'Number of times to try a DNS query (default is 4) ',
+        help     => 'Number of times to try a DNS query (default is 4)',
         required => 0,
         default  => $DEFAULT_RETRIES,
     );
@@ -476,8 +481,9 @@ sub run {
     );
 
     $options->arg(
-        spec     => 'nameserver|n=s',
-        help     => 'Use this nameserver IP as DNS resolver (only one IP supported)',
+        spec => 'nameserver|n=s',
+        help =>
+'Use this nameserver IP as DNS resolver (only one server is supported)',
         required => 0,
     );
 

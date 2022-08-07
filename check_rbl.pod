@@ -2,44 +2,60 @@
 
 =head1 NAME
 
-C<check_rbl> - a Nagios plugin to check if an SMTP server is blacklisted
+C<check_rbl> - Check SMTP black- or white- listing status
 
 =head1 DESCRIPTION
 
-check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
+check_rbl is a Nagios plugin to check SMTP black- or white- listing status
 
 =head1 VERSION
 
-Version 1.6.0
+Version 1.7.0
 
 =head1 SYNOPSIS
 
-check_rbl [--help] [--verbose] [--version] [--timeout t]
-                 -H hostname --server servername
-                 [--critical n] [--warning n] [--workers n]
+check_rbl -H hostname --server servername [options]
 
 =head1 REQUIRED ARGUMENTS
 
+  -H, --host=STRING    SMTP server to check. If hostname is given, it will be resolved to its IP first.
   -s, --server=STRING  RBL server (may be repeated)
 
 =head1 OPTIONS
 
- -H, --host=STRING                         SMTP server to check
- -U, --url=STRING                          URL to check. Will be ignored if host is set.
- -?, --usage                                Print usage information
- -h, --help                                 Print detailed help screen
- -V, --version                              Print version information
- -a, --append=STRING                        Append string at the end of the plugin output
- --extra-opts=[<section>[@<config_file>]]   Section and/or config_file from which to load extra options (may repeat)
- -c, --critical=INTEGER                     Number of blacklisting servers for a critical warning
- -w, --warning=INTEGER                      Number of blacklisting servers for a warning
- -d, --debug                                Prints debugging information
- -r, --retry=INTEGER                        Number of times to try a DNS query (default is 4) 
- --workers=INTEGER                          Number of parallel checks
- --whitelistings, --wl                      Check whitelistings instead of blacklistings
- --query-timeout=INTEGER                    Timeout of the RBL queries
- -t, --timeout=INTEGER                      Seconds before plugin times out (default: 15)
- -v, --verbose                              Show details for command-line debugging (can repeat up to 3 times)
+ -?, --usage
+   Print usage information
+ -h, --help
+   Print detailed help screen
+ -V, --version
+   Print version information
+ --extra-opts=[section][@file]
+   Read options from an ini file. See https://www.monitoring-plugins.org/doc/extra-opts.html
+   for usage and examples.
+ -c, --critical=INTEGER
+   Number of blacklisting servers for a critical warning
+ -w, --warning=INTEGER
+   Number of blacklisting servers for a warning
+ -d, --debug
+   Prints debugging information
+ -U, --url=STRING
+   URL to check. Will be ignored if host is set.
+ -r, --retry=INTEGER
+   Number of times to try a DNS query (default is 4) 
+ --workers=INTEGER
+   Number of parallel checks
+ --whitelistings, --wl
+   Check whitelistings instead of blacklistings
+ --query-timeout=INTEGER
+   Timeout of the RBL queries
+ -a, --append=STRING
+   Append string at the end of the plugin output
+ -n, --nameserver=STRING
+   Use this nameserver IP as DNS resolver (only one server is supported)
+ -t, --timeout=INTEGER
+   Seconds before plugin times out (default: 15)
+ -v, --verbose
+   Show details for command-line debugging (can repeat up to 3 times)
 
 =head1 EXAMPLE
 
@@ -82,6 +98,8 @@ check_updates depends on
 
 =head1 CONFIGURATION
 
+Options can be specified in an ini file. See https://www.monitoring-plugins.org/doc/extra-opts.html
+
 =head1 INCOMPATIBILITIES
 
 None reported.
@@ -100,12 +118,17 @@ web interface at https://github.com/matteocorti/check_rbl/issues
 =head1 AUTHOR
 
 Matteo Corti <matteo@corti.li>
+See AUTHORS for the complete list
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright (c) 2010, Elan Ruusamae <glen@delfi.ee>
+Copyright (c) 2009-2022 Matteo Corti <matteo@corti.li>
 
-Copyright (c) 2008-2017, Matteo Corti <matteo.corti@id.ethz.ch>
+Copyright (c) 2009 ETH Zurich.
+
+Copyright (c) 2010 Elan Ruusamae <glen@delfi.ee>.
+
+Copyright (c) 2022 Claudio Kuenzler <ck@claudiokuenzler.com>.
 
 This module is free software; you can redistribute it and/or modify it
 under the terms of GNU general public license (gpl) version 3.
