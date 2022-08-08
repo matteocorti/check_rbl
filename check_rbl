@@ -144,7 +144,7 @@ sub init_dns_resolver {
 
     if ( defined $options->nameserver ) {
 
-# If the nameserver is invalid Net::DNS::Resover prints an error message on STDERR: we want to supress it
+# If the nameserver is invalid Net::DNS::Resover prints an error message on STDERR: we want to suppress it
 # see: https://stackoverflow.com/questions/73270724/how-to-handle-errors-while-setting-the-name-server-with-netdns
 
         my ( $stdout, $stderr, @servers ) =
