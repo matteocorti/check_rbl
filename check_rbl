@@ -23,6 +23,7 @@ use warnings;
 
 our $VERSION = '1.7.0';
 
+use Capture::Tiny qw(capture);
 use Data::Validate::Domain qw(is_hostname);
 use Data::Validate::IP qw(is_ipv4 is_ipv6);
 use IO::Select;
@@ -142,16 +143,23 @@ sub init_dns_resolver {
     }
 
     if ( defined $options->nameserver ) {
-        if ( !$resolver->nameservers( $options->nameserver ) ) {
-            $plugin->nagios_exit(
-                Monitoring::Plugin->CRITICAL,
-                $options->nameserver . ' is invalid'
-            );
+
+# If the nameserver is invalid Net::DNS::Resover prints an error message on STDERR: we want to supress it
+# see: https://stackoverflow.com/questions/73270724/how-to-handle-errors-while-setting-the-name-server-with-netdns
+
+        my ( $stdout, $stderr, @servers ) =
+          capture { $resolver->nameservers( $options->nameserver ); };
+
+        if ( @servers == 0 ) {
+            $plugin->nagios_exit( Monitoring::Plugin->CRITICAL,
+                'Invalid nameserver ' . $options->nameserver );
         }
+
     }
 
     my @nameservers = $resolver->nameservers();
     debug("Using DNS Resolver: @nameservers");
+
     return $resolver;
 }
 
