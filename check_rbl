@@ -151,6 +151,7 @@ sub init_dns_resolver {
           capture { $resolver->nameservers( $options->nameserver ); };
 
         if ( @servers == 0 ) {
+            debuglog("DNS nameserver error: $stderr");
             $plugin->nagios_exit( Monitoring::Plugin->CRITICAL,
                 'Invalid nameserver ' . $options->nameserver );
         }
