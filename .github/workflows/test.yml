@@ -29,17 +29,17 @@ jobs:
         include:
           - distro: 'fedora:36'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP perl-Capture-Tiny
           - distro: 'fedora:35'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP perl-Capture-Tiny
           - distro: 'fedora:34'
             pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP
+              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP perl-Capture-Tiny
           - distro: 'centos:7'
             pre: >-
               yum install -y epel-release &&
-              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus &&
+              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminusdnf search perl-Capture &&
               sudo cpanm Data::Validate::Domain
     steps:
       - name: Git clone repository
