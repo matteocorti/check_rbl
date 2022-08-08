@@ -39,7 +39,7 @@ jobs:
           - distro: 'centos:7'
             pre: >-
               yum install -y epel-release &&
-              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminusdnf search perl-Capture &&
+              yum install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus perl-Capture &&
               sudo cpanm Data::Validate::Domain
     steps:
       - name: Git clone repository

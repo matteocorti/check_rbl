@@ -78,6 +78,8 @@ check_updates depends on
 
 =over 4
 
+=item * Capture::Tiny
+
 =item * Data::Validate::Domain
 
 =item * Data::Validate::IP
