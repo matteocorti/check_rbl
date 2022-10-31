@@ -23,7 +23,6 @@ jobs:
       matrix:
         distro:
           - 'centos:7'
-          - 'fedora:34'
           - 'fedora:35'
           - 'fedora:36'
         include:
@@ -31,9 +30,6 @@ jobs:
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP perl-Capture-Tiny
           - distro: 'fedora:35'
-            pre: >-
-              dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP perl-Capture-Tiny
-          - distro: 'fedora:34'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Perl-Critic rpm-build perl-Net-DNS perl-Data-Validate-Domain perl-Net-IP perl-Data-Validate-IP perl-Capture-Tiny
           - distro: 'centos:7'
