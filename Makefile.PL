@@ -12,6 +12,7 @@ version_from      'check_rbl';
 # Specific dependencies
 
 my %prereqs = (
+    'Capture::Tiny'                 => 0,
     'Data::Validate::Domain'        => 0.12,
     'Data::Validate::IP'            => 0,
     'English'                       => 0,
