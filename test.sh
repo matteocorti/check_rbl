@@ -34,7 +34,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s bl.0spam.org \
     -s bl.blocklist.de \
     -s bl.deadbeef.com \
-    -s bl.fmb.la \
     -s bl.konstant.no \
     -s bl.mailspike.net \
     -s bl.nordspam.com \
@@ -48,7 +47,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s bl.worst.nosolicitado.org \
     -s black.dnsbl.brukalai.lt \
     -s black.junkemailfilter.com \
-    -s black.uribl.com \
     -s blackholes.five-ten-sg.com \
     -s blacklist.sci.kun.nl \
     -s blacklist.woody.ch \
@@ -72,7 +70,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s dnsbl.madavi.de \
     -s dnsbl.sorbs.net \
     -s dnsbl.spfbl.net \
-    -s dnsbl.zapbl.net \
     -s dnsblchile.org \
     -s dnswl.spfbl.net \
     -s drone.abuse.ch \
@@ -85,7 +82,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s forbidden.icm.edu.pl \
     -s free.v4bl.org \
     -s gl.suomispam.net \
-    -s grey.uribl.com \
     -s hil.habeas.com \
     -s http.dnsbl.sorbs.net \
     -s images.rbl.msrbl.net \
@@ -106,7 +102,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s misc.dnsbl.sorbs.net \
     -s mtawlrev.dnsbl.rediris.es \
     -s multi.surbl.org \
-    -s multi.uribl.com \
     -s nbl.0spam.org \
     -s netblockbl.spamgrouper.to \
     -s netscan.rbl.blockedservers.com \
@@ -137,7 +132,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s rbl.schulte.org \
     -s rbl.spamlab.com \
     -s recent.spam.dnsbl.sorbs.net \
-    -s red.uribl.com \
     -s relays.bl.gweep.ca \
     -s relays.bl.kunden.de \
     -s relays.dnsbl.sorbs.net \
@@ -182,7 +176,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s web.dnsbl.sorbs.net \
     -s web.rbl.msrbl.net \
     -s white.dnsbl.brukalai.lt \
-    -s white.uribl.com \
     -s whois.rfc-ignorant.org \
     -s wl.mailspike.net \
     -s wormrbl.imp.ch \

@@ -1,6 +1,7 @@
-.travis.yml
 AUTHORS
+build_rpm.sh
 Changes
+check_distribution.sh
 check_rbl
 check_rbl.ini
 check_rbl.pod
@@ -24,9 +25,13 @@ META.yml
 MYMETA.json
 MYMETA.yml
 NEWS
+publish_release.sh
 README.md
+RELEASE_NOTES.md
+SECURITY.md
 t/00_modules.t
 t/01_validation.t
 test.sh
+test_script.sh
 TODO
 VERSION

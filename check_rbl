@@ -9,7 +9,7 @@ package main;
 #
 # See  the INSTALL file for installation instructions
 #
-# Copyright (c) 2009-2021 Matteo Corti <matteo@corti.li>
+# Copyright (c) 2009-2023 Matteo Corti <matteo@corti.li>
 # Copyright (c) 2009 ETH Zurich.
 # Copyright (c) 2010 Elan Ruusamae <glen@delfi.ee>.
 # Copyright (c) 2022 Claudio Kuenzler <ck@claudiokuenzler.com>.
@@ -530,7 +530,7 @@ sub run {
             'host or url has to be set' );
     }
 
-    if ( defined $options && defined $options->('namneserver') && defined $options->('authoritative') ) {
+    if ( defined $options && defined $options->authoritative && defined $options->namneserver  ) {
         $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
             '--or authoritaive and --nameserver cannot be specified at the same time' );        
     }

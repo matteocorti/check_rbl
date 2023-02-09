@@ -1,3 +1,7 @@
+2023-02-09  Matteo Corti  <matteo@corti.li>
+
+        * check_rbl: Removed non-working servers
+
 2021-12-16  Matteo Corti  <matteo@corti.li>
 
         * check_rbl (run): Remove the dot at the end of FQDN
