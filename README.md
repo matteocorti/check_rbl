@@ -5,6 +5,8 @@
 
   see AUTHORS for the complete list of contributors
 
+![](https://img.shields.io/github/v/release/matteocorti/check_ssl_cert@)&nbsp;![](https://img.shields.io/github/downloads/matteocorti/check_ssl_cert/latest/total)&nbsp;![](https://img.shields.io/github/downloads/matteocorti/check_ssl_cert/total)&nbsp;![](https://img.shields.io/github/license/matteocorti/check_ssl_cert)&nbsp;![](https://img.shields.io/github/stars/matteocorti/check_ssl_cert)&nbsp;![](https://img.shields.io/github/forks/matteocorti/check_ssl_cert)
+
 # check\_rbl
 
 A Nagios plugin to check if an SMTP server is blacklisted
