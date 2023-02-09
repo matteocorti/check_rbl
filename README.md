@@ -5,7 +5,7 @@
 
   see AUTHORS for the complete list of contributors
 
-![](https://img.shields.io/github/v/release/matteocorti/check_ssl_cert@)&nbsp;![](https://img.shields.io/github/downloads/matteocorti/check_ssl_cert/latest/total)&nbsp;![](https://img.shields.io/github/downloads/matteocorti/check_ssl_cert/total)&nbsp;![](https://img.shields.io/github/license/matteocorti/check_ssl_cert)&nbsp;![](https://img.shields.io/github/stars/matteocorti/check_ssl_cert)&nbsp;![](https://img.shields.io/github/forks/matteocorti/check_ssl_cert)
+![](https://img.shields.io/github/v/release/matteocorti/check_rbl@)&nbsp;![](https://img.shields.io/github/downloads/matteocorti/check_rbl/latest/total)&nbsp;![](https://img.shields.io/github/downloads/matteocorti/check_rbl/total)&nbsp;![](https://img.shields.io/github/license/matteocorti/check_rbl)&nbsp;![](https://img.shields.io/github/stars/matteocorti/check_rbl)&nbsp;![](https://img.shields.io/github/forks/matteocorti/check_rbl)
 
 # check\_rbl
 

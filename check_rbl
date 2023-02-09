@@ -209,6 +209,17 @@ sub mdns {
                 last;
             }
 
+            # TODO
+            # get the authoritative name server
+            # to be implemented
+
+            if ( defined $options && defined $options->get('authoritative') ) {
+
+                # we initialize a default query to get the authoritative nameserver
+                
+                
+            }
+            
             debug("reading...$name");
 
             my $sock = $res->bgsend($name);
@@ -494,7 +505,13 @@ sub run {
         help =>
 'Use this nameserver IP as DNS resolver (only one server is supported)',
         required => 0,
-    );
+        );
+
+    $options->arg(
+        spec => 'authoritative|a',
+        help => 'Always use the corresponding authoritative name server',
+        required => 0,
+        );
 
     $options->getopts();
 
@@ -513,6 +530,11 @@ sub run {
             'host or url has to be set' );
     }
 
+    if ( defined $options && defined $options->('namneserver') && defined $options->('authoritative') ) {
+        $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
+            '--or authoritaive and --nameserver cannot be specified at the same time' );        
+    }
+    
 # if present remove the trailing dot from the FQDN
 # see https://serverfault.com/questions/803033/should-i-append-a-dot-at-the-end-of-my-dns-urls
     my $host = $options->host;
