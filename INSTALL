@@ -73,11 +73,14 @@ web interface at https://github.com/matteocorti/check_rbl/issues
 Dependencies on Debian
 ======================
 
-apt-get install libdata-validate-ip-perl libdata-validate-domain-perl libnet-dns-perl libreadonly-perl libmonitoring-plugin-perl
+    apt-get install libdata-validate-ip-perl libdata-validate-domain-perl libnet-dns-perl libreadonly-perl libmonitoring-plugin-perl
 
 Dependencies on Redhat
 ======================
-This was tested on RHEL8, with repository `epel` and `codeready-builder-for-rhel-8-x86_64-rpms` enabled.
+
+You can just install the nagios-plugins-check-rbl with DNF and the dependencies will be installed automatically
+
+If yoi want to install the dependencies manually (tested on RHEL8, with repository `epel` and `codeready-builder-for-rhel-8-x86_64-rpms` enabled)
 
     dnf install perl-Capture-Tiny perl-Data-Validate-IP perl-IO perl-Monitoring-Plugin perl-Net-DNS perl-Net-IP perl-Readonly perl-Socket
 
@@ -90,5 +93,3 @@ Please check with '`perl -V`' the best value for PERL5LIB.
     export PERL5LIB=/usr/local/lib64/perl5
     cpanm --verbose --install Data::Validate::Domain
     unset PERL5LIB
-
-Now you can install check_rbl.
