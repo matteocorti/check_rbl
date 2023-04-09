@@ -62,7 +62,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s dnsbl-3.uceprotect.net \
     -s dnsbl.antispam.or.id \
     -s dnsbl.beetjevreemd.nl \
-    -s dnsbl.darklist.de \
     -s dnsbl.dronebl.org \
     -s dnsbl.isx.fr \
     -s dnsbl.justspam.org \
@@ -76,7 +75,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s dsn.rfc-ignorant.org \
     -s duinv.aupads.org \
     -s dul.dnsbl.sorbs.net \
-    -s dul.pacifier.net \
     -s dyna.spamrats.com \
     -s escalations.dnsbl.sorbs.net \
     -s forbidden.icm.edu.pl \
@@ -96,7 +94,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s l2.bbfh.ext.sorbs.net \
     -s l2.spews.dnsbl.sorbs.net \
     -s light.dnsbl.brukalai.lt \
-    -s list.bbfh.org \
     -s list.dnswl.org \
     -s mail-abuse.blacklist.jippg.org \
     -s misc.dnsbl.sorbs.net \
@@ -164,7 +161,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s swl.spamhaus.org \
     -s tor.dan.me.uk \
     -s torexit.dan.me.uk \
-    -s tr.countries.nerd.dk \
     -s truncate.gbudb.net \
     -s ubl.lashback.com \
     -s ubl.unsubscore.com \
