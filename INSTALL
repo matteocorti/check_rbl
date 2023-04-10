@@ -89,7 +89,7 @@ The perl libray `Data::Validate::Domain` is not avaliable (_yet_) as package, so
 Please check with '`perl -V`' the best value for PERL5LIB.
 
     dnf install perl-Scope-Guard perl-Sub-Info perl-Module-Pluggable perl-Net-Domain-TLD perl-Test2-Suite perl-Term-Table perl-Test-Simple
-    
+
     export PERL5LIB=/usr/local/lib64/perl5
     cpanm --verbose --install Data::Validate::Domain
     unset PERL5LIB
