@@ -10,9 +10,6 @@ rm -f "${TARBALL}"
 # build a new tarball
 make dist
 
-# debugging
-rpmbuild -ta "${TARBALL}"
-
 OUT=$(rpmbuild -ta "${TARBALL}" 2>&1 | grep ^Wrote)
 
 echo "${OUT}"
