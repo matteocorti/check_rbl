@@ -1,5 +1,5 @@
-%define version          1.7.0
-%define release          1
+%define version          1.7.1
+%define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
 %define nagiospluginsdir %{_libdir}/nagios/plugins
@@ -54,6 +54,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Mon Apr 10 2023 Matteo Corti <matteo@corti.li> - 1.7.1-0
+- Update to 1.7.1
+
 * Mon Aug  8 2022 Matteo Corti <matteo@corti.li> - 1.7.0-1
 - Updated the package dependencies
 
