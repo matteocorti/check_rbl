@@ -19,9 +19,9 @@ jobs:
         distro:
           - 'centos:7'
           - 'fedora:37'
-          - 'fedora:36'
+          - 'fedora:38'
         include:
-          - distro: 'fedora:36'
+          - distro: 'fedora:38'
             pre: >-
               dnf install -y sudo perl-Module-Install perl-Monitoring-Plugin perl-Perl-Critic rpm-build openssh-clients
           - distro: 'fedora:37'
