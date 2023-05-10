@@ -85,7 +85,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s images.rbl.msrbl.net \
     -s ip4.bl.zenrbl.pl \
     -s iprbl.mailcleaner.net \
-    -s ips.backscatterer.org \
     -s ips.whitelisted.org \
     -s ix.dnsbl.manitu.net \
     -s korea.services.net \
