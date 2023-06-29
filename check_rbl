@@ -507,7 +507,7 @@ sub run {
     );
 
     $options->arg(
-        spec     => 'authoritative|a',
+        spec     => 'authoritative|A',
         help     => 'Always use the corresponding authoritative name server',
         required => 0,
     );
@@ -531,10 +531,10 @@ sub run {
 
     if (   defined $options
         && defined $options->authoritative
-        && defined $options->namneserver )
+        && defined $options->nameserver )
     {
         $plugin->nagios_exit( Monitoring::Plugin->UNKNOWN,
-'--or authoritaive and --nameserver cannot be specified at the same time'
+'--or authoritative and --nameserver cannot be specified at the same time'
         );
     }
 
