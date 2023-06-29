@@ -1,1 +1,2 @@
-Updated the list of servers
+
+Fixed confliting command line option
