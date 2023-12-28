@@ -1,5 +1,5 @@
 %define version          1.7.2
-%define release          0
+%define release          1
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
 %define nagiospluginsdir %{_libdir}/nagios/plugins
@@ -21,6 +21,8 @@ Source:    https://github.com/matteocorti/check_rbl/releases/download/v%{version
 
 # Fedora build requirement (not needed for EPEL{4,5})
 BuildRequires: perl(ExtUtils::MakeMaker)
+# Fedora build requirement (EPEL >=8, Fedora >= 38)
+BuildRequires: perl(FindBin)
 
 Requires: perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus perl-Capture-Tiny
 
@@ -54,6 +56,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Wed Dec 28 2023 Matteo Corti <matteo@corti.li> - 1.7.2-1
+- Add BuildReq perl(FindBin) for EPEL >= 9 and Fedora >= 38
+
 * Thu Jun 29 2023 Matteo Corti <matteo@corti.li> - 1.7.2-0
 - Update to 1.7.2
 
