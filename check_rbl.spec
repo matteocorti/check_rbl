@@ -57,7 +57,7 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
-* Wed Dec 28 2023 Matteo Corti <matteo@corti.li> - 1.7.2-1
+* Thu Dec 28 2023 Peter Bieringer <pb@bieringer.de> - 1.7.2-1
 - Add BuildRequirement for EPEL >= 9 and Fedora >= 38: perl(FindBin) make
 - Add Requirement perl(Data::Validate::Domain)
 
