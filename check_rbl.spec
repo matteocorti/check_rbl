@@ -25,6 +25,7 @@ BuildRequires: perl(ExtUtils::MakeMaker)
 BuildRequires: perl(FindBin) make
 
 Requires: perl-Module-Install perl-Readonly perl-Monitoring-Plugin perl-Test-Simple perl-Perl-Critic rpm-build perl-Net-DNS perl-Net-IP perl-Data-Validate-IP perl-App-cpanminus perl-Capture-Tiny
+Requires: perl(Data::Validate::Domain)
 
 %description
 check_rbl is a Nagios plugin to check if an SMTP server is blacklisted
@@ -57,7 +58,8 @@ rm -rf %{buildroot}
 
 %changelog
 * Wed Dec 28 2023 Matteo Corti <matteo@corti.li> - 1.7.2-1
-- Add BuildReq for EPEL >= 9 and Fedora >= 38: perl(FindBin) make
+- Add BuildRequirement for EPEL >= 9 and Fedora >= 38: perl(FindBin) make
+- Add Requirement perl(Data::Validate::Domain)
 
 * Thu Jun 29 2023 Matteo Corti <matteo@corti.li> - 1.7.2-0
 - Update to 1.7.2
