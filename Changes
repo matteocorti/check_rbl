@@ -1,3 +1,7 @@
+2024-03-27  Matteo Corti  <matteo@corti.li>
+
+        * check_rbl: Removed spamtrap.drbl.drand.net
+
 2023-02-09  Matteo Corti  <matteo@corti.li>
 
         * check_rbl: Removed non-working servers

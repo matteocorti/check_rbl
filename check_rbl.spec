@@ -1,5 +1,5 @@
-%define version          1.7.2
-%define release          1
+%define version          1.7.3
+%define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
 %define nagiospluginsdir %{_libdir}/nagios/plugins
@@ -57,6 +57,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Wed Mar 27 2024 Matteo Corti <matteo@corti.li> - 1.7.3-0
+- Update to 1.7.3
+
 * Thu Dec 28 2023 Peter Bieringer <pb@bieringer.de> - 1.7.2-1
 - Add BuildRequirement for EPEL >= 9 and Fedora >= 38: perl(FindBin) make
 - Add Requirement perl(Data::Validate::Domain)

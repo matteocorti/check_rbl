@@ -1,1 +1,1 @@
-Fixed confliting command line option
+Removed spamtrap.drbl.drand.net
