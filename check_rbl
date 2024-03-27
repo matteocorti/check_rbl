@@ -215,7 +215,9 @@ sub mdns {
 
             if ( defined $options && defined $options->get('authoritative') ) {
 
-             # we initialize a default query to get the authoritative nameserver
+                # we initialize a default query to get the authoritative nameserver
+
+                printf "-A not yet implemented\n";
 
             }
 
