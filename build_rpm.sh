@@ -10,6 +10,7 @@ rm -f "${TARBALL}"
 # build a new tarball
 make dist
 
+# build the RPMs
 OUT=$(rpmbuild -ta "${TARBALL}" 2>&1 | grep ^Wrote)
 
 echo "${OUT}"
