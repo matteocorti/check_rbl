@@ -132,7 +132,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s relays.bl.kunden.de \
     -s relays.dnsbl.sorbs.net \
     -s relays.nether.net \
-    -s rep.mailspike.net \
     -s reputation-ip.rbl.scrolloutf1.com \
     -s reputation-ns.rbl.scrolloutf1.com \
     -s residential.block.transip.nl \
@@ -172,7 +171,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s web.rbl.msrbl.net \
     -s white.dnsbl.brukalai.lt \
     -s whois.rfc-ignorant.org \
-    -s wl.mailspike.net \
     -s wormrbl.imp.ch \
     -s xbl.spamhaus.org \
     -s z.mailspike.net \
