@@ -108,7 +108,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s rbl.inter.net \
     -s rbl.interserver.net \
     -s rbl.ircbl.org \
-    -s rbl.lugh.ch \
     -s rbl.metunet.com \
     -s rbl.rbldns.ru \
     -s rbl.schulte.org \
