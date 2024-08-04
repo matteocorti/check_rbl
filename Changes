@@ -1,3 +1,7 @@
+2024-08-04  Matteo Corti  <matteo@corti.li>
+
+        * removed bondsender.org as it's not working anymore
+        
 2024-03-27  Matteo Corti  <matteo@corti.li>
 
         * check_rbl: Removed spamtrap.drbl.drand.net
