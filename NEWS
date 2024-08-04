@@ -1,5 +1,5 @@
 2024-03-27: 1.7.3 - Removed spamtrap.drbl.drand.net
-2023-06-29: 1.7.2 - Fixed confliting command line option
+2023-06-29: 1.7.2 - Fixed conflicting command line option
 2023-04-10: 1.7.1 - updated the list of servers
 2022-08-08: 1.7.0 - new option to specify nameserver to use for the DNS queries
 2022-05-12: 1.6.4 - updated the list of servers
