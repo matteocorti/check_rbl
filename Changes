@@ -145,7 +145,7 @@
     * Version 1.2.2
     * check_rbl: specified the dependency on Nagios::Plugin > 0.31
                  (earlier versions caused parameter parsing errors,
-                 thanks to Elan Ruusamäe)
+                 thanks to Elan RuusamÃ¤e)
 
 2010-07-05  Matteo Corti  <matteo.corti@id.ethz.ch>
 
