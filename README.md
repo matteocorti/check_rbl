@@ -1,7 +1,7 @@
 
  &copy; Matteo Corti, ETH Zurich, 2009-2012
 
- &copy; Matteo Corti, 2009-2023
+ &copy; Matteo Corti, 2009-2024
 
   see AUTHORS for the complete list of contributors
 
