@@ -1,1 +1,1 @@
-Removed spamtrap.drbl.drand.net
+Fixed a problem with a debug subroutine

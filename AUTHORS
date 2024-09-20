@@ -14,4 +14,4 @@ Thanks:
 * Many thanks to waja (https://github.com/waja) for the dnsbl.inps.de patch
 * Many thanks to Dalfo (https://github.com/DalfoCentreon) for the installation instructions
 * Many thanks to Bas Couwenberg (https://github.com/sebastic) for the --authoritative patch
-* Many thanks to Peter Bieringer (pb@bieringer.de) for the Fedora 38 and EPEL 9 patch
+* Many thanks to Peter Bieringer (pb@bieringer.de) for the Fedora 38 and EPEL 9 patch and the 'debuglog' patch
