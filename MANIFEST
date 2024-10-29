@@ -1,3 +1,5 @@
+.codespell-ignore
+.codespellrc
 AUTHORS
 build_rpm.sh
 Changes

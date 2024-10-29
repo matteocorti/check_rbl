@@ -47,6 +47,6 @@ WriteMakefile(
     INSTALLSCRIPT        => '/usr/lib/nagios/plugins/contrib',
     INSTALLSITESCRIPT    => '/usr/lib/nagios/plugins/contrib',
     MAN1PODS             => { 'check_rbl.pod' =>'blib/man1/check_rbl.1', },
-    MAN3PODS             => { },
+    MAN3PODS             => { },    
 );
 

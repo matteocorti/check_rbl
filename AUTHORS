@@ -2,7 +2,7 @@ Matteo Corti <matteo@corti.li>
 
 Thanks:
 
-* Many thanks to Elan Ruusam‰e <glen@delfi.ee> for the improved parallel support and several fixes
+* Many thanks to Elan Ruusam√§e <glen@delfi.ee> for the improved parallel support and several fixes
 * Many thanks to Victor V Kudlak <info@kentos.ru> for the parallel support
 * Many thanks to Jan Kantert <jan.kantert@researchgate.net> for the whitelisting support
 * Many thanks to Nick Nicholas <opoudjis@gmail.com> for IPv6 support
@@ -14,4 +14,4 @@ Thanks:
 * Many thanks to waja (https://github.com/waja) for the dnsbl.inps.de patch
 * Many thanks to Dalfo (https://github.com/DalfoCentreon) for the installation instructions
 * Many thanks to Bas Couwenberg (https://github.com/sebastic) for the --authoritative patch
-* Many thanks to Peter Bieringer (pb@bieringer.de) for the Fedora 38 and EPEL 9 patch
+* Many thanks to Peter Bieringer (pb@bieringer.de) for the Fedora 38 and EPEL 9 patch and the 'debuglog' patch

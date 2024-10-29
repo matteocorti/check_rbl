@@ -84,7 +84,7 @@ If yoi want to install the dependencies manually (tested on RHEL8, with reposito
 
     dnf install perl-Capture-Tiny perl-Data-Validate-IP perl-IO perl-Monitoring-Plugin perl-Net-DNS perl-Net-IP perl-Readonly perl-Socket
 
-The perl libray `Data::Validate::Domain` is not avaliable (_yet_) as package, so you have to install it trough CPAN.
+The perl library `Data::Validate::Domain` is not available (_yet_) as package, so you have to install it through CPAN.
 
 Please check with '`perl -V`' the best value for PERL5LIB.
 

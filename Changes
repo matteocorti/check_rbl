@@ -1,3 +1,11 @@
+2024-09-20  Matteo Corti  <matteo@corti.li>
+
+        * check_rbl: Fixed a problem with a debug subroutine
+
+2024-08-04  Matteo Corti  <matteo@corti.li>
+
+        * removed bondsender.org as it's not working anymore
+
 2024-03-27  Matteo Corti  <matteo@corti.li>
 
         * check_rbl: Removed spamtrap.drbl.drand.net
@@ -141,7 +149,7 @@
     * Version 1.2.2
     * check_rbl: specified the dependency on Nagios::Plugin > 0.31
                  (earlier versions caused parameter parsing errors,
-                 thanks to Elan Ruusam‰e)
+                 thanks to Elan Ruusam√§e)
 
 2010-07-05  Matteo Corti  <matteo.corti@id.ethz.ch>
 
