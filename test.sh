@@ -38,7 +38,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s bl.nordspam.com \
     -s bl.nosolicitado.org \
     -s bl.scientificspam.net \
-    -s bl.score.senderscore.com \
     -s bl.spamcop.net \
     -s bl.spameatingmonkey.net \
     -s bl.suomispam.net \
@@ -51,7 +50,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s blacklist.woody.ch \
     -s bsb.spamlookup.net \
     -s cbl.abuseat.org \
-    -s cidr.bl.mcafee.com \
     -s combined.abuse.ch \
     -s combined.rbl.msrbl.net \
     -s db.wpbl.info \
