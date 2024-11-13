@@ -1,3 +1,7 @@
+2024-11-13  Matteo Corti  <matteo@corti.li>
+
+        * check_rbl.ini: Removed anomalies.de
+
 2024-09-20  Matteo Corti  <matteo@corti.li>
 
         * check_rbl: Fixed a problem with a debug subroutine

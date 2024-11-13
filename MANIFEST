@@ -33,6 +33,7 @@ RELEASE_NOTES.md
 SECURITY.md
 t/00_modules.t
 t/01_validation.t
+t/02_codespell.t
 test.sh
 test_script.sh
 TODO

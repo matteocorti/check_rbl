@@ -1,1 +1,1 @@
-Fixed a problem with a debug subroutine
+Removed spam.dnsbl.anonmails.de

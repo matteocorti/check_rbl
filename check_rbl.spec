@@ -1,4 +1,4 @@
-%define version          1.7.4
+%define version          1.7.5
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl

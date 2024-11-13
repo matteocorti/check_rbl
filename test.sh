@@ -122,7 +122,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s score.spfbl.net \
     -s singular.ttk.pte.hu \
     -s spam.abuse.ch \
-    -s spam.dnsbl.anonmails.de \
     -s spam.pedantic.org \
     -s spam.rbl.blockedservers.com \
     -s spam.rbl.msrbl.net \
