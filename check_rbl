@@ -9,7 +9,7 @@ package main;
 #
 # See  the INSTALL file for installation instructions
 #
-# Copyright (c) 2009-2023 Matteo Corti <matteo@corti.li>
+# Copyright (c) 2009-2025 Matteo Corti <matteo@corti.li>
 # Copyright (c) 2009 ETH Zurich.
 # Copyright (c) 2010 Elan Ruusamae <glen@delfi.ee>.
 # Copyright (c) 2022 Claudio Kuenzler <ck@claudiokuenzler.com>.
@@ -21,7 +21,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.7.5';
+our $VERSION = '1.7.6';
 
 use Capture::Tiny qw(capture);
 use Data::Validate::Domain qw(is_hostname);

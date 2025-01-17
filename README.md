@@ -25,7 +25,7 @@ Needs ```Data::Validate::Domain``` 0.12 to handle fully qualified host names wit
 ## Example
 
 ```
-check_rbl -H example.org -t 60 -c 1 -w 1 -s cbl.abuseat.org -s spamsources.fabel.dk -s mail-abuse.blacklist.jippg.org -s korea.services.net -s ix.dnsbl.manitu.net -s psbl.surriel.com -s dyna.spamrats.com -s noptr.spamrats.com -s spam.spamrats.com -s bl.spamcop.net -s pbl.spamhaus.org -s sbl.spamhaus.org -s xbl.spamhaus.org -s db.wpbl.info -s access.redhawk.org -s dnsbl.kempt.net -s rbl.schulte.org -s sbl-xbl.spamhaus.org -s zen.spamhaus.org -s dnsbl.dronebl.org -s dnsbl.spfbl.net -s z.mailspike.net
+check_rbl -H example.org -t 60 -c 1 -w 1 -s cbl.abuseat.org -s spamsources.fabel.dk -s mail-abuse.blacklist.jippg.org -s korea.services.net -s psbl.surriel.com -s dyna.spamrats.com -s noptr.spamrats.com -s spam.spamrats.com -s bl.spamcop.net -s pbl.spamhaus.org -s sbl.spamhaus.org -s xbl.spamhaus.org -s db.wpbl.info -s access.redhawk.org -s dnsbl.kempt.net -s rbl.schulte.org -s sbl-xbl.spamhaus.org -s zen.spamhaus.org -s dnsbl.dronebl.org -s dnsbl.spfbl.net -s z.mailspike.net
 ```
 
 ### See also
