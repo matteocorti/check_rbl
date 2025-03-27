@@ -21,7 +21,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.7.6';
+our $VERSION = '1.7.7';
 
 use Capture::Tiny qw(capture);
 use Data::Validate::Domain qw(is_hostname);

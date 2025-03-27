@@ -1,1 +1,1 @@
-Removed ix.dnsbl.manitu.net
+Removed madavi.de
