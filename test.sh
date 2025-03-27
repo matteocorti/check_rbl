@@ -62,7 +62,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s dnsbl.isx.fr \
     -s dnsbl.justspam.org \
     -s dnsbl.kempt.net \
-    -s dnsbl.madavi.de \
     -s dnsbl.spfbl.net \
     -s dnsblchile.org \
     -s dnswl.spfbl.net \
