@@ -1,3 +1,7 @@
+2026-02-26  Matteo Corti  <matteo@corti.li>
+
+        * check_rbl (init_dns_resolver): added an option to force an IPv4 resolver
+
 2024-11-13  Matteo Corti  <matteo@corti.li>
 
         * check_rbl.ini: Removed anomalies.de

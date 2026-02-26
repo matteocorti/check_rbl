@@ -21,7 +21,7 @@ package main;
 use strict;
 use warnings;
 
-our $VERSION = '1.7.7';
+our $VERSION = '1.8.0';
 
 use Capture::Tiny qw(capture);
 use Data::Validate::Domain qw(is_hostname);
@@ -134,7 +134,10 @@ sub init_dns_resolver {
     my $retries = shift;
 
     my $resolver = Net::DNS::Resolver->new();
-    if ( $resolver->can('force_v4') ) {
+    if (   defined $options
+        && defined $options->get('force-ipv4-resolver')
+        && $resolver->can('force_v4') )
+    {
         $resolver->force_v4(1);
     }
 
@@ -215,7 +218,7 @@ sub mdns {
 
             if ( defined $options && defined $options->get('authoritative') ) {
 
-                # we initialize a default query to get the authoritative nameserver
+             # we initialize a default query to get the authoritative nameserver
 
                 printf "-A not yet implemented\n";
 
@@ -511,6 +514,12 @@ sub run {
     $options->arg(
         spec     => 'authoritative|A',
         help     => 'Always use the corresponding authoritative name server',
+        required => 0,
+    );
+
+    $options->arg(
+        spec     => 'force-ipv4-resolver',
+        help     => 'Forces IPv4 DNS resolvers',
         required => 0,
     );
 

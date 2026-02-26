@@ -1,4 +1,4 @@
-%define version          1.7.7
+%define version          1.8.0
 %define release          0
 %define sourcename       check_rbl
 %define packagename      nagios-plugins-check-rbl
@@ -57,6 +57,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/%{sourcename}.1*
 
 %changelog
+* Thu Feb 26 2026 Matteo Corti <matteo@corti.li> - 1.8.0-0
+- Update to 1.8.0
+
 * Thu Mar 27 2025 Matteo Corti <matteo@corti.li> - 1.7.7-0
 - Update to 1.7.7
 
