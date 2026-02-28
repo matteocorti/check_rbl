@@ -136,6 +136,12 @@ sub init_dns_resolver {
     debug( "Initializing the DNS resolver with $retries retries\n" );
     
     my $resolver = Net::DNS::Resolver->new();
+
+    if ( $options && $options->debug() ) {
+        $resolver->debug(2);
+    }
+    
+    
     if (   defined $options
         && defined $options->get('force-ipv4-resolver')
         && $resolver->can('force_v4') )
@@ -168,6 +174,7 @@ sub init_dns_resolver {
     debug("Using DNS Resolver: @nameservers");
 
     return $resolver;
+
 }
 
 ##############################################################################
@@ -208,7 +215,7 @@ sub mdns {
         while ( !$eof && $sel->count() < $workers ) {
 
             my $name = shift @addrs;
-
+            
             if ( !defined $name ) {
                 debug('reading...EOF.');
                 $eof = 1;
