@@ -40,7 +40,7 @@ fi
 
 YEAR=$(date +"%Y")
 echo "Copyright (${YEAR})"
-echo "========="
+echo "================"
 echo
 echo '### README.md'
 grep "&copy; Matteo Corti, 2009-${YEAR}" README.md
