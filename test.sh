@@ -113,7 +113,6 @@ perl ./check_rbl -H "${IP_ADDR}" \
     -s reputation-ns.rbl.scrolloutf1.com \
     -s residential.block.transip.nl \
     -s sbl-xbl.spamhaus.org \
-    -s sbl.spamdown.org \
     -s sbl.spamhaus.org \
     -s score.spfbl.net \
     -s singular.ttk.pte.hu \
